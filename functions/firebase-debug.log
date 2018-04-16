@@ -1,0 +1,40 @@
+[debug] [2017-12-10T03:35:48.366Z] ----------------------------------------------------------------------
+[debug] [2017-12-10T03:35:48.368Z] Command:       /usr/local/bin/node /usr/local/bin/firebase serve --only functions
+[debug] [2017-12-10T03:35:48.368Z] CLI Version:   3.16.0
+[debug] [2017-12-10T03:35:48.368Z] Platform:      darwin
+[debug] [2017-12-10T03:35:48.368Z] Node Version:  v8.9.3
+[debug] [2017-12-10T03:35:48.368Z] Time:          Sat Dec 09 2017 19:35:48 GMT-0800 (PST)
+[debug] [2017-12-10T03:35:48.368Z] ----------------------------------------------------------------------
+[debug] 
+[debug] [2017-12-10T03:35:48.381Z] > command requires scopes: ["email","openid","https://www.googleapis.com/auth/cloudplatformprojects.readonly","https://www.googleapis.com/auth/firebase","https://www.googleapis.com/auth/cloud-platform"]
+[debug] [2017-12-10T03:35:48.381Z] > authorizing via signed-in user
+[debug] [2017-12-10T03:35:48.383Z] > refreshing access token with scopes: ["email","https://www.googleapis.com/auth/cloud-platform","https://www.googleapis.com/auth/cloudplatformprojects.readonly","https://www.googleapis.com/auth/firebase","openid"]
+[debug] [2017-12-10T03:35:48.383Z] >>> HTTP REQUEST POST https://www.googleapis.com/oauth2/v3/token  
+ { refresh_token: '1/4By0GQH8yfNiY2M4x2MzJ0KLWRgxAPyCDw49m95Ff3k',
+  client_id: '563584335869-fgrhgmd47bqnekij5i8b5pr03ho849e6.apps.googleusercontent.com',
+  client_secret: 'j9iVZfS8kkCEFUPaAeJV0sAi',
+  grant_type: 'refresh_token',
+  scope: 'email https://www.googleapis.com/auth/cloud-platform https://www.googleapis.com/auth/cloudplatformprojects.readonly https://www.googleapis.com/auth/firebase openid' } 
+ Sat Dec 09 2017 19:35:48 GMT-0800 (PST)
+[debug] [2017-12-10T03:35:48.688Z] <<< HTTP RESPONSE 200
+[debug] [2017-12-10T03:35:48.701Z] >>> HTTP REQUEST GET https://admin.firebase.com/v1/projects/trip-keep  
+  
+ Sat Dec 09 2017 19:35:48 GMT-0800 (PST)
+[debug] [2017-12-10T03:35:49.396Z] <<< HTTP RESPONSE 200
+[debug] [2017-12-10T03:35:49.397Z] >>> HTTP REQUEST GET https://admin.firebase.com/v1/database/trip-keep/tokens  
+  
+ Sat Dec 09 2017 19:35:49 GMT-0800 (PST)
+[debug] [2017-12-10T03:35:49.891Z] <<< HTTP RESPONSE 200
+[info] 
+[info] === Serving from '/Users/justinhardin/C-Drive/projects/trip-keep'...
+[info] 
+[info] i  functions: Preparing to emulate functions.
+[debug] [2017-12-10T03:35:50.722Z] >>> HTTP REQUEST GET https://appengine.googleapis.com/v1/apps/trip-keep  
+  
+ Sat Dec 09 2017 19:35:50 GMT-0800 (PST)
+[debug] [2017-12-10T03:35:50.722Z] >>> HTTP REQUEST GET https://apikeys.googleapis.com/v1/projects/trip-keep/apiKeys  
+  
+ Sat Dec 09 2017 19:35:50 GMT-0800 (PST)
+[debug] [2017-12-10T03:35:51.309Z] <<< HTTP RESPONSE 200
+[debug] [2017-12-10T03:35:51.332Z] <<< HTTP RESPONSE 200
+[info] ✔  functions: getAmazonList: http://localhost:5000/trip-keep/us-central1/getAmazonList

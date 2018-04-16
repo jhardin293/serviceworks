@@ -1,0 +1,6 @@
+{
+  "projects": {
+    "staging": "trip-keep",
+    "default": "trip-keep"
+  }
+}
