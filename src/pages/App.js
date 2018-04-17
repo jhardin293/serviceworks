@@ -1,18 +1,19 @@
-import React, { Component } from 'react';
+import React, { Component } from 'react'
+import PropTypes from 'prop-types'
 import BigCalendar from 'react-big-calendar'
 import moment from 'moment'
 import DatePicker from 'react-datepicker'
 import 'react-big-calendar/lib/css/react-big-calendar.css'
-import './App.css';
-import 'react-datepicker/dist/react-datepicker-cssmodules.css';
+import './App.css'
+import 'react-datepicker/dist/react-datepicker-cssmodules.css'
 
-import logoImg from './images/AtomFlower.svg';
-import schedule from './images/schedule.svg';
-import notes from './images/notes.svg';
-import customers from './images/customers.svg';
-import invoices from './images/invoices.svg';
-import map from './images/map.svg';
-import gear from './images/gear.svg';
+import logoImg from './images/AtomFlower.svg'
+import schedule from './images/schedule.svg'
+import notes from './images/notes.svg'
+import customers from './images/customers.svg'
+import invoices from './images/invoices.svg'
+import map from './images/map.svg'
+import gear from './images/gear.svg'
 
 BigCalendar.setLocalizer(BigCalendar.momentLocalizer(moment));
 
@@ -80,6 +81,40 @@ class SideCalendar extends Component {
 }
 
 //TODO build a Calander component that enacpsulates the custom toolbar and calendar
+class Toolbar extends Component {
+  static propTypes = {
+    view: PropTypes.string.isRequired,
+    views: PropTypes.arrayOf(PropTypes.string).isRequired,
+    label: PropTypes.node.isRequired,
+    messages: PropTypes.object,
+    onNavigate: PropTypes.func.isRequired,
+    onViewChange: PropTypes.func.isRequired,
+  }
+  navigate = action => {
+    console.log(action);
+    this.props.onNavigate(action);
+  }
+  render () {
+    let {messages, label} = this.props;
+    return (
+      <div>
+        <button
+          type="button"
+          onClick={this.navigate.bind(null, 'PREV')}
+        >
+          {messages.previous}
+        </button>
+        <span>{label}</span>
+        <button
+          type="button"
+          onClick={this.navigate.bind(null, 'NEXT')}
+        >
+          {messages.next}
+        </button>
+      </div>
+    )
+  }
+}
 class App extends Component {
   constructor() {
     super();
@@ -90,23 +125,8 @@ class App extends Component {
       selectedDate: moment()._d
     };
   }
-  navigate = action => {
-    console.log(action,'action', this.state.selectedDate);
-    let newIdx =  this.state.calendar.months;
-    if (action === 'NEXT') {
-      newIdx = newIdx + 1;
-    }else {
-      newIdx = newIdx - 1;
-    }
-
-    this.setState({calendar : {'months' : newIdx}});
-    this.setState({selectedDate: moment().add({'months': newIdx})._d}); 
-  };
-
-  handleNavigate(d) {
-    //this is not firening 
-    //Not sure why
-    console.log(d, 'hi');
+  handleNavigate (date, view, action) {
+    console.log("date:", date, "view:", view, "action:" ,action);
   }
   render() {
     let events = [];
@@ -115,14 +135,12 @@ class App extends Component {
         <SideNav />
         <div className="schedule-view">
           <div className="calendar-wrapper">
-            <button onClick={this.navigate.bind(null, 'PREV')}>Prev</button>
-            <button onClick={this.navigate.bind(null, 'NEXT')}>Next</button>
             <BigCalendar 
               className="calendar" 
               events={events} 
-              date={this.state.selectedDate}
+              defaultDate={new Date()}
+              components={{toolbar: Toolbar}}
               onNavigate={this.handleNavigate}
-              views={['day', 'week', 'month']} 
              />
           </div>
           <SideCalendar />
