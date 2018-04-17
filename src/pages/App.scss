@@ -11,6 +11,10 @@ body {
   margin: 0px;
 }
 
+.main-content {
+  display: flex;
+}
+
 .side-nav {
   width: 200px;
   background-color: #414A57;
@@ -80,3 +84,22 @@ body {
     }
   }
 }
+
+
+.schedule-view {
+  width: calc(100% - 200px);
+  display: flex;
+}
+.calendar-wrapper {
+  width: 100%;
+  .calendar {
+    height: 100vh;
+    width: 100%;
+  }
+}
+.side-calendar {
+  width: 310px;
+  background-color:#F5F6FA;
+  height: 100vh;
+}
+
