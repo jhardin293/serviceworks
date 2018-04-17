@@ -5,6 +5,7 @@
   "dependencies": {
     "@firebase/firestore": "^0.2.0",
     "amazon-wish-list": "^0.5.2",
+    "classnames": "^2.2.5",
     "firebase": "^4.7.0",
     "moment": "^2.22.1",
     "node-sass-chokidar": "0.0.3",

@@ -1,5 +1,6 @@
 import React, { Component } from 'react'
 import PropTypes from 'prop-types'
+import cn from 'classnames'
 import BigCalendar from 'react-big-calendar'
 import moment from 'moment'
 import DatePicker from 'react-datepicker'
@@ -94,40 +95,69 @@ class Toolbar extends Component {
     console.log(action);
     this.props.onNavigate(action);
   }
+  view = view => {
+    this.props.onViewChange(view);
+  }
   render () {
-    let {messages, label} = this.props;
+    let {messages, label} = this.props,
+      month = label.split(" ")[0],
+      year = label.split(" ")[1],
+      view = this.props.view
+
+    console.log(this.props.views, messages);
     return (
-      <div>
-        <button
-          type="button"
-          onClick={this.navigate.bind(null, 'PREV')}
-        >
-          {messages.previous}
-        </button>
-        <span>{label}</span>
-        <button
-          type="button"
-          onClick={this.navigate.bind(null, 'NEXT')}
-        >
-          {messages.next}
-        </button>
+      <div className="calendar-toolbar">
+        <div className="month-area">
+          <button
+            type="button"
+            onClick={this.navigate.bind(null, 'PREV')}
+          >
+            {messages.previous}
+          </button>
+          <span><strong>{month}</strong> {year}</span>
+          <button
+            type="button"
+            onClick={this.navigate.bind(null, 'NEXT')}
+          >
+            {messages.next}
+          </button>
+        </div>
+        <div className="view-area">
+          <button
+            type="button"
+            onClick={this.view.bind(null, 'day')}
+            className={cn({ 'rbc-active': view === 'day' })}
+          >
+            Day
+          </button>
+          <button
+            type="button"
+            onClick={this.view.bind(null, 'week')}
+            className={cn({ 'rbc-active': view === 'week' })}
+          >
+            Week
+          </button>
+          <button
+            type="button"
+            onClick={this.view.bind(null, 'month')}
+            className={cn({ 'rbc-active': view === 'month' })}
+          >
+            Month
+          </button>
+          <button
+            type="button"
+            onClick={this.navigate.bind(null, 'TODAY')}
+          >
+            {messages.today}
+          </button>
+
+        </div>
+       
       </div>
     )
   }
 }
 class App extends Component {
-  constructor() {
-    super();
-    this.state = {
-      calendar : {
-        'months': 0
-      },
-      selectedDate: moment()._d
-    };
-  }
-  handleNavigate (date, view, action) {
-    console.log("date:", date, "view:", view, "action:" ,action);
-  }
   render() {
     let events = [];
     return (
@@ -140,7 +170,7 @@ class App extends Component {
               events={events} 
               defaultDate={new Date()}
               components={{toolbar: Toolbar}}
-              onNavigate={this.handleNavigate}
+              views={['day', 'week', 'month']}
              />
           </div>
           <SideCalendar />
