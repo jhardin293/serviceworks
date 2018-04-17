@@ -9,22 +9,52 @@ body {
   margin: 0px; }
 
 .side-nav {
-  height: 100vh;
   width: 200px;
   background-color: #414A57;
   padding-top: 20px;
-  padding-left: 20px; }
+  height: calc(100vh - 20px); }
   .side-nav .logo {
     display: flex;
-    margin-bottom: 60px; }
+    margin-bottom: 40px;
+    padding-left: 15px; }
     .side-nav .logo img {
       margin-right: 15px; }
     .side-nav .logo h2 {
       font-size: 20px;
       color: white; }
   .side-nav .nav-items ul {
-    list-style: none; }
+    list-style: none;
+    padding: 0px; }
     .side-nav .nav-items ul li {
-      margin-bottom: 40px; }
+      position: relative;
+      padding-left: 15px;
+      border-width: 6px;
+      border-style: solid;
+      border-right: none;
+      border-top: none;
+      border-bottom: none;
+      border-color: transparent; }
+      .side-nav .nav-items ul li img {
+        margin-right: 25px; }
       .side-nav .nav-items ul li a {
-        color: white; }
+        display: flex;
+        color: white;
+        align-items: center;
+        height: 52px; }
+        .side-nav .nav-items ul li a span {
+          position: absolute;
+          left: 51px; }
+      .side-nav .nav-items ul li.active {
+        background-color: #2D3440; }
+      .side-nav .nav-items ul li:nth-child(1).active {
+        border-image: linear-gradient(to bottom, #7D3884, #DF6B68) 1 100%; }
+      .side-nav .nav-items ul li:nth-child(2).active {
+        border-image: linear-gradient(to bottom, #1EE7DD, #61A0C5) 1 100%; }
+      .side-nav .nav-items ul li:nth-child(3).active {
+        border-image: linear-gradient(to bottom, #FE6AAC, #FE8812) 1 100%; }
+      .side-nav .nav-items ul li:nth-child(4).active {
+        border-image: linear-gradient(to bottom, #7087D7, #4CC2F0) 1 100%; }
+      .side-nav .nav-items ul li:nth-child(5).active {
+        border-image: linear-gradient(to bottom, #FA7497, #FFD845) 1 100%; }
+      .side-nav .nav-items ul li:nth-child(6).active {
+        border-image: linear-gradient(to bottom, #6BE1A7, #5CB6B5) 1 100%; }

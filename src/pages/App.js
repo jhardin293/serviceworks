@@ -2,6 +2,12 @@ import React, { Component } from 'react';
 import './App.css';
 
 import logoImg from './images/AtomFlower.svg';
+import schedule from './images/schedule.svg';
+import notes from './images/notes.svg';
+import customers from './images/customers.svg';
+import invoices from './images/invoices.svg';
+import map from './images/map.svg';
+import gear from './images/gear.svg';
 
 
 class SideNav extends Component {
@@ -14,39 +20,39 @@ class SideNav extends Component {
         </div>
         <div className="nav-items">
           <ul>
-            <li>
+            <li className="active">
               <a>
-                <img src="" alt=""/>
+                <img src={schedule} alt=""/>
                 <span>Schedule</span>
               </a>
             </li>
             <li>
               <a>
-                <img src="" alt=""/>
+                <img src={notes} alt=""/>
                 <span>Notes</span>
               </a>
             </li>
             <li>
               <a>
-                <img src="" alt=""/>
+                <img src={customers} alt=""/>
                 <span>Customers</span>
               </a>
             </li>
             <li>
               <a>
-                <img src="" alt=""/>
+                <img src={invoices} alt=""/>
                 <span>Invoices</span>
               </a>
             </li>
             <li>
               <a>
-                <img src="" alt=""/>
+                <img src={map} alt=""/>
                 <span>Team map</span>
               </a>
             </li>
             <li>
               <a>
-                <img src="" alt=""/>
+                <img src={gear} width="20" height="20" alt=""/>
                 <span>My account</span>
               </a>
             </li>
