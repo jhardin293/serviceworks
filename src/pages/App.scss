@@ -198,5 +198,34 @@ button {
   width: 310px;
   background-color:#F5F6FA;
   height: 100vh;
+  padding-left: 20px;
+  padding-right: 20px;
+  .side-header {
+    padding-top: 15px;
+    margin-bottom: 20px;
+  }
+  .job-btn {
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    padding-bottom: 0px;
+    background-image: linear-gradient(90deg, #DF6B68 0%,  #7D3884 100%);
+    font-size: 14px;
+    color: white;
+    height: 30px;
+    width: 106px;
+    border: none;
+    border-radius: 4px;
+    img {
+      width: 11px;
+      align-items: center;
+      margin-right: 8px;
+      margin-left: 3px;
+    }
+    &:hover {
+      transition: box-shadow 0.1s ease-in;
+      box-shadow: 0px 0px 19px 1px rgba(0, 0, 0, 0.25);
+    }
+  }
 }
 

@@ -18,6 +18,8 @@ import gear from './images/gear.svg'
 
 import chevron from './images/chevron.svg'
 
+import plus from './images/plus.svg'
+
 BigCalendar.setLocalizer(BigCalendar.momentLocalizer(moment));
 
 class SideNav extends Component {
@@ -77,7 +79,10 @@ class SideCalendar extends Component {
   render () {
     return (
       <aside className="side-calendar">
-      <DatePicker inline />
+        <div className="side-header">
+          <button className="job-btn"><img src={plus} alt="" /><span>New job</span></button>
+        </div>
+        <DatePicker inline />
       </aside>
     )
   }
