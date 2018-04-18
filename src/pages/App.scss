@@ -142,9 +142,9 @@ button {
         }
         .view-switcher {
           display: flex;
-          margin-right: 40px;
+          margin-right: 20px;
           button {
-            width: 70px;
+            min-width: 70px;
             &:first-child {
               border-top-left-radius: 4px;
               border-bottom-left-radius: 4px;
@@ -157,10 +157,39 @@ button {
             }
           }
         }
+        .reset-day {
+          border-radius: 4px;
+          min-width: 80px;
+        }
       }
       .rbc-active {
         background-color:#DADEE3;
         color: white !important;
+      }
+    }
+    .rbc-month-view {
+      border-top: none;
+      border-left: none;
+      border-right: none;
+      .rbc-header {
+        border: none;
+        margin-bottom: 10px;
+      }
+      .rbc-header + .rbc-header {
+        border-left: none;
+      }
+      .rbc-day-bg {
+        &:first-child {
+          border-left: 1px solid #DDD;
+        }
+        &:last-child {
+          border-right: 1px solid #DDD;
+        }
+      }
+      .rbc-month-row {
+        &:nth-child(2) {
+          border-top: 1px solid #DDD;
+        }
       }
     }
   }

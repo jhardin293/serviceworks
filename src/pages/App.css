@@ -109,9 +109,9 @@ button {
           font-size: 14px; }
         .calendar-wrapper .calendar .calendar-toolbar .view-area .view-switcher {
           display: flex;
-          margin-right: 40px; }
+          margin-right: 20px; }
           .calendar-wrapper .calendar .calendar-toolbar .view-area .view-switcher button {
-            width: 70px; }
+            min-width: 70px; }
             .calendar-wrapper .calendar .calendar-toolbar .view-area .view-switcher button:first-child {
               border-top-left-radius: 4px;
               border-bottom-left-radius: 4px;
@@ -120,9 +120,27 @@ button {
               border-top-right-radius: 4px;
               border-bottom-right-radius: 4px;
               border-left: none; }
+        .calendar-wrapper .calendar .calendar-toolbar .view-area .reset-day {
+          border-radius: 4px;
+          min-width: 80px; }
       .calendar-wrapper .calendar .calendar-toolbar .rbc-active {
         background-color: #DADEE3;
         color: white !important; }
+    .calendar-wrapper .calendar .rbc-month-view {
+      border-top: none;
+      border-left: none;
+      border-right: none; }
+      .calendar-wrapper .calendar .rbc-month-view .rbc-header {
+        border: none;
+        margin-bottom: 10px; }
+      .calendar-wrapper .calendar .rbc-month-view .rbc-header + .rbc-header {
+        border-left: none; }
+      .calendar-wrapper .calendar .rbc-month-view .rbc-day-bg:first-child {
+        border-left: 1px solid #DDD; }
+      .calendar-wrapper .calendar .rbc-month-view .rbc-day-bg:last-child {
+        border-right: 1px solid #DDD; }
+      .calendar-wrapper .calendar .rbc-month-view .rbc-month-row:nth-child(2) {
+        border-top: 1px solid #DDD; }
 
 .side-calendar {
   width: 310px;
