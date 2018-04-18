@@ -100,10 +100,43 @@ class Toolbar extends Component {
     this.props.onViewChange(view);
   }
   render () {
-    let {messages, label} = this.props,
-      month = label.split(" ")[0].substring(0,3),
-      year = label.split(" ")[1],
-      view = this.props.view
+    let {label, view, date} = this.props,
+    month = label.split(" ")[0].substring(0,3),
+    dateToday = new Date(),
+    dateSelected = new Date(date),
+    isToday = true,
+    pre,body;
+
+    dateToday.setHours(0,0,0,0);
+    dateSelected.setHours(0,0,0,0);
+    if (dateToday.getTime() === dateSelected.getTime()) {
+      isToday = true;
+    }else {
+      isToday = false;
+    }
+
+    switch(view) {
+      case 'day':
+        let day = label.split(" ")[0].substring(0,3);
+        let monthDay = label.split(" ").slice(1).join("");
+        pre = day;
+        body = monthDay;
+        break;
+      case 'week':
+        let week = label.split(" ").slice(1).join("");
+        pre = month;
+        body = week;
+        break;
+      case 'month':
+        let year = label.split(" ")[1];
+        pre = month;
+        body = year;
+        break;
+      default:
+         pre = 'not';
+         body = 'found';
+    }
+    
 
     return (
       <div className="calendar-toolbar">
@@ -114,7 +147,7 @@ class Toolbar extends Component {
           >
             <img src={chevron} alt="prev"  />
           </button>
-          <span className="month-label"><strong>{month}</strong> {year}</span>
+          <span className="month-label"><strong>{pre}</strong> {body}</span>
           <button
             type="button"
             onClick={this.navigate.bind(null, 'NEXT')}
@@ -123,32 +156,35 @@ class Toolbar extends Component {
           </button>
         </div>
         <div className="view-area">
-          <button
-            type="button"
-            onClick={this.view.bind(null, 'day')}
-            className={cn({ 'rbc-active': view === 'day' })}
-          >
-            Day
-          </button>
-          <button
-            type="button"
-            onClick={this.view.bind(null, 'week')}
-            className={cn({ 'rbc-active': view === 'week' })}
-          >
-            Week
-          </button>
-          <button
-            type="button"
-            onClick={this.view.bind(null, 'month')}
-            className={cn({ 'rbc-active': view === 'month' })}
-          >
-            Month
-          </button>
+          <div className="view-switcher"> 
+            <button
+              type="button"
+              onClick={this.view.bind(null, 'day')}
+              className={cn({ 'rbc-active': view === 'day' })}
+            >
+              Day
+            </button>
+            <button
+              type="button"
+              onClick={this.view.bind(null, 'week')}
+              className={cn({ 'rbc-active': view === 'week' })}
+            >
+              Week
+            </button>
+            <button
+              type="button"
+              onClick={this.view.bind(null, 'month')}
+              className={cn({ 'rbc-active': view === 'month' })}
+            >
+              Month
+            </button>
+          </div>
           <button
             type="button"
             onClick={this.navigate.bind(null, 'TODAY')}
+            className={"reset-day " + cn({'rbc-active': isToday })}
           >
-            {messages.today}
+            Today
           </button>
 
         </div>

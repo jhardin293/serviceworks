@@ -8,6 +8,9 @@ body {
   font-family: 'Lato', sans-serif;
   margin: 0px; }
 
+button {
+  cursor: pointer; }
+
 .main-content {
   display: flex; }
 
@@ -75,15 +78,18 @@ body {
     .calendar-wrapper .calendar .calendar-toolbar {
       display: flex;
       justify-content: space-between;
+      align-items: center;
       padding-top: 20px;
       padding-bottom: 20px; }
       .calendar-wrapper .calendar .calendar-toolbar .month-area {
-        display: flex; }
+        display: flex;
+        align-items: flex-end; }
         .calendar-wrapper .calendar .calendar-toolbar .month-area button {
           background-color: transparent;
           border-radius: 3px;
           box-shadow: 0px 0px 3px 1px rgba(0, 0, 0, 0.19);
-          border: none; }
+          border: none;
+          height: 20px; }
           .calendar-wrapper .calendar .calendar-toolbar .month-area button img {
             padding-top: 2px;
             width: 6px; }
@@ -92,9 +98,31 @@ body {
         .calendar-wrapper .calendar .calendar-toolbar .month-area .month-label {
           display: block;
           padding: 0 20px;
-          min-width: 111px; }
+          min-width: 121px;
+          font-size: 18px; }
+      .calendar-wrapper .calendar .calendar-toolbar .view-area {
+        display: flex; }
+        .calendar-wrapper .calendar .calendar-toolbar .view-area button {
+          border: 2px solid #DADEE3;
+          color: #DADEE3;
+          height: 30px;
+          font-size: 14px; }
+        .calendar-wrapper .calendar .calendar-toolbar .view-area .view-switcher {
+          display: flex;
+          margin-right: 40px; }
+          .calendar-wrapper .calendar .calendar-toolbar .view-area .view-switcher button {
+            width: 70px; }
+            .calendar-wrapper .calendar .calendar-toolbar .view-area .view-switcher button:first-child {
+              border-top-left-radius: 4px;
+              border-bottom-left-radius: 4px;
+              border-right: none; }
+            .calendar-wrapper .calendar .calendar-toolbar .view-area .view-switcher button:last-child {
+              border-top-right-radius: 4px;
+              border-bottom-right-radius: 4px;
+              border-left: none; }
       .calendar-wrapper .calendar .calendar-toolbar .rbc-active {
-        background-color: gray; }
+        background-color: #DADEE3;
+        color: white !important; }
 
 .side-calendar {
   width: 310px;
