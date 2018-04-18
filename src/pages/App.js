@@ -16,6 +16,8 @@ import invoices from './images/invoices.svg'
 import map from './images/map.svg'
 import gear from './images/gear.svg'
 
+import chevron from './images/chevron.svg'
+
 BigCalendar.setLocalizer(BigCalendar.momentLocalizer(moment));
 
 class SideNav extends Component {
@@ -92,7 +94,6 @@ class Toolbar extends Component {
     onViewChange: PropTypes.func.isRequired,
   }
   navigate = action => {
-    console.log(action);
     this.props.onNavigate(action);
   }
   view = view => {
@@ -100,11 +101,10 @@ class Toolbar extends Component {
   }
   render () {
     let {messages, label} = this.props,
-      month = label.split(" ")[0],
+      month = label.split(" ")[0].substring(0,3),
       year = label.split(" ")[1],
       view = this.props.view
 
-    console.log(this.props.views, messages);
     return (
       <div className="calendar-toolbar">
         <div className="month-area">
@@ -112,14 +112,14 @@ class Toolbar extends Component {
             type="button"
             onClick={this.navigate.bind(null, 'PREV')}
           >
-            {messages.previous}
+            <img src={chevron} alt="prev"  />
           </button>
-          <span><strong>{month}</strong> {year}</span>
+          <span className="month-label"><strong>{month}</strong> {year}</span>
           <button
             type="button"
             onClick={this.navigate.bind(null, 'NEXT')}
           >
-            {messages.next}
+            <img src={chevron} alt="next"/>
           </button>
         </div>
         <div className="view-area">

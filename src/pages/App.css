@@ -23,7 +23,7 @@ body {
     .side-nav .logo img {
       margin-right: 15px; }
     .side-nav .logo h2 {
-      font-size: 20px;
+      font-size: 18px;
       color: white; }
   .side-nav .nav-items ul {
     list-style: none;
@@ -67,13 +67,32 @@ body {
   display: flex; }
 
 .calendar-wrapper {
-  width: 100%; }
+  width: 100%;
+  padding: 0px 15px 0px 15px; }
   .calendar-wrapper .calendar {
     height: 100vh;
     width: 100%; }
     .calendar-wrapper .calendar .calendar-toolbar {
       display: flex;
-      justify-content: space-between; }
+      justify-content: space-between;
+      padding-top: 20px;
+      padding-bottom: 20px; }
+      .calendar-wrapper .calendar .calendar-toolbar .month-area {
+        display: flex; }
+        .calendar-wrapper .calendar .calendar-toolbar .month-area button {
+          background-color: transparent;
+          border-radius: 3px;
+          box-shadow: 0px 0px 3px 1px rgba(0, 0, 0, 0.19);
+          border: none; }
+          .calendar-wrapper .calendar .calendar-toolbar .month-area button img {
+            padding-top: 2px;
+            width: 6px; }
+          .calendar-wrapper .calendar .calendar-toolbar .month-area button:first-child img {
+            transform: translateX(-13%) translateY(13%) rotate(-180deg); }
+        .calendar-wrapper .calendar .calendar-toolbar .month-area .month-label {
+          display: block;
+          padding: 0 20px;
+          min-width: 111px; }
       .calendar-wrapper .calendar .calendar-toolbar .rbc-active {
         background-color: gray; }
 
