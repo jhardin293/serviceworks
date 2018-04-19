@@ -15,15 +15,43 @@ button {
   cursor: pointer;
 }
 
+.btn {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  padding-bottom: 0px;
+  background-image: linear-gradient(90deg, #DF6B68 0%,  #7D3884 100%);
+  font-size: 14px;
+  color: white;
+  height: 30px;
+  width: 106px;
+  border: none;
+  border-radius: 4px;
+  img {
+    width: 11px;
+    align-items: center;
+    margin-right: 8px;
+    margin-left: 3px;
+  }
+  &:hover {
+    transition: box-shadow 0.3s ease;
+    box-shadow: 0px 0px 19px 1px rgba(0, 0, 0, 0.25);
+  }
+}
+
 .main-content {
   display: flex;
+}
+
+.page-view {
+  width: calc(100% - 200px);
 }
 
 .side-nav {
   width: 200px;
   background-color: #414A57;
-  padding-top: 20px;
-  height: calc(100vh - 20px);
+  padding-top: 25px;
+  height: calc(100vh - 25px);
   .logo {
     display: flex;
     margin-bottom: 40px;
@@ -58,9 +86,13 @@ button {
           border-top: none;
           border-bottom: none;
           border-color: transparent;
+          transition: background-color 0.2s ease;
           span {
             position: absolute;
             left: 51px;
+          }
+          &:hover {
+            background-color: #394251;
           }
           &.active {
             background-color: #2D3440;
@@ -91,7 +123,6 @@ button {
 
 
 .schedule-view {
-  width: calc(100% - 200px);
   display: flex;
   box-shadow: 0px 0px 37px 1px rgba(0, 0, 0, 0.35);
 }
@@ -117,7 +148,7 @@ button {
           border: none;
           height: 20px;
           &:hover {
-            transition: box-shadow 0.1s ease-in;
+            transition: box-shadow 0.1s ease;
             box-shadow: 0px 0px 19px 1px rgba(0, 0, 0, 0.22);
           }
           img {
@@ -148,9 +179,9 @@ button {
         .view-switcher {
           display: flex;
           margin-right: 20px;
+          transition: box-shadow 0.3s ease;
                 
           &:hover {
-            transition: box-shadow 0.1s ease-in;
             box-shadow: 0px 0px 19px 1px rgba(0, 0, 0, 0.12);
             border-radius: 4px;
           }
@@ -172,7 +203,7 @@ button {
           border-radius: 4px;
           min-width: 80px;
           &:hover {
-            transition: box-shadow 0.1s ease-in;
+            transition: box-shadow 0.3s ease;
             box-shadow: 0px 0px 19px 1px rgba(0, 0, 0, 0.12);
             border-radius: 4px;
           }
@@ -225,27 +256,7 @@ button {
     margin-bottom: 20px;
   }
   .job-btn {
-    display: flex;
-    align-items: center;
-    justify-content: flex-start;
-    padding-bottom: 0px;
     background-image: linear-gradient(90deg, #DF6B68 0%,  #7D3884 100%);
-    font-size: 14px;
-    color: white;
-    height: 30px;
-    width: 106px;
-    border: none;
-    border-radius: 4px;
-    img {
-      width: 11px;
-      align-items: center;
-      margin-right: 8px;
-      margin-left: 3px;
-    }
-    &:hover {
-      transition: box-shadow 0.1s ease-in;
-      box-shadow: 0px 0px 19px 1px rgba(0, 0, 0, 0.25);
-    }
   }
 }
 
@@ -272,6 +283,23 @@ button {
     .react-datepicker__week:nth-child(even) {
       background-color: #edeff5;
       border-radius: 36px;
+    }
+  }
+}
+
+.notes-view {
+  .page-header {
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+    margin-top: 20px;
+    h1 {
+      font-size: 24px;
+      margin-left: 20px;
+    }
+    .notes-btn {
+      background-image: linear-gradient(90deg, #1EE7DD 0%,  #61A0C5 100%);
+      margin-right: 20px;
     }
   }
 }

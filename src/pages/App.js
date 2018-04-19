@@ -85,7 +85,7 @@ class SideCalendar extends Component {
     return (
       <aside className="side-calendar">
         <div className="side-header">
-          <button className="job-btn"><img src={plus} alt="" /><span>New job</span></button>
+          <button className="job-btn btn"><img src={plus} alt="" /><span>New job</span></button>
         </div>
         <DatePicker inline />
       </aside>
@@ -208,7 +208,7 @@ class Schedule extends Component {
   render() {
     let events = [];
     return (
-        <div className="schedule-view">
+        <div className="schedule-view page-view">
           <div className="calendar-wrapper">
             <BigCalendar 
               className="calendar" 
@@ -227,8 +227,11 @@ class Schedule extends Component {
 class Notes extends Component {
   render() {
     return (
-      <div>
-        <h1>Notes</h1>
+      <div className="notes-view page-view">
+        <div className="page-header">
+          <h1>Notes</h1>
+          <button className="notes-btn btn"><img src={plus} alt="" /><span>New note</span></button>
+        </div>
       </div>
     )
   }

@@ -11,14 +11,38 @@ body {
 button {
   cursor: pointer; }
 
+.btn {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  padding-bottom: 0px;
+  background-image: linear-gradient(90deg, #DF6B68 0%, #7D3884 100%);
+  font-size: 14px;
+  color: white;
+  height: 30px;
+  width: 106px;
+  border: none;
+  border-radius: 4px; }
+  .btn img {
+    width: 11px;
+    align-items: center;
+    margin-right: 8px;
+    margin-left: 3px; }
+  .btn:hover {
+    transition: box-shadow 0.3s ease;
+    box-shadow: 0px 0px 19px 1px rgba(0, 0, 0, 0.25); }
+
 .main-content {
   display: flex; }
+
+.page-view {
+  width: calc(100% - 200px); }
 
 .side-nav {
   width: 200px;
   background-color: #414A57;
-  padding-top: 20px;
-  height: calc(100vh - 20px); }
+  padding-top: 25px;
+  height: calc(100vh - 25px); }
   .side-nav .logo {
     display: flex;
     margin-bottom: 40px;
@@ -46,10 +70,13 @@ button {
         border-right: none;
         border-top: none;
         border-bottom: none;
-        border-color: transparent; }
+        border-color: transparent;
+        transition: background-color 0.2s ease; }
         .side-nav .nav-items ul li a span {
           position: absolute;
           left: 51px; }
+        .side-nav .nav-items ul li a:hover {
+          background-color: #394251; }
         .side-nav .nav-items ul li a.active {
           background-color: #2D3440; }
       .side-nav .nav-items ul li:nth-child(1) a.active {
@@ -66,7 +93,6 @@ button {
         border-image: linear-gradient(to bottom, #6BE1A7, #5CB6B5) 1 100%; }
 
 .schedule-view {
-  width: calc(100% - 200px);
   display: flex;
   box-shadow: 0px 0px 37px 1px rgba(0, 0, 0, 0.35); }
 
@@ -92,7 +118,7 @@ button {
           border: none;
           height: 20px; }
           .calendar-wrapper .calendar .calendar-toolbar .month-area button:hover {
-            transition: box-shadow 0.1s ease-in;
+            transition: box-shadow 0.1s ease;
             box-shadow: 0px 0px 19px 1px rgba(0, 0, 0, 0.22); }
           .calendar-wrapper .calendar .calendar-toolbar .month-area button img {
             padding-top: 2px;
@@ -113,9 +139,9 @@ button {
           font-size: 14px; }
         .calendar-wrapper .calendar .calendar-toolbar .view-area .view-switcher {
           display: flex;
-          margin-right: 20px; }
+          margin-right: 20px;
+          transition: box-shadow 0.3s ease; }
           .calendar-wrapper .calendar .calendar-toolbar .view-area .view-switcher:hover {
-            transition: box-shadow 0.1s ease-in;
             box-shadow: 0px 0px 19px 1px rgba(0, 0, 0, 0.12);
             border-radius: 4px; }
           .calendar-wrapper .calendar .calendar-toolbar .view-area .view-switcher button {
@@ -132,7 +158,7 @@ button {
           border-radius: 4px;
           min-width: 80px; }
           .calendar-wrapper .calendar .calendar-toolbar .view-area .reset-day:hover {
-            transition: box-shadow 0.1s ease-in;
+            transition: box-shadow 0.3s ease;
             box-shadow: 0px 0px 19px 1px rgba(0, 0, 0, 0.12);
             border-radius: 4px; }
       .calendar-wrapper .calendar .calendar-toolbar .rbc-active {
@@ -167,25 +193,7 @@ button {
     padding-top: 21px;
     margin-bottom: 20px; }
   .side-calendar .job-btn {
-    display: flex;
-    align-items: center;
-    justify-content: flex-start;
-    padding-bottom: 0px;
-    background-image: linear-gradient(90deg, #DF6B68 0%, #7D3884 100%);
-    font-size: 14px;
-    color: white;
-    height: 30px;
-    width: 106px;
-    border: none;
-    border-radius: 4px; }
-    .side-calendar .job-btn img {
-      width: 11px;
-      align-items: center;
-      margin-right: 8px;
-      margin-left: 3px; }
-    .side-calendar .job-btn:hover {
-      transition: box-shadow 0.1s ease-in;
-      box-shadow: 0px 0px 19px 1px rgba(0, 0, 0, 0.25); }
+    background-image: linear-gradient(90deg, #DF6B68 0%, #7D3884 100%); }
 
 .react-datepicker {
   background-color: transparent;
@@ -205,3 +213,15 @@ button {
   .react-datepicker .react-datepicker__month .react-datepicker__week:nth-child(even) {
     background-color: #edeff5;
     border-radius: 36px; }
+
+.notes-view .page-header {
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+  margin-top: 20px; }
+  .notes-view .page-header h1 {
+    font-size: 24px;
+    margin-left: 20px; }
+  .notes-view .page-header .notes-btn {
+    background-image: linear-gradient(90deg, #1EE7DD 0%, #61A0C5 100%);
+    margin-right: 20px; }
