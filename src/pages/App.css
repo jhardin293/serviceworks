@@ -217,11 +217,68 @@ button {
 .notes-view .page-header {
   display: flex;
   justify-content: space-between;
+  align-items: center;
   width: 100%;
-  margin-top: 20px; }
+  margin-top: 20px;
+  margin-bottom: 25px; }
   .notes-view .page-header h1 {
     font-size: 24px;
     margin-left: 20px; }
   .notes-view .page-header .notes-btn {
     background-image: linear-gradient(90deg, #1EE7DD 0%, #61A0C5 100%);
     margin-right: 20px; }
+
+.notes-view .notes-list-wrapper {
+  padding: 0px 20px; }
+
+.notes-view .notes-list {
+  border: 1px solid #eaeded;
+  border-bottom-left-radius: 4px;
+  border-bottom-right-radius: 4px; }
+  .notes-view .notes-list .header {
+    width: 100%;
+    background-color: #E2E8EC;
+    display: flex;
+    border-top-left-radius: 4px;
+    border-top-right-radius: 4px;
+    padding: 10px 0px; }
+    .notes-view .notes-list .header h2 {
+      color: #90969D;
+      margin: 0px 10px;
+      font-size: 14px; }
+      .notes-view .notes-list .header h2:first-child {
+        width: 80%; }
+  .notes-view .notes-list .sort-group .month-group {
+    background-color: #C9D1DA;
+    padding-top: 4px;
+    padding-bottom: 5px; }
+    .notes-view .notes-list .sort-group .month-group span {
+      display: block;
+      margin-left: 10px;
+      color: white; }
+  .notes-view .notes-list .sort-group .group-body .note {
+    display: flex;
+    padding-top: 15px;
+    padding-bottom: 15px;
+    border-bottom: 1px solid #c5c7c8; }
+    .notes-view .notes-list .sort-group .group-body .note:hover {
+      background-color: #F6F8FA; }
+    .notes-view .notes-list .sort-group .group-body .note:last-child {
+      border-bottom: none; }
+    .notes-view .notes-list .sort-group .group-body .note .note-left {
+      width: 80%;
+      margin: 0px 10px;
+      display: flex;
+      justify-content: space-between; }
+      .notes-view .notes-list .sort-group .group-body .note .note-left .note-text {
+        margin-right: 20px; }
+      .notes-view .notes-list .sort-group .group-body .note .note-left .note-title {
+        font-weight: bold;
+        margin-bottom: 10px; }
+    .notes-view .notes-list .sort-group .group-body .note .note-right .note-created {
+      margin-left: 10px; }
+  .notes-view .notes-list .sort-group .group-body .note-img {
+    margin-right: 30px; }
+    .notes-view .notes-list .sort-group .group-body .note-img img {
+      width: 100px;
+      height: 100px; }

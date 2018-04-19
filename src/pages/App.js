@@ -25,6 +25,8 @@ import chevron from './images/chevron.svg'
 
 import plus from './images/plus.svg'
 
+import noteImg1 from './images/note-img-1.jpg'
+
 BigCalendar.setLocalizer(BigCalendar.momentLocalizer(moment));
 
 class SideNav extends Component {
@@ -231,6 +233,106 @@ class Notes extends Component {
         <div className="page-header">
           <h1>Notes</h1>
           <button className="notes-btn btn"><img src={plus} alt="" /><span>New note</span></button>
+        </div>
+        <div className="page-body">
+          <div className="notes-list-wrapper">
+            <div className="notes-list">
+              <div className="header">
+                <h2>Note text</h2>
+                <h2>Created</h2>
+              </div>
+              <div className="sort-group">
+                <div className="month-group"><span>March 2018</span></div>
+                <div className="group-body">
+                  <div className="note">
+                    <div className="note-left">
+                      <div className="note-text">
+                        <div className="note-title">This is the first note</div>
+                        <div className="note-body">
+                          <p>This is the body text of the note. Im sure a lot better content will be written here</p>
+                        </div>
+                      </div>
+                      <div className="note-img">
+                        <img src={noteImg1} alt="note-img"/>
+                      </div>
+                    </div>
+                    <div className="note-right">
+                      <div className="note-created">3/07/18</div>
+                    </div>
+                  </div>
+                  <div className="note">
+                    <div className="note-left">
+                      <div className="note-text">
+                        <div className="note-title">This is the first note</div>
+                        <div className="note-body">
+                          <p>This is the body text of the note. Im sure a lot better content will be written here</p>
+                        </div>
+                      </div>
+                      <div className="note-img">
+                        <img src={noteImg1} alt="note-img"/>
+                      </div>
+                    </div>
+                    <div className="note-right">
+                      <div className="note-created">3/07/18</div>
+                    </div>
+                  </div>
+                  <div className="note">
+                    <div className="note-left">
+                      <div className="note-text">
+                        <div className="note-title">This is the first note</div>
+                        <div className="note-body">
+                          <p>This is the body text of the note. Im sure a lot better content will be written here</p>
+                        </div>
+                      </div>
+                      <div className="note-img">
+                        <img src={noteImg1} alt="note-img"/>
+                      </div>
+                    </div>
+                    <div className="note-right">
+                      <div className="note-created">3/07/18</div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div className="sort-group">
+                <div className="month-group"><span>March 2018</span></div>
+                <div className="group-body">
+                  <div className="note">
+                    <div className="note-left">
+                      <div className="note-text">
+                        <div className="note-title">This is the first note</div>
+                        <div className="note-body">
+                          <p>This is the body text of the note. Im sure a lot better content will be written here</p>
+                        </div>
+                      </div>
+                      <div className="note-img">
+                        <img src={noteImg1} alt="note-img"/>
+                      </div>
+                    </div>
+                    <div className="note-right">
+                      <div className="note-created">3/07/18</div>
+                    </div>
+                  </div>
+                  <div className="note">
+                    <div className="note-left">
+                      <div className="note-text">
+                        <div className="note-title">This is the first note</div>
+                        <div className="note-body">
+                          <p>This is the body text of the note. Im sure a lot better content will be written here</p>
+                        </div>
+                      </div>
+                      <div className="note-img">
+                        <img src={noteImg1} alt="note-img"/>
+                      </div>
+                    </div>
+                    <div className="note-right">
+                      <div className="note-created">3/07/18</div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
         </div>
       </div>
     )
