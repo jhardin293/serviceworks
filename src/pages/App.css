@@ -90,6 +90,9 @@ button {
           box-shadow: 0px 0px 3px 1px rgba(0, 0, 0, 0.19);
           border: none;
           height: 20px; }
+          .calendar-wrapper .calendar .calendar-toolbar .month-area button:hover {
+            transition: box-shadow 0.1s ease-in;
+            box-shadow: 0px 0px 19px 1px rgba(0, 0, 0, 0.22); }
           .calendar-wrapper .calendar .calendar-toolbar .month-area button img {
             padding-top: 2px;
             width: 6px; }
@@ -110,6 +113,10 @@ button {
         .calendar-wrapper .calendar .calendar-toolbar .view-area .view-switcher {
           display: flex;
           margin-right: 20px; }
+          .calendar-wrapper .calendar .calendar-toolbar .view-area .view-switcher:hover {
+            transition: box-shadow 0.1s ease-in;
+            box-shadow: 0px 0px 19px 1px rgba(0, 0, 0, 0.12);
+            border-radius: 4px; }
           .calendar-wrapper .calendar .calendar-toolbar .view-area .view-switcher button {
             min-width: 70px; }
             .calendar-wrapper .calendar .calendar-toolbar .view-area .view-switcher button:first-child {
@@ -123,9 +130,15 @@ button {
         .calendar-wrapper .calendar .calendar-toolbar .view-area .reset-day {
           border-radius: 4px;
           min-width: 80px; }
+          .calendar-wrapper .calendar .calendar-toolbar .view-area .reset-day:hover {
+            transition: box-shadow 0.1s ease-in;
+            box-shadow: 0px 0px 19px 1px rgba(0, 0, 0, 0.12);
+            border-radius: 4px; }
       .calendar-wrapper .calendar .calendar-toolbar .rbc-active {
         background-color: #DADEE3;
         color: white !important; }
+    .calendar-wrapper .calendar .rbc-today {
+      background-color: #de6a671c; }
     .calendar-wrapper .calendar .rbc-month-view {
       border-top: none;
       border-left: none;
