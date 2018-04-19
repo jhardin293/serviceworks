@@ -93,6 +93,7 @@ button {
 .schedule-view {
   width: calc(100% - 200px);
   display: flex;
+  box-shadow: 0px 0px 37px 1px rgba(0, 0, 0, 0.35);
 }
 .calendar-wrapper {
   width: 100%;
@@ -218,8 +219,9 @@ button {
   height: 100vh;
   padding-left: 20px;
   padding-right: 20px;
+  box-shadow: 0px 0px 5px 1px rgba(0, 0, 0, 0.17);
   .side-header {
-    padding-top: 15px;
+    padding-top: 21px;
     margin-bottom: 20px;
   }
   .job-btn {
@@ -247,3 +249,29 @@ button {
   }
 }
 
+.react-datepicker {
+  background-color: transparent;
+  border: none;
+  .react-datepicker__navigation {
+    background-image: url('./images/grey-chevron.svg');
+    background-size: 5.75px 10.75px;
+    width: 5.75px;
+    height: 10.75px;
+    border: none;
+    margin-right: 40px;
+    &.react-datepicker__navigation--previous {
+      transform: translateX(-13%) translateY(13%) rotate(-180deg);
+      margin-left: 40px;
+    }
+  }
+  .react-datepicker__header {
+    background-color: transparent;
+  }
+
+  .react-datepicker__month {
+    .react-datepicker__week:nth-child(even) {
+      background-color: #edeff5;
+      border-radius: 36px;
+    }
+  }
+}
