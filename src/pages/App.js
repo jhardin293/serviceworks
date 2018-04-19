@@ -4,6 +4,11 @@ import cn from 'classnames'
 import BigCalendar from 'react-big-calendar'
 import moment from 'moment'
 import DatePicker from 'react-datepicker'
+import {
+  BrowserRouter as Router,
+  Route,
+  NavLink
+} from 'react-router-dom'
 import 'react-big-calendar/lib/css/react-big-calendar.css'
 import 'react-datepicker/dist/react-datepicker-cssmodules.css'
 import './App.css'
@@ -32,41 +37,41 @@ class SideNav extends Component {
         </div>
         <div className="nav-items">
           <ul>
-            <li className="active">
-              <a>
+            <li>
+              <NavLink to="/" exact>
                 <img src={schedule} alt=""/>
                 <span>Schedule</span>
-              </a>
+              </NavLink>
             </li>
             <li>
-              <a>
+              <NavLink to="/notes">
                 <img src={notes} alt=""/>
                 <span>Notes</span>
-              </a>
+              </NavLink>
             </li>
             <li>
-              <a>
+              <NavLink to="/customers">
                 <img src={customers} alt=""/>
                 <span>Customers</span>
-              </a>
+              </NavLink>
             </li>
             <li>
-              <a>
+              <NavLink to="/invoices">
                 <img src={invoices} alt=""/>
                 <span>Invoices</span>
-              </a>
+              </NavLink>
             </li>
             <li>
-              <a>
+              <NavLink to="/team-map">
                 <img src={map} alt=""/>
                 <span>Team map</span>
-              </a>
+              </NavLink>
             </li>
             <li>
-              <a>
+              <NavLink to="/my-account">
                 <img src={gear} width="20" height="20" alt=""/>
                 <span>My account</span>
-              </a>
+              </NavLink>
             </li>
           </ul>
         </div>
@@ -198,12 +203,11 @@ class Toolbar extends Component {
     )
   }
 }
-class App extends Component {
+
+class Schedule extends Component {
   render() {
     let events = [];
     return (
-      <div className="main-content">
-        <SideNav />
         <div className="schedule-view">
           <div className="calendar-wrapper">
             <BigCalendar 
@@ -216,7 +220,73 @@ class App extends Component {
           </div>
           <SideCalendar />
         </div>
+    );
+  }
+}
+
+class Notes extends Component {
+  render() {
+    return (
+      <div>
+        <h1>Notes</h1>
       </div>
+    )
+  }
+}
+
+class Customers extends Component {
+  render() {
+    return (
+      <div>
+        <h1>Customers</h1>
+      </div>
+    )
+  }
+}
+
+
+class Invoices extends Component {
+  render() {
+    return (
+      <div>
+        <h1>Invoices</h1>
+      </div>
+    )
+  }
+}
+
+class TeamMap extends Component {
+  render() {
+    return (
+      <div>
+        <h1>Team map</h1>
+      </div>
+    )
+  }
+}
+class MyAccount extends Component {
+  render() {
+    return (
+      <div>
+        <h1>My account</h1>
+      </div>
+    )
+  }
+}
+class App extends Component {
+  render() {
+    return (
+      <Router>
+      <div className="main-content">
+        <SideNav />
+        <Route exact path="/" component={Schedule}/>
+        <Route path="/notes" component={Notes}/>
+        <Route path="/customers" component={Customers}/>
+        <Route path="/invoices" component={Invoices}/>
+        <Route path="/team-map" component={TeamMap}/>
+        <Route path="/my-account" component={MyAccount}/>
+      </div>
+      </Router>
     );
   }
 }

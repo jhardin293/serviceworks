@@ -32,37 +32,37 @@ button {
     list-style: none;
     padding: 0px; }
     .side-nav .nav-items ul li {
-      position: relative;
-      padding-left: 15px;
-      border-width: 6px;
-      border-style: solid;
-      border-right: none;
-      border-top: none;
-      border-bottom: none;
-      border-color: transparent; }
+      position: relative; }
       .side-nav .nav-items ul li img {
         margin-right: 25px; }
       .side-nav .nav-items ul li a {
         display: flex;
         color: white;
         align-items: center;
-        height: 52px; }
+        padding-left: 15px;
+        height: 52px;
+        border-width: 6px;
+        border-style: solid;
+        border-right: none;
+        border-top: none;
+        border-bottom: none;
+        border-color: transparent; }
         .side-nav .nav-items ul li a span {
           position: absolute;
           left: 51px; }
-      .side-nav .nav-items ul li.active {
-        background-color: #2D3440; }
-      .side-nav .nav-items ul li:nth-child(1).active {
+        .side-nav .nav-items ul li a.active {
+          background-color: #2D3440; }
+      .side-nav .nav-items ul li:nth-child(1) a.active {
         border-image: linear-gradient(to bottom, #7D3884, #DF6B68) 1 100%; }
-      .side-nav .nav-items ul li:nth-child(2).active {
+      .side-nav .nav-items ul li:nth-child(2) a.active {
         border-image: linear-gradient(to bottom, #1EE7DD, #61A0C5) 1 100%; }
-      .side-nav .nav-items ul li:nth-child(3).active {
+      .side-nav .nav-items ul li:nth-child(3) a.active {
         border-image: linear-gradient(to bottom, #FE6AAC, #FE8812) 1 100%; }
-      .side-nav .nav-items ul li:nth-child(4).active {
+      .side-nav .nav-items ul li:nth-child(4) a.active {
         border-image: linear-gradient(to bottom, #7087D7, #4CC2F0) 1 100%; }
-      .side-nav .nav-items ul li:nth-child(5).active {
+      .side-nav .nav-items ul li:nth-child(5) a.active {
         border-image: linear-gradient(to bottom, #FA7497, #FFD845) 1 100%; }
-      .side-nav .nav-items ul li:nth-child(6).active {
+      .side-nav .nav-items ul li:nth-child(6) a.active {
         border-image: linear-gradient(to bottom, #6BE1A7, #5CB6B5) 1 100%; }
 
 .schedule-view {

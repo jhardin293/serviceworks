@@ -43,13 +43,6 @@ button {
       padding: 0px;
       li {
         position: relative;
-        padding-left: 15px;
-        border-width: 6px;
-        border-style: solid;
-        border-right: none;
-        border-top: none;
-        border-bottom: none;
-        border-color: transparent;
         img {
           margin-right: 25px;
         }
@@ -57,31 +50,38 @@ button {
           display: flex;
           color: white;
           align-items: center;
+          padding-left: 15px;
           height: 52px;
+          border-width: 6px;
+          border-style: solid;
+          border-right: none;
+          border-top: none;
+          border-bottom: none;
+          border-color: transparent;
           span {
             position: absolute;
             left: 51px;
           }
+          &.active {
+            background-color: #2D3440;
+          }
         }
-        &.active {
-          background-color: #2D3440;
-        }
-        &:nth-child(1).active {
+        &:nth-child(1) a.active {
           border-image:linear-gradient(to bottom,#7D3884, #DF6B68) 1 100%;
         }
-        &:nth-child(2).active {
+        &:nth-child(2) a.active {
           border-image:linear-gradient(to bottom,#1EE7DD, #61A0C5) 1 100%;
         }
-        &:nth-child(3).active {
+        &:nth-child(3) a.active {
           border-image:linear-gradient(to bottom,#FE6AAC, #FE8812) 1 100%;
         }
-        &:nth-child(4).active {
+        &:nth-child(4) a.active {
           border-image:linear-gradient(to bottom,#7087D7, #4CC2F0) 1 100%;
         }
-        &:nth-child(5).active {
+        &:nth-child(5) a.active {
           border-image:linear-gradient(to bottom,#FA7497, #FFD845) 1 100%;
         }
-        &:nth-child(6).active {
+        &:nth-child(6) a.active {
           border-image:linear-gradient(to bottom,#6BE1A7, #5CB6B5) 1 100%;
         }
       } 
