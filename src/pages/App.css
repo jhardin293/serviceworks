@@ -38,6 +38,19 @@ button {
 .page-view {
   width: calc(100% - 200px); }
 
+.page-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+  margin-top: 20px;
+  margin-bottom: 25px; }
+  .page-header h1 {
+    font-size: 24px;
+    margin-left: 20px; }
+  .page-header .btn {
+    margin-right: 20px; }
+
 .side-nav {
   width: 200px;
   background-color: #414A57;
@@ -214,19 +227,8 @@ button {
     background-color: #edeff5;
     border-radius: 36px; }
 
-.notes-view .page-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  width: 100%;
-  margin-top: 20px;
-  margin-bottom: 25px; }
-  .notes-view .page-header h1 {
-    font-size: 24px;
-    margin-left: 20px; }
-  .notes-view .page-header .notes-btn {
-    background-image: linear-gradient(90deg, #1EE7DD 0%, #61A0C5 100%);
-    margin-right: 20px; }
+.notes-view .notes-btn {
+  background-image: linear-gradient(90deg, #1EE7DD 0%, #61A0C5 100%); }
 
 .notes-view .notes-list-wrapper {
   padding: 0px 20px; }
@@ -282,3 +284,20 @@ button {
     .notes-view .notes-list .sort-group .group-body .note-img img {
       width: 100px;
       height: 100px; }
+
+.react-tabs .react-tabs__tab-list {
+  border-color: #E1E3E7;
+  margin: 0px; }
+  .react-tabs .react-tabs__tab-list .react-tabs__tab {
+    margin-right: 10px; }
+    .react-tabs .react-tabs__tab-list .react-tabs__tab:first-child {
+      margin-left: 20px; }
+    .react-tabs .react-tabs__tab-list .react-tabs__tab.react-tabs__tab--selected {
+      border-color: #E1E3E7;
+      background-color: #F5F6FA;
+      color: #FE8812; }
+
+.react-tabs .react-tabs__tab-panel--selected {
+  display: block;
+  background-color: #F5F6FA;
+  height: calc(100vh - 107px); }

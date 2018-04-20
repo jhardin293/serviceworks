@@ -11,6 +11,8 @@ import {
 } from 'react-router-dom'
 import 'react-big-calendar/lib/css/react-big-calendar.css'
 import 'react-datepicker/dist/react-datepicker-cssmodules.css'
+import 'react-tabs/style/react-tabs.css';
+import { Tab, Tabs, TabList, TabPanel } from 'react-tabs'
 import './App.css'
 
 import logoImg from './images/AtomFlower.svg'
@@ -342,8 +344,34 @@ class Notes extends Component {
 class Customers extends Component {
   render() {
     return (
-      <div>
-        <h1>Customers</h1>
+      <div className="customers-view page-view">
+        <div className="page-header">
+          <h1>New Customers</h1>
+        </div>
+        <div className="page-body">
+          <Tabs>
+            <TabList>
+              <Tab>Details</Tab>
+              <Tab>Jobs</Tab>
+              <Tab>Notes</Tab>
+              <Tab>Invoices</Tab>
+            </TabList>
+
+            <TabPanel>
+              <h2>Any content 1</h2>
+            </TabPanel>
+            <TabPanel>
+              <h2>Any content 2</h2>
+            </TabPanel>
+            <TabPanel>
+              <h2>Any content 1</h2>
+            </TabPanel>
+            <TabPanel>
+              <h2>Any content 2</h2>
+            </TabPanel>
+          </Tabs>
+        </div>
+
       </div>
     )
   }
