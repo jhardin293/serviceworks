@@ -330,6 +330,10 @@ button {
 .customers-view form {
   max-width: 1080px; }
 
+.customers-view .map {
+  height: 285px;
+  width: 100%; }
+
 form label {
   display: block;
   margin-bottom: 6px;
@@ -372,8 +376,3 @@ form .col-80 > div:first-child {
 
 form .with-map {
   align-items: end; }
-
-.dummy-map {
-  height: 91px;
-  width: 150px;
-  border: 2px solid; }

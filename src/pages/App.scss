@@ -442,6 +442,11 @@ button {
   form {
     max-width: 1080px;
   }
+
+  .map {
+    height: 285px;
+    width: 100%;
+  }
 }
 
 form {
@@ -498,10 +503,4 @@ form {
   .with-map {
     align-items: end;
   }
-}
-
-.dummy-map {
-  height: 91px;
-  width: 150px;
-  border: 2px solid;
 }

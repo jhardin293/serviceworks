@@ -9,10 +9,14 @@ import {
   Route,
   NavLink
 } from 'react-router-dom'
+
+import { Tab, Tabs, TabList, TabPanel } from 'react-tabs'
+
+import { withScriptjs, withGoogleMap, GoogleMap, Marker } from "react-google-maps"
+
 import 'react-big-calendar/lib/css/react-big-calendar.css'
 import 'react-datepicker/dist/react-datepicker-cssmodules.css'
 import 'react-tabs/style/react-tabs.css';
-import { Tab, Tabs, TabList, TabPanel } from 'react-tabs'
 import './App.css'
 
 import logoImg from './images/AtomFlower.svg'
@@ -341,6 +345,15 @@ class Notes extends Component {
   }
 }
 
+const MyMapComponent = withScriptjs(withGoogleMap((props) =>
+  <GoogleMap
+    defaultZoom={8}
+    defaultCenter={{ lat: -34.397, lng: 150.644 }}
+  >
+    {props.isMarkerShown && <Marker position={{ lat: -34.397, lng: 150.644 }} />}
+  </GoogleMap>
+))
+
 class Customers extends Component {
   render() {
     return (
@@ -404,7 +417,14 @@ class Customers extends Component {
                       </div>
                     </div>
                     <div>
-                      <div className="dummy-map">
+                      <div className="map">
+                        <MyMapComponent
+                          isMarkerShown
+                          googleMapURL="https://maps.googleapis.com/maps/api/js?v=3.exp&libraries=geometry,drawing,places"
+                          loadingElement={<div style={{ height: `100%` }} />}
+                          containerElement={<div style={{ height: `100%` }} />}
+                          mapElement={<div style={{ height: `100%` }} />}
+                        />
                       </div>
                     </div>
                   </div>
