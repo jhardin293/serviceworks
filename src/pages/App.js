@@ -346,9 +346,10 @@ class Customers extends Component {
     return (
       <div className="customers-view page-view">
         <div className="page-header">
-          <h1>New Customers</h1>
+          <h1>New Customer</h1>
         </div>
         <div className="page-body">
+          <button className="btn second-btn customer-btn btn-success">Save customer</button>
           <Tabs>
             <TabList>
               <Tab>Details</Tab>
@@ -358,7 +359,78 @@ class Customers extends Component {
             </TabList>
 
             <TabPanel>
-              <h2>Any content 1</h2>
+              <form>
+                <div className="input-group">
+                  <label>
+                    Name and company
+                  </label>
+                  <div className="col-2">
+                    <div>
+                      <input type="text" placeholder="First name" />
+                    </div>
+                    <div>
+                      <input type="text" placeholder="Last name" />
+                    </div>
+                  </div>
+                  <div className="col-2">
+                    <div>
+                      <input type="text" placeholder="Company" />
+                    </div>
+                    <div>
+                      <input type="text" placeholder="Nickname" />
+                    </div>
+                  </div>
+                </div>
+                <div className="input-group">
+                  <label>
+                    Address
+                  </label>
+                  <div className="col-2 with-map">
+                    <div className="col-1">
+                      <input type="text" placeholder="Street address" />
+                      <input type="text" placeholder="Apt / suite / floor" />
+                      <input type="text" placeholder="City" />
+                      <input type="text" placeholder="State" />
+                      <div className="row col-80">
+                        <div>
+                          <select>
+                            <option>California</option>
+                            <option>New York</option>
+                          </select>
+                        </div>
+                        <div>
+                          <input type="text" placeholder="Zip code" />
+                        </div>
+                      </div>
+                    </div>
+                    <div>
+                      <div className="dummy-map">
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div className="input-group">
+                  <label>
+                    Contact
+                  </label>
+                  <div className="col-2">
+                    <div>
+                      <input type="text" placeholder="Mobile phone" />
+                    </div>
+                    <div>
+                      <input type="text" placeholder="Home phone" />
+                    </div>
+                  </div>
+                  <div className="col-2">
+                    <div>
+                      <input type="text" placeholder="Email" />
+                    </div>
+                    <div>
+                      <input type="text" placeholder="Office phone" />
+                    </div>
+                  </div>
+                </div>
+              </form>
             </TabPanel>
             <TabPanel>
               <h2>Any content 2</h2>
