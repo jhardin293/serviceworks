@@ -46,6 +46,22 @@ button {
   .second-btn:hover {
     box-shadow: none; }
 
+.panel {
+  border: 1px solid #eaeded;
+  border-bottom-left-radius: 4px;
+  border-bottom-right-radius: 4px; }
+  .panel .header {
+    width: 100%;
+    background-color: #E2E8EC;
+    display: flex;
+    border-top-left-radius: 4px;
+    border-top-right-radius: 4px;
+    padding: 10px 0px; }
+    .panel .header h2 {
+      color: #90969D;
+      margin: 0px 10px;
+      font-size: 14px; }
+
 .main-content {
   display: flex; }
 
@@ -253,57 +269,45 @@ button {
 .notes-view .notes-list-wrapper {
   padding: 0px 20px; }
 
-.notes-view .notes-list {
-  border: 1px solid #eaeded;
-  border-bottom-left-radius: 4px;
-  border-bottom-right-radius: 4px; }
-  .notes-view .notes-list .header {
-    width: 100%;
-    background-color: #E2E8EC;
+.notes-view .notes-list .header h2:first-child {
+  width: 80%; }
+
+.notes-view .notes-list .sort-group .month-group {
+  background-color: #C9D1DA;
+  padding-top: 4px;
+  padding-bottom: 5px; }
+  .notes-view .notes-list .sort-group .month-group span {
+    display: block;
+    margin-left: 10px;
+    color: white; }
+
+.notes-view .notes-list .sort-group .group-body .note {
+  display: flex;
+  padding-top: 15px;
+  padding-bottom: 15px;
+  border-bottom: 1px solid #c5c7c8; }
+  .notes-view .notes-list .sort-group .group-body .note:hover {
+    background-color: #F6F8FA; }
+  .notes-view .notes-list .sort-group .group-body .note:last-child {
+    border-bottom: none; }
+  .notes-view .notes-list .sort-group .group-body .note .note-left {
+    width: 80%;
+    margin: 0px 10px;
     display: flex;
-    border-top-left-radius: 4px;
-    border-top-right-radius: 4px;
-    padding: 10px 0px; }
-    .notes-view .notes-list .header h2 {
-      color: #90969D;
-      margin: 0px 10px;
-      font-size: 14px; }
-      .notes-view .notes-list .header h2:first-child {
-        width: 80%; }
-  .notes-view .notes-list .sort-group .month-group {
-    background-color: #C9D1DA;
-    padding-top: 4px;
-    padding-bottom: 5px; }
-    .notes-view .notes-list .sort-group .month-group span {
-      display: block;
-      margin-left: 10px;
-      color: white; }
-  .notes-view .notes-list .sort-group .group-body .note {
-    display: flex;
-    padding-top: 15px;
-    padding-bottom: 15px;
-    border-bottom: 1px solid #c5c7c8; }
-    .notes-view .notes-list .sort-group .group-body .note:hover {
-      background-color: #F6F8FA; }
-    .notes-view .notes-list .sort-group .group-body .note:last-child {
-      border-bottom: none; }
-    .notes-view .notes-list .sort-group .group-body .note .note-left {
-      width: 80%;
-      margin: 0px 10px;
-      display: flex;
-      justify-content: space-between; }
-      .notes-view .notes-list .sort-group .group-body .note .note-left .note-text {
-        margin-right: 20px; }
-      .notes-view .notes-list .sort-group .group-body .note .note-left .note-title {
-        font-weight: bold;
-        margin-bottom: 10px; }
-    .notes-view .notes-list .sort-group .group-body .note .note-right .note-created {
-      margin-left: 10px; }
-  .notes-view .notes-list .sort-group .group-body .note-img {
-    margin-right: 30px; }
-    .notes-view .notes-list .sort-group .group-body .note-img img {
-      width: 100px;
-      height: 100px; }
+    justify-content: space-between; }
+    .notes-view .notes-list .sort-group .group-body .note .note-left .note-text {
+      margin-right: 20px; }
+    .notes-view .notes-list .sort-group .group-body .note .note-left .note-title {
+      font-weight: bold;
+      margin-bottom: 10px; }
+  .notes-view .notes-list .sort-group .group-body .note .note-right .note-created {
+    margin-left: 10px; }
+
+.notes-view .notes-list .sort-group .group-body .note-img {
+  margin-right: 30px; }
+  .notes-view .notes-list .sort-group .group-body .note-img img {
+    width: 100px;
+    height: 100px; }
 
 .react-tabs .react-tabs__tab-list {
   border-color: #E1E3E7;
@@ -340,7 +344,7 @@ button {
   height: 285px;
   width: 100%; }
 
-form label {
+label {
   display: block;
   margin-bottom: 6px;
   color: #747f91;
@@ -410,19 +414,34 @@ form .react-datepicker {
   padding-left: 9px; }
 
 .invoice-view .page-header {
-  height: 50px; }
+  height: 68px; }
+  .invoice-view .page-header h1 {
+    font-size: 36px;
+    margin-left: 40px; }
+  .invoice-view .page-header .btn {
+    margin-right: 40px; }
 
 .invoice-view .page-body {
   background-color: #F5F6FA;
   height: calc(100% - 75px); }
 
 .invoice-view .invoice-header {
-  padding-top: 40px;
-  padding-left: 40px;
+  padding: 40px;
+  display: flex;
+  justify-content: space-between; }
+
+.invoice-view .invoice-header-inputs {
   width: 60%; }
-  .invoice-view .invoice-header .invoice-meta {
+  .invoice-view .invoice-header-inputs .invoice-meta {
     display: flex; }
-    .invoice-view .invoice-header .invoice-meta > div {
+    .invoice-view .invoice-header-inputs .invoice-meta > div {
       margin-right: 10px; }
-      .invoice-view .invoice-header .invoice-meta > div:last-child {
+      .invoice-view .invoice-header-inputs .invoice-meta > div:last-child {
         margin-right: 0px; }
+
+.invoice-view .invoice-total label {
+  text-align: right; }
+
+.invoice-view .invoice-total h2 {
+  font-size: 36px;
+  color: #4CC2F0; }

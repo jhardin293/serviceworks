@@ -244,7 +244,7 @@ class Notes extends Component {
         </div>
         <div className="page-body">
           <div className="notes-list-wrapper">
-            <div className="notes-list">
+            <div className="notes-list panel">
               <div className="header">
                 <h2>Note text</h2>
                 <h2>Created</h2>
@@ -491,45 +491,71 @@ class Invoices extends Component {
           <button className="btn second-btn btn-success">Save invoice</button>
         </div>
         <div className="page-body">
-          <form className="invoice-header">
-            <div className="col-2">
-             <div>
-                <label>Customer</label>
-                <Select
-                  name="form-field-name"
-                  value={selectedCustomer}
-                  onChange={this.handleCustomer}
-                  searchable
-                  options={[
-                    { value: 'Billy Joel', label: 'Billy Joel' },
-                    { value: 'Sarah Ann', label: 'Sarah Ann' },
-                  ]}
-                />
-              </div>
-              <div className="invoice-meta">
-                <div>
-                  <label>Invoice #</label>
-                  <input type="text" placeholder="Pending" disabled="true"/>
-                </div>
-                <div>
-                  <label>Sent Date</label>
-                  <input type="text" placeholder="Not sent" disabled="true"/>
-                </div>
-                <div>
-                  <label>Due date</label>
-                  <DatePicker
-                      selected={this.state.startDate}
-                      onChange={this.handleDate}
-                      placeholderText="Due date"
+          <div className="invoice-header">
+            <form className="invoice-header-inputs">
+              <div className="col-2">
+              <div>
+                  <label>Customer</label>
+                  <Select
+                    name="form-field-name"
+                    value={selectedCustomer}
+                    onChange={this.handleCustomer}
+                    searchable
+                    options={[
+                      { value: 'Billy Joel', label: 'Billy Joel' },
+                      { value: 'Sarah Ann', label: 'Sarah Ann' },
+                    ]}
                   />
                 </div>
+                <div className="invoice-meta">
+                  <div>
+                    <label>Invoice #</label>
+                    <input type="text" placeholder="Pending" disabled="true"/>
+                  </div>
+                  <div>
+                    <label>Sent Date</label>
+                    <input type="text" placeholder="Not sent" disabled="true"/>
+                  </div>
+                  <div>
+                    <label>Due date</label>
+                    <DatePicker
+                        selected={this.state.startDate}
+                        onChange={this.handleDate}
+                        placeholderText="Due date"
+                    />
+                  </div>
+                </div>
               </div>
+              <div>
+                    <label>Title</label>
+                    <input type="text" placeholder="Untitled invoice"/>
+              </div>
+            </form>
+            <div className="invoice-total">
+               <label>Total</label>
+               <h2>$250.56</h2>
             </div>
-            <div>
-                  <label>Title</label>
-                  <input type="text" placeholder="Untitled invoice"/>
-            </div>
-          </form>
+          </div>
+          <div className="invoice-body">
+            <Tabs>
+              <TabList>
+                <Tab>Line items</Tab>
+                <Tab>Footer</Tab>
+              </TabList>
+              <TabPanel>
+                <div className="panel">
+                    <div className="header">
+                      <h2>Labor</h2>
+                    </div>
+                </div>
+              </TabPanel>
+              <TabPanel>
+                <div>
+                  <h2>Footer</h2>
+                </div>
+              </TabPanel>
+            </Tabs>
+          </div>
         </div>
       </div>
     )
