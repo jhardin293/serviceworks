@@ -4,6 +4,7 @@ import cn from 'classnames'
 import BigCalendar from 'react-big-calendar'
 import moment from 'moment'
 import DatePicker from 'react-datepicker'
+import Select from 'react-select'
 import {
   BrowserRouter as Router,
   Route,
@@ -16,7 +17,8 @@ import { withScriptjs, withGoogleMap, GoogleMap, Marker } from "react-google-map
 
 import 'react-big-calendar/lib/css/react-big-calendar.css'
 import 'react-datepicker/dist/react-datepicker-cssmodules.css'
-import 'react-tabs/style/react-tabs.css';
+import 'react-tabs/style/react-tabs.css'
+import 'react-select/dist/react-select.css'
 import './App.css'
 
 import logoImg from './images/AtomFlower.svg'
@@ -471,10 +473,36 @@ class Customers extends Component {
 
 
 class Invoices extends Component {
+  state = {
+    selectedCustomer: '',
+  }
+  handleChange = (selectedCustomer) => {
+    this.setState({selectedCustomer});
+  }
   render() {
+    const { selectedCustomer } = this.state; 
     return (
-      <div>
-        <h1>Invoices</h1>
+      <div className="invoice-view page-view">
+        <div className="page-header">
+          <h1>Bathroom tiling</h1>
+          <button className="btn second-btn btn-success">Save invoice</button>
+        </div>
+        <div className="page-body">
+          <form>
+            <label>Customer</label>
+            <div>
+              <Select
+                name="form-field-name"
+                value={selectedCustomer}
+                onChange={this.handleChange}
+                options={[
+                  { value: 'Billy Joel', label: 'Billy Joel' },
+                  { value: 'Sarah Ann', label: 'Sarah Ann' },
+                ]}
+              />
+            </div>
+          </form>
+        </div>
       </div>
     )
   }
