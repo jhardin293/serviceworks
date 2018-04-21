@@ -97,7 +97,7 @@ class SideCalendar extends Component {
         <div className="side-header">
           <button className="job-btn btn"><img src={plus} alt="" /><span>New job</span></button>
         </div>
-        <DatePicker inline />
+        <DatePicker calendarClassName="in-line" inline />
       </aside>
     )
   }
@@ -476,8 +476,11 @@ class Invoices extends Component {
   state = {
     selectedCustomer: '',
   }
-  handleChange = (selectedCustomer) => {
+  handleCustomer = (selectedCustomer) => {
     this.setState({selectedCustomer});
+  }
+  handleDate = (date) =>  {
+    this.setState({startDate: date });
   }
   render() {
     const { selectedCustomer } = this.state; 
@@ -488,18 +491,43 @@ class Invoices extends Component {
           <button className="btn second-btn btn-success">Save invoice</button>
         </div>
         <div className="page-body">
-          <form>
-            <label>Customer</label>
+          <form className="invoice-header">
+            <div className="col-2">
+             <div>
+                <label>Customer</label>
+                <Select
+                  name="form-field-name"
+                  value={selectedCustomer}
+                  onChange={this.handleCustomer}
+                  searchable
+                  options={[
+                    { value: 'Billy Joel', label: 'Billy Joel' },
+                    { value: 'Sarah Ann', label: 'Sarah Ann' },
+                  ]}
+                />
+              </div>
+              <div className="invoice-meta">
+                <div>
+                  <label>Invoice #</label>
+                  <input type="text" placeholder="Pending" disabled="true"/>
+                </div>
+                <div>
+                  <label>Sent Date</label>
+                  <input type="text" placeholder="Not sent" disabled="true"/>
+                </div>
+                <div>
+                  <label>Due date</label>
+                  <DatePicker
+                      selected={this.state.startDate}
+                      onChange={this.handleDate}
+                      placeholderText="Due date"
+                  />
+                </div>
+              </div>
+            </div>
             <div>
-              <Select
-                name="form-field-name"
-                value={selectedCustomer}
-                onChange={this.handleChange}
-                options={[
-                  { value: 'Billy Joel', label: 'Billy Joel' },
-                  { value: 'Sarah Ann', label: 'Sarah Ann' },
-                ]}
-              />
+                  <label>Title</label>
+                  <input type="text" placeholder="Untitled invoice"/>
             </div>
           </form>
         </div>

@@ -295,8 +295,15 @@ button {
 }
 
 .react-datepicker {
-  background-color: transparent;
-  border: none;
+  background-color: #f3f5f9;
+  box-shadow: 0 6px 12px rgba(0,0,0,.175);
+  border: 1px solid rgba(0,0,0,.15);
+  border-radius: 4px;
+  &.in-line {
+    background-color: transparent;
+    box-shadow: none;
+    border: none;
+  }
   .react-datepicker__navigation {
     background-image: url('./images/grey-chevron.svg');
     background-size: 5.75px 10.75px;
@@ -457,7 +464,7 @@ form {
     font-size: 14px;
     font-weight: bold;
   }
-  input,select {
+  input,select,.Select-control {
     height: 46px;
     padding: 10px 16px;
     box-sizing: border-box;
@@ -466,6 +473,20 @@ form {
     font-size: 18px;
     width: 100%;
     margin-bottom: 15px;
+    &[disabled] {
+      background-color: #eee;
+      cursor: not-allowed;
+    }
+  }
+  .Select-control {
+    height: 46px;
+    padding: 0px !important;
+    .Select-input {
+      height: 0px;
+      input {
+        height: 0px;
+      }
+    }
   }
   .input-group {
     margin-bottom: 15px;
@@ -503,15 +524,45 @@ form {
   .with-map {
     align-items: end;
   }
+  .react-datepicker {
+    margin-top: -23px;
+    .react-datepicker__triangle {
+      display: none;
+    }
+  }
 }
 
 
 .invoice-view {
+  label {
+    font-size: 14px;
+    color: #333;
+  }
+  input,select,.Select-control {
+    height: 34px;
+    font-size: 14px;
+    padding-top: 9px;
+    padding-left: 9px;
+  }
   .page-header {
     height: 50px;
   }
   .page-body {
     background-color: #F5F6FA;
     height: calc(100% - 75px);
+  }
+  .invoice-header {
+    padding-top: 40px;
+    padding-left: 40px;
+    width: 60%;
+    .invoice-meta {
+      display: flex;
+      > div {
+        margin-right: 10px;
+        &:last-child {
+          margin-right: 0px;
+        }
+      }
+    }
   }
 }
