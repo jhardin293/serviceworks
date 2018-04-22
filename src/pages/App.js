@@ -656,8 +656,9 @@ class Invoices extends Component {
                 </table>
               </TabPanel>
               <TabPanel>
-                <div>
-                  <h2>Footer</h2>
+                <div className="invoice-footer">
+                  <h5>Additional notes to show at bottom of invoice</h5>
+                  <textarea></textarea>
                 </div>
               </TabPanel>
             </Tabs>

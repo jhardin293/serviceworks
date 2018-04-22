@@ -528,3 +528,14 @@ form .react-datepicker {
     background-color: white;
     color: #4CC2F0;
     font-size: 14px; }
+
+.invoice-view .invoice-footer h5 {
+  font-size: 14px;
+  margin-bottom: 10px; }
+
+.invoice-view textarea {
+  padding: 6px 12px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  height: 150px;
+  width: 50%; }
