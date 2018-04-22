@@ -38,6 +38,7 @@ import noteImg1 from './images/note-img-1.jpg'
 import threeDots from './images/three-dots.png'
 
 BigCalendar.setLocalizer(BigCalendar.momentLocalizer(moment));
+const googleMapUrl = 'https://maps.googleapis.com/maps/api/js?key=AIzaSyC4R6AN7SmujjPUIGKdyao2Kqitzr1kiRg&v=3.exp&libraries=geometry,drawing,places';
 
 class SideNav extends Component {
   render() {
@@ -76,7 +77,7 @@ class SideNav extends Component {
             <li>
               <NavLink to="/team-map">
                 <img src={map} alt=""/>
-                <span>Team map</span>
+                <span>Map</span>
               </NavLink>
             </li>
             <li>
@@ -95,7 +96,7 @@ class SideNav extends Component {
 class SideCalendar extends Component {
   render () {
     return (
-      <aside className="side-calendar">
+      <aside className="side-calendar side-area">
         <div className="side-header">
           <button className="job-btn btn"><img src={plus} alt="" /><span>New job</span></button>
         </div>
@@ -355,9 +356,9 @@ class Notes extends Component {
 const MyMapComponent = withScriptjs(withGoogleMap((props) =>
   <GoogleMap
     defaultZoom={8}
-    defaultCenter={{ lat: -34.397, lng: 150.644 }}
+    defaultCenter={{ lat: 37.9678761, lng: -121.7594383 }}
   >
-    {props.isMarkerShown && <Marker position={{ lat: -34.397, lng: 150.644 }} />}
+    {props.isMarkerShown && <Marker position={{ lat: 37.9678761, lng: -121.7594383 }} />}
   </GoogleMap>
 ))
 
@@ -425,9 +426,9 @@ class Customers extends Component {
                     </div>
                     <div>
                       <div className="map">
-                        <MyMapComponent
+                        <MyMapComponent 
                           isMarkerShown
-                          googleMapURL="https://maps.googleapis.com/maps/api/js?v=3.exp&libraries=geometry,drawing,places"
+                          googleMapURL={googleMapUrl}
                           loadingElement={<div style={{ height: `100%` }} />}
                           containerElement={<div style={{ height: `100%` }} />}
                           mapElement={<div style={{ height: `100%` }} />}
@@ -672,9 +673,38 @@ class Invoices extends Component {
 class TeamMap extends Component {
   render() {
     return (
-      <div>
-        <h1>Team map</h1>
-      </div>
+        <div className="map-view page-view">
+          <div className="map">
+            <MyMapComponent
+              isMarkerShown
+              googleMapURL={googleMapUrl}
+              loadingElement={<div style={{ height: `100%` }} />}
+              containerElement={<div style={{ height: `100%` }} />}
+              mapElement={<div style={{ height: `100%` }} />}
+            />
+          </div>
+          <aside className="side-area">
+            <div className="side-header">
+              <h2>Customers</h2>
+              <hr/>
+            </div> 
+            <div className="side-body">
+              <div className="customer">
+                <label><input type="checkbox"/><span>All Customers</span></label>
+              </div>
+              <div className="customer">
+                <label><input type="checkbox"/><span>Jim Jones</span></label>
+              </div>
+              <div className="customer">
+                <label><input type="checkbox"/><span>Lilly Mack</span></label>
+              </div>
+              <div className="customer">
+                <label><input type="checkbox"/><span>Sammy Brown</span></label>
+              </div>
+              <button className="btn second-btn btn-success">Add Customer</button>
+            </div>
+          </aside>
+        </div>
     )
   }
 }

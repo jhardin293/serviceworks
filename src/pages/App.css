@@ -235,18 +235,20 @@ button {
       .calendar-wrapper .calendar .rbc-month-view .rbc-month-row:nth-child(2) {
         border-top: 1px solid #DDD; }
 
-.side-calendar {
+.side-area {
   width: 310px;
   background-color: #F5F6FA;
   height: 100vh;
   padding-left: 20px;
   padding-right: 20px;
   box-shadow: 0px 0px 5px 1px rgba(0, 0, 0, 0.17); }
-  .side-calendar .side-header {
-    padding-top: 21px;
-    margin-bottom: 20px; }
-  .side-calendar .job-btn {
-    background-image: linear-gradient(90deg, #DF6B68 0%, #7D3884 100%); }
+
+.side-calendar .side-header {
+  padding-top: 21px;
+  margin-bottom: 20px; }
+
+.side-calendar .job-btn {
+  background-image: linear-gradient(90deg, #DF6B68 0%, #7D3884 100%); }
 
 .react-datepicker {
   background-color: #f3f5f9;
@@ -521,13 +523,16 @@ form .react-datepicker {
       display: flex;
       justify-content: space-between;
       padding-right: 20px; }
+      .invoice-view .panel .line-item .line-total img {
+        cursor: pointer; }
   .invoice-view .panel td {
     vertical-align: middle;
     padding: 15px 10px; }
   .invoice-view .panel .new-line-item {
     background-color: white;
     color: #4CC2F0;
-    font-size: 14px; }
+    font-size: 14px;
+    cursor: pointer; }
 
 .invoice-view .invoice-footer h5 {
   font-size: 14px;
@@ -539,3 +544,28 @@ form .react-datepicker {
   border-radius: 4px;
   height: 150px;
   width: 50%; }
+
+.map-view {
+  position: relative; }
+  .map-view .map {
+    height: 100vh;
+    width: 100%; }
+  .map-view .side-area {
+    position: absolute;
+    right: 0;
+    top: 0; }
+    .map-view .side-area .side-header {
+      margin-top: 40px; }
+      .map-view .side-area .side-header h2 {
+        color: #828E9E;
+        font-weight: 400;
+        font-size: 18px; }
+      .map-view .side-area .side-header hr {
+        border: 1px solid #CAD2DD; }
+    .map-view .side-area .customer label {
+      display: flex;
+      align-items: center; }
+      .map-view .side-area .customer label input {
+        margin-right: 10px; }
+    .map-view .side-area .btn {
+      margin-top: 20px; }
