@@ -35,6 +35,8 @@ import plus from './images/plus.svg'
 
 import noteImg1 from './images/note-img-1.jpg'
 
+import threeDots from './images/three-dots.png'
+
 BigCalendar.setLocalizer(BigCalendar.momentLocalizer(moment));
 
 class SideNav extends Component {
@@ -249,96 +251,99 @@ class Notes extends Component {
                 <h2>Note text</h2>
                 <h2>Created</h2>
               </div>
-              <div className="sort-group">
-                <div className="month-group"><span>March 2018</span></div>
-                <div className="group-body">
-                  <div className="note">
-                    <div className="note-left">
-                      <div className="note-text">
-                        <div className="note-title">This is the first note</div>
-                        <div className="note-body">
-                          <p>This is the body text of the note. Im sure a lot better content will be written here</p>
+              <div className="panel-body">
+                <div className="sort-group">
+                  <div className="month-group"><span>March 2018</span></div>
+                  <div className="group-body">
+                    <div className="note">
+                      <div className="note-left">
+                        <div className="note-text">
+                          <div className="note-title">This is the first note</div>
+                          <div className="note-body">
+                            <p>This is the body text of the note. Im sure a lot better content will be written here</p>
+                          </div>
+                        </div>
+                        <div className="note-img">
+                          <img src={noteImg1} alt="note-img"/>
                         </div>
                       </div>
-                      <div className="note-img">
-                        <img src={noteImg1} alt="note-img"/>
+                      <div className="note-right">
+                        <div className="note-created">3/07/18</div>
                       </div>
                     </div>
-                    <div className="note-right">
-                      <div className="note-created">3/07/18</div>
+                    <div className="note">
+                      <div className="note-left">
+                        <div className="note-text">
+                          <div className="note-title">This is the first note</div>
+                          <div className="note-body">
+                            <p>This is the body text of the note. Im sure a lot better content will be written here</p>
+                          </div>
+                        </div>
+                        <div className="note-img">
+                          <img src={noteImg1} alt="note-img"/>
+                        </div>
+                      </div>
+                      <div className="note-right">
+                        <div className="note-created">3/07/18</div>
+                      </div>
+                    </div>
+                    <div className="note">
+                      <div className="note-left">
+                        <div className="note-text">
+                          <div className="note-title">This is the first note</div>
+                          <div className="note-body">
+                            <p>This is the body text of the note. Im sure a lot better content will be written here</p>
+                          </div>
+                        </div>
+                        <div className="note-img">
+                          <img src={noteImg1} alt="note-img"/>
+                        </div>
+                      </div>
+                      <div className="note-right">
+                        <div className="note-created">3/07/18</div>
+                      </div>
                     </div>
                   </div>
-                  <div className="note">
-                    <div className="note-left">
-                      <div className="note-text">
-                        <div className="note-title">This is the first note</div>
-                        <div className="note-body">
-                          <p>This is the body text of the note. Im sure a lot better content will be written here</p>
+                </div>
+                <div className="sort-group">
+                  <div className="month-group"><span>March 2018</span></div>
+                  <div className="group-body">
+                    <div className="note">
+                      <div className="note-left">
+                        <div className="note-text">
+                          <div className="note-title">This is the first note</div>
+                          <div className="note-body">
+                            <p>This is the body text of the note. Im sure a lot better content will be written here</p>
+                          </div>
+                        </div>
+                        <div className="note-img">
+                          <img src={noteImg1} alt="note-img"/>
                         </div>
                       </div>
-                      <div className="note-img">
-                        <img src={noteImg1} alt="note-img"/>
+                      <div className="note-right">
+                        <div className="note-created">3/07/18</div>
                       </div>
                     </div>
-                    <div className="note-right">
-                      <div className="note-created">3/07/18</div>
-                    </div>
-                  </div>
-                  <div className="note">
-                    <div className="note-left">
-                      <div className="note-text">
-                        <div className="note-title">This is the first note</div>
-                        <div className="note-body">
-                          <p>This is the body text of the note. Im sure a lot better content will be written here</p>
+                    <div className="note">
+                      <div className="note-left">
+                        <div className="note-text">
+                          <div className="note-title">This is the first note</div>
+                          <div className="note-body">
+                            <p>This is the body text of the note. Im sure a lot better content will be written here</p>
+                          </div>
+                        </div>
+                        <div className="note-img">
+                          <img src={noteImg1} alt="note-img"/>
                         </div>
                       </div>
-                      <div className="note-img">
-                        <img src={noteImg1} alt="note-img"/>
+                      <div className="note-right">
+                        <div className="note-created">3/07/18</div>
                       </div>
-                    </div>
-                    <div className="note-right">
-                      <div className="note-created">3/07/18</div>
                     </div>
                   </div>
                 </div>
               </div>
-              <div className="sort-group">
-                <div className="month-group"><span>March 2018</span></div>
-                <div className="group-body">
-                  <div className="note">
-                    <div className="note-left">
-                      <div className="note-text">
-                        <div className="note-title">This is the first note</div>
-                        <div className="note-body">
-                          <p>This is the body text of the note. Im sure a lot better content will be written here</p>
-                        </div>
-                      </div>
-                      <div className="note-img">
-                        <img src={noteImg1} alt="note-img"/>
-                      </div>
-                    </div>
-                    <div className="note-right">
-                      <div className="note-created">3/07/18</div>
-                    </div>
-                  </div>
-                  <div className="note">
-                    <div className="note-left">
-                      <div className="note-text">
-                        <div className="note-title">This is the first note</div>
-                        <div className="note-body">
-                          <p>This is the body text of the note. Im sure a lot better content will be written here</p>
-                        </div>
-                      </div>
-                      <div className="note-img">
-                        <img src={noteImg1} alt="note-img"/>
-                      </div>
-                    </div>
-                    <div className="note-right">
-                      <div className="note-created">3/07/18</div>
-                    </div>
-                  </div>
-                </div>
-              </div>
+              
             </div>
           </div>
         </div>
@@ -475,6 +480,7 @@ class Customers extends Component {
 class Invoices extends Component {
   state = {
     selectedCustomer: '',
+    selectedBilling: '',
   }
   handleCustomer = (selectedCustomer) => {
     this.setState({selectedCustomer});
@@ -482,8 +488,11 @@ class Invoices extends Component {
   handleDate = (date) =>  {
     this.setState({startDate: date });
   }
+  handleBilling = (option) => {
+    this.setState({selectedBilling: option});
+  }
   render() {
-    const { selectedCustomer } = this.state; 
+    const { selectedCustomer, selectedBilling } = this.state; 
     return (
       <div className="invoice-view page-view">
         <div className="page-header">
@@ -537,17 +546,114 @@ class Invoices extends Component {
             </div>
           </div>
           <div className="invoice-body">
-            <Tabs>
+            <Tabs className="react-tabs alt">
               <TabList>
                 <Tab>Line items</Tab>
                 <Tab>Footer</Tab>
               </TabList>
               <TabPanel>
-                <div className="panel">
-                    <div className="header">
-                      <h2>Labor</h2>
-                    </div>
-                </div>
+                <table className="panel">
+                  <thead>
+                    <tr className="header">
+                      <th><h2>Labor</h2></th>
+                      <th><h2>Rate</h2></th>
+                      <th><h2>Billing</h2></th>
+                      <th><h2>Hours</h2></th>
+                      <th><h2>Discount</h2></th>
+                      <th><h2>Tax</h2></th>
+                      <th><h2>Total</h2></th>
+                    </tr>
+                  </thead>
+                  <tbody className="panel-body">
+                    <tr className="line-item">
+                      <td className="description"><input type="text" placeholder="Enter line item or description..." /></td>
+                      <td><input type="text" placeholder="$0.00" /></td>
+                      <td>
+                        <Select
+                          name="form-field-name"
+                          value={selectedBilling}
+                          onChange={this.handleBilling}
+                          searchable
+                          placeholder = "Hourly"
+                          options={[
+                            { value: 'hourly', label: 'Hourly' },
+                            { value: 'fixed', label: 'Fixed' },
+                            { value: 'quantity', label: 'Quantity' },
+                          ]}
+                        />
+                      </td>
+                      <td><input type="text" placeholder="0" /></td>
+                      <td><input type="text" placeholder="0" /></td>
+                      <td><input type="text" placeholder="0" /></td>
+                      <td>
+                        <div className="line-total">
+                          <span className="line-value">$100</span>
+                          <img src={threeDots} alt="item-menu" />
+                        </div>
+                      </td>
+                    </tr>
+                    <tr className="line-item">
+                      <td className="description"><input type="text" placeholder="Enter line item or description..." /></td>
+                      <td><input type="text" placeholder="$0.00" /></td>
+                      <td>
+                        <Select
+                          name="form-field-name"
+                          value={selectedBilling}
+                          onChange={this.handleBilling}
+                          searchable
+                          placeholder = "Hourly"
+                          options={[
+                            { value: 'hourly', label: 'Hourly' },
+                            { value: 'fixed', label: 'Fixed' },
+                            { value: 'quantity', label: 'Quantity' },
+                          ]}
+                        />
+                      </td>
+                      <td><input type="text" placeholder="0" /></td>
+                      <td><input type="text" placeholder="0" /></td>
+                      <td><input type="text" placeholder="0" /></td>
+                      <td>
+                        <div className="line-total">
+                          <span className="line-value">$100</span>
+                          <img src={threeDots} alt="item-menu" />
+                        </div>
+                      </td>
+                    </tr>
+                    <tr className="new-line-item">
+                      <td colSpan="8"><span>+ New line item</span></td>
+                    </tr>
+                  </tbody>
+                </table>
+                <table className="panel">
+                  <thead>
+                    <tr className="header">
+                      <th><h2>Parts</h2></th>
+                      <th><h2>Price</h2></th>
+                      <th><h2>Quantity</h2></th>
+                      <th><h2>Discount</h2></th>
+                      <th><h2>Tax</h2></th>
+                      <th><h2>Total</h2></th>
+                    </tr>
+                  </thead>
+                  <tbody className="panel-body">
+                    <tr className="line-item">
+                      <td className="description"><input type="text" placeholder="Enter line item or description..." /></td>
+                      <td><input type="text" placeholder="$0.00" /></td>
+                      <td><input type="text" placeholder="0" /></td>
+                      <td><input type="text" placeholder="0" /></td>
+                      <td><input type="text" placeholder="0" /></td>
+                      <td>
+                        <div className="line-total">
+                          <span className="line-value">$100</span>
+                          <img src={threeDots} alt="item-menu" />
+                        </div>
+                      </td>
+                    </tr>
+                    <tr className="new-line-item">
+                      <td colSpan="8"><span>+ New line item</span></td>
+                    </tr>
+                  </tbody>
+                </table>
               </TabPanel>
               <TabPanel>
                 <div>

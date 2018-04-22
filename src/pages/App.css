@@ -1,3 +1,9 @@
+html {
+  box-sizing: border-box; }
+
+*, *:before, *:after {
+  box-sizing: inherit; }
+
 p, h1, h2, h3, h4, h5, h6 {
   margin: 0px; }
 
@@ -47,9 +53,7 @@ button {
     box-shadow: none; }
 
 .panel {
-  border: 1px solid #eaeded;
-  border-bottom-left-radius: 4px;
-  border-bottom-right-radius: 4px; }
+  border-collapse: collapse; }
   .panel .header {
     width: 100%;
     background-color: #E2E8EC;
@@ -61,6 +65,11 @@ button {
       color: #90969D;
       margin: 0px 10px;
       font-size: 14px; }
+  .panel .panel-body {
+    border: 1px solid #eaeded;
+    border-bottom-left-radius: 4px;
+    border-bottom-right-radius: 4px;
+    border-top: 0px; }
 
 .main-content {
   display: flex; }
@@ -179,7 +188,8 @@ button {
           border: 2px solid #DADEE3;
           color: #DADEE3;
           height: 30px;
-          font-size: 14px; }
+          font-size: 14px;
+          background-color: white; }
         .calendar-wrapper .calendar .calendar-toolbar .view-area .view-switcher {
           display: flex;
           margin-right: 20px;
@@ -205,7 +215,7 @@ button {
             box-shadow: 0px 0px 19px 1px rgba(0, 0, 0, 0.12);
             border-radius: 4px; }
       .calendar-wrapper .calendar .calendar-toolbar .rbc-active {
-        background-color: #DADEE3;
+        background-color: #DADEE3 !important;
         color: white !important; }
     .calendar-wrapper .calendar .rbc-today {
       background-color: #de6a671c; }
@@ -314,7 +324,7 @@ button {
   margin: 0px; }
   .react-tabs .react-tabs__tab-list .react-tabs__tab {
     margin-right: 10px;
-    height: 30px;
+    height: 44px;
     padding-top: 9px; }
     .react-tabs .react-tabs__tab-list .react-tabs__tab:first-child {
       margin-left: 20px; }
@@ -328,6 +338,16 @@ button {
   background-color: #F5F6FA;
   height: calc(100vh - 161px);
   padding: 20px 30px; }
+
+.react-tabs.alt .react-tabs__tab-list .react-tabs__tab:focus:after {
+  content: none; }
+
+.react-tabs.alt .react-tabs__tab-list .react-tabs__tab:focus {
+  box-shadow: none; }
+
+.react-tabs.alt .react-tabs__tab-list .react-tabs__tab.react-tabs__tab--selected {
+  border: none;
+  border-bottom: 3px solid; }
 
 .customers-view .page-body {
   position: relative; }
@@ -445,3 +465,66 @@ form .react-datepicker {
 .invoice-view .invoice-total h2 {
   font-size: 36px;
   color: #4CC2F0; }
+
+.invoice-view .react-tabs.alt .react-tabs__tab-list {
+  height: 37px; }
+  .invoice-view .react-tabs.alt .react-tabs__tab-list .react-tabs__tab.react-tabs__tab--selected {
+    color: #4CC2F0;
+    height: 35px; }
+
+.invoice-view .panel {
+  width: 100%;
+  margin-bottom: 40px; }
+  .invoice-view .panel .header {
+    display: table-row; }
+    .invoice-view .panel .header h2 {
+      margin: 0px; }
+    .invoice-view .panel .header th {
+      text-align: left;
+      padding: 6px 6px 6px 14px; }
+      .invoice-view .panel .header th:first-child {
+        border-top-left-radius: 4px; }
+      .invoice-view .panel .header th:last-child {
+        border-top-right-radius: 4px; }
+  .invoice-view .panel .line-item {
+    height: 54px;
+    background-color: #fafafa;
+    border-bottom: 1px solid #dfe4ea; }
+    .invoice-view .panel .line-item input {
+      height: 34px;
+      font-size: 14px;
+      padding-top: 0px;
+      border: 1px solid #ccc;
+      border-radius: 6px;
+      width: 100%;
+      box-sizing: border-box;
+      padding-right: 9px; }
+    .invoice-view .panel .line-item .Select {
+      height: 34px; }
+      .invoice-view .panel .line-item .Select .Select-control {
+        height: 34px;
+        padding-top: 0px; }
+        .invoice-view .panel .line-item .Select .Select-control .Select-input {
+          height: 30px; }
+          .invoice-view .panel .line-item .Select .Select-control .Select-input input {
+            height: 0px;
+            border: 0px; }
+    .invoice-view .panel .line-item td:first-child {
+      width: 30%; }
+      .invoice-view .panel .line-item td:first-child input {
+        border-radius: 0px; }
+    .invoice-view .panel .line-item td:nth-child(n + 2) {
+      width: 10%; }
+      .invoice-view .panel .line-item td:nth-child(n + 2) input {
+        text-align: right; }
+    .invoice-view .panel .line-item .line-total {
+      display: flex;
+      justify-content: space-between;
+      padding-right: 20px; }
+  .invoice-view .panel td {
+    vertical-align: middle;
+    padding: 15px 10px; }
+  .invoice-view .panel .new-line-item {
+    background-color: white;
+    color: #4CC2F0;
+    font-size: 14px; }

@@ -1,3 +1,10 @@
+html {
+  box-sizing: border-box;
+}
+*, *:before, *:after {
+  box-sizing: inherit;
+}
+
 p, h1,h2,h3,h4,h5,h6 {
   margin: 0px;
 }
@@ -57,9 +64,7 @@ button {
 }
 
 .panel {
-  border: 1px solid #eaeded;
-  border-bottom-left-radius: 4px;
-  border-bottom-right-radius: 4px;
+  border-collapse: collapse;
   .header {
     width: 100%;
     background-color: #E2E8EC; 
@@ -72,6 +77,12 @@ button {
       margin: 0px 10px;
       font-size: 14px;
     }
+  }
+  .panel-body {
+    border: 1px solid #eaeded;
+    border-bottom-left-radius: 4px;
+    border-bottom-right-radius: 4px;
+    border-top: 0px;
   }
 }
 
@@ -228,6 +239,7 @@ button {
           color:#DADEE3; 
           height: 30px;
           font-size: 14px;
+          background-color: white;
         }
         .view-switcher {
           display: flex;
@@ -263,7 +275,7 @@ button {
         }
       }
       .rbc-active {
-        background-color:#DADEE3;
+        background-color:#DADEE3 !important;
         color: white !important;
       }
     }
@@ -424,7 +436,7 @@ button {
     margin: 0px;
     .react-tabs__tab {
       margin-right: 10px;
-      height: 30px;
+      height: 44px;
       padding-top: 9px;
       &:first-child {
         margin-left: 20px;
@@ -442,6 +454,22 @@ button {
     height: calc(100vh - 161px);
     padding: 20px 30px;
   } 
+  &.alt {
+    .react-tabs__tab-list {
+      .react-tabs__tab {
+        &:focus:after {
+          content: none;
+        }
+        &:focus {
+          box-shadow: none;
+        }
+        &.react-tabs__tab--selected {
+          border: none;
+          border-bottom: 3px solid;
+        }
+      }
+    }
+  }
 }
 
 .customers-view {
@@ -590,5 +618,94 @@ form {
       font-size: 36px;
       color: #4CC2F0;
     }
+  }
+  .react-tabs.alt {
+    .react-tabs__tab-list {
+      height: 37px;
+      .react-tabs__tab {
+        &.react-tabs__tab--selected {
+          color: #4CC2F0;
+          height: 35px;
+        }
+      }
+    }
+  }
+  .panel {
+    width: 100%;
+    margin-bottom: 40px;
+    .header {
+      display: table-row;
+      h2 {
+        margin: 0px;
+      }
+      th {
+        text-align: left;
+        padding: 6px 6px 6px 14px;
+        &:first-child {
+          border-top-left-radius: 4px;
+        }
+        &:last-child {
+          border-top-right-radius: 4px;
+        }
+      }
+    }
+    .line-item {
+      height: 54px;
+      background-color: #fafafa;
+      border-bottom: 1px solid #dfe4ea;
+      input{
+        height: 34px;
+        font-size: 14px;
+        padding-top: 0px;
+        border: 1px solid #ccc;
+        border-radius: 6px;
+        width: 100%;
+        box-sizing: border-box;
+        padding-right: 9px;
+      }
+      .Select {
+        height: 34px;
+        .Select-control {
+          height: 34px;
+          padding-top: 0px;
+          .Select-input {
+            height: 30px;
+            input {
+              height: 0px;
+              border: 0px;
+            }
+          }
+        }
+      }
+      td {
+        &:first-child {
+          width: 30%;
+          input {
+            border-radius: 0px;
+          }
+        }
+        &:nth-child(n + 2) {
+          width: 10%;
+          input {
+            text-align: right;
+          }
+        }
+      }
+      .line-total {
+        display: flex;
+        justify-content: space-between;
+        padding-right: 20px;
+      }
+    }
+    td {
+      vertical-align: middle;
+      padding: 15px 10px;
+    }
+    .new-line-item  {
+      background-color: white;
+      color: #4CC2F0;
+      font-size: 14px;
+    }
+
   }
 }
