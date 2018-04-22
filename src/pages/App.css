@@ -75,6 +75,7 @@ button {
   display: flex; }
 
 .page-view {
+  position: relative;
   width: calc(100% - 200px);
   box-shadow: 0px 0px 37px 1px rgba(0, 0, 0, 0.35); }
 
@@ -334,6 +335,8 @@ button {
       border-color: #E1E3E7;
       background-color: #F5F6FA;
       color: #FE8812; }
+      .react-tabs .react-tabs__tab-list .react-tabs__tab.react-tabs__tab--selected:after {
+        content: none; }
 
 .react-tabs .react-tabs__tab-panel--selected {
   display: block;
@@ -358,9 +361,6 @@ button {
   position: absolute;
   right: 20px;
   top: 2px; }
-
-.customers-view form {
-  max-width: 1080px; }
 
 .customers-view .map {
   height: 285px;
@@ -424,6 +424,9 @@ form .react-datepicker {
   margin-top: -23px; }
   form .react-datepicker .react-datepicker__triangle {
     display: none; }
+
+form.person-form {
+  max-width: 1080px; }
 
 .invoice-view label {
   font-size: 14px;
@@ -564,8 +567,25 @@ form .react-datepicker {
         border: 1px solid #CAD2DD; }
     .map-view .side-area .customer label {
       display: flex;
-      align-items: center; }
+      align-items: center;
+      cursor: pointer; }
       .map-view .side-area .customer label input {
-        margin-right: 10px; }
+        margin-right: 10px;
+        cursor: pointer; }
     .map-view .side-area .btn {
       margin-top: 20px; }
+
+.account-view .page-body {
+  position: relative; }
+
+.account-view .account-btn {
+  position: absolute;
+  right: 20px;
+  top: 2px; }
+
+.account-view .react-tabs .react-tabs__tab-list .react-tabs__tab.react-tabs__tab--selected {
+  color: #5CB6B5; }
+
+.account-view .map {
+  height: 285px;
+  width: 100%; }

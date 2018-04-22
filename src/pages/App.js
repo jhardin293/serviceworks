@@ -380,7 +380,7 @@ class Customers extends Component {
             </TabList>
 
             <TabPanel>
-              <form>
+              <form className="person-form">
                 <div className="input-group">
                   <label>
                     Name and company
@@ -708,15 +708,115 @@ class TeamMap extends Component {
     )
   }
 }
+
 class MyAccount extends Component {
   render() {
     return (
-      <div>
-        <h1>My account</h1>
+      <div className="account-view page-view">
+        <div className="page-header">
+          <h1>My account</h1>
+        </div>
+        <div className="page-body">
+          <button className="btn second-btn account-btn btn-success">Save customer</button>
+          <Tabs>
+            <TabList>
+              <Tab>Details</Tab>
+              <Tab>Team</Tab>
+            </TabList>
+
+            <TabPanel>
+              <form className="person-form">
+                <div className="input-group">
+                  <label>
+                    Name and company
+                  </label>
+                  <div className="col-2">
+                    <div>
+                      <input type="text" placeholder="First name" />
+                    </div>
+                    <div>
+                      <input type="text" placeholder="Last name" />
+                    </div>
+                  </div>
+                  <div className="col-2">
+                    <div>
+                      <input type="text" placeholder="Company" />
+                    </div>
+                    <div>
+                      <input type="text" placeholder="Nickname" />
+                    </div>
+                  </div>
+                </div>
+                <div className="input-group">
+                  <label>
+                    Address
+                  </label>
+                  <div className="col-2 with-map">
+                    <div className="col-1">
+                      <input type="text" placeholder="Street address" />
+                      <input type="text" placeholder="Apt / suite / floor" />
+                      <input type="text" placeholder="City" />
+                      <input type="text" placeholder="State" />
+                      <div className="row col-80">
+                        <div>
+                          <select>
+                            <option>California</option>
+                            <option>New York</option>
+                          </select>
+                        </div>
+                        <div>
+                          <input type="text" placeholder="Zip code" />
+                        </div>
+                      </div>
+                    </div>
+                    <div>
+                      <div className="map">
+                        <MyMapComponent 
+                          isMarkerShown
+                          googleMapURL={googleMapUrl}
+                          loadingElement={<div style={{ height: `100%` }} />}
+                          containerElement={<div style={{ height: `100%` }} />}
+                          mapElement={<div style={{ height: `100%` }} />}
+                        />
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div className="input-group">
+                  <label>
+                    Contact
+                  </label>
+                  <div className="col-2">
+                    <div>
+                      <input type="text" placeholder="Mobile phone" />
+                    </div>
+                    <div>
+                      <input type="text" placeholder="Home phone" />
+                    </div>
+                  </div>
+                  <div className="col-2">
+                    <div>
+                      <input type="text" placeholder="Email" />
+                    </div>
+                    <div>
+                      <input type="text" placeholder="Office phone" />
+                    </div>
+                  </div>
+                </div>
+              </form>
+            </TabPanel>
+            <TabPanel>
+              <h2>Any content 2</h2>
+            </TabPanel>
+          </Tabs>
+        </div>
+
       </div>
     )
   }
 }
+
+
 class App extends Component {
   render() {
     return (

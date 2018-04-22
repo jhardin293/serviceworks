@@ -92,6 +92,7 @@ button {
 }
 
 .page-view {
+  position: relative;
   width: calc(100% - 200px);
   box-shadow: 0px 0px 37px 1px rgba(0, 0, 0, 0.35);
 }
@@ -449,6 +450,9 @@ button {
         border-color: #E1E3E7;
         background-color: #F5F6FA;
         color: #FE8812;
+        &:after {
+          content: none;
+        }
       }
     }
   }
@@ -484,9 +488,6 @@ button {
     position: absolute;
     right: 20px;
     top: 2px;
-  }
-  form {
-    max-width: 1080px;
   }
 
   .map {
@@ -568,6 +569,10 @@ form {
     .react-datepicker__triangle {
       display: none;
     }
+  }
+
+  &.person-form {
+    max-width: 1080px;
   }
 }
 
@@ -756,13 +761,33 @@ form {
       label {
         display:flex;
         align-items: center;
+        cursor: pointer;
         input {
           margin-right: 10px;
+          cursor: pointer;
         }
       }
     }
     .btn {
       margin-top: 20px;
     }
+  }
+}
+
+.account-view {
+  .page-body {
+    position: relative;
+  }
+  .account-btn {
+    position: absolute;
+    right: 20px;
+    top: 2px;
+  }
+  .react-tabs .react-tabs__tab-list .react-tabs__tab.react-tabs__tab--selected {
+    color: #5CB6B5;
+  }
+  .map {
+    height: 285px;
+    width: 100%;
   }
 }
