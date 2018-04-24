@@ -717,7 +717,7 @@ class MyAccount extends Component {
           <h1>My account</h1>
         </div>
         <div className="page-body">
-          <button className="btn second-btn account-btn btn-success">Save customer</button>
+          <button className="btn second-btn account-btn btn-success">Save account</button>
           <Tabs>
             <TabList>
               <Tab>Details</Tab>

@@ -7,7 +7,7 @@ html {
 p, h1, h2, h3, h4, h5, h6 {
   margin: 0px; }
 
-html, body {
+html, body, #root, .main-content {
   height: 100%; }
 
 body {
@@ -72,12 +72,14 @@ button {
     border-top: 0px; }
 
 .main-content {
-  display: flex; }
+  display: flex;
+  overflow: hidden; }
 
 .page-view {
   position: relative;
   width: calc(100% - 200px);
-  box-shadow: 0px 0px 37px 1px rgba(0, 0, 0, 0.35); }
+  box-shadow: 0px 0px 37px 1px rgba(0, 0, 0, 0.35);
+  overflow: scroll; }
 
 .page-header {
   display: flex;
@@ -96,7 +98,7 @@ button {
   width: 200px;
   background-color: #414A57;
   padding-top: 25px;
-  height: calc(100vh - 25px); }
+  height: 100%; }
   .side-nav .logo {
     display: flex;
     margin-bottom: 30px;
@@ -341,7 +343,7 @@ button {
 .react-tabs .react-tabs__tab-panel--selected {
   display: block;
   background-color: #F5F6FA;
-  height: calc(100vh - 161px);
+  height: calc(100vh - 120px);
   padding: 20px 30px; }
 
 .react-tabs.alt .react-tabs__tab-list .react-tabs__tab:focus:after {
