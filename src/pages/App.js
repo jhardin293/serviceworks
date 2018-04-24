@@ -8,7 +8,9 @@ import Select from 'react-select'
 import {
   BrowserRouter as Router,
   Route,
-  NavLink
+  NavLink,
+  Link,
+  Redirect
 } from 'react-router-dom'
 
 import { Tab, Tabs, TabList, TabPanel } from 'react-tabs'
@@ -51,7 +53,7 @@ class SideNav extends Component {
         <div className="nav-items">
           <ul>
             <li>
-              <NavLink to="/" exact>
+              <NavLink to="/schedule">
                 <img src={schedule} alt=""/>
                 <span>Schedule</span>
               </NavLink>
@@ -98,7 +100,9 @@ class SideCalendar extends Component {
     return (
       <aside className="side-calendar side-area">
         <div className="side-header">
-          <button className="job-btn btn"><img src={plus} alt="" /><span>New job</span></button>
+          <Link to="/schedule/new-job">
+            <button className="job-btn btn"><img src={plus} alt="" /><span>New job</span></button>
+          </Link>
         </div>
         <DatePicker calendarClassName="in-line" inline />
       </aside>
@@ -218,8 +222,17 @@ class Toolbar extends Component {
 }
 
 class Schedule extends Component {
+  state = {
+    openNewJob: false,
+  }
+  handleSlotSelect = (slotInfo) => {
+    this.setState({openNewJob: true});
+  }
   render() {
     let events = [];
+    if (this.state.openNewJob) {
+      return <Redirect push to="/schedule/new-job" />
+    }
     return (
         <div className="schedule-view page-view">
           <div className="calendar-wrapper">
@@ -229,11 +242,168 @@ class Schedule extends Component {
               defaultDate={new Date()}
               components={{toolbar: Toolbar}}
               views={['day', 'week', 'month']}
+              selectable
+              onSelectSlot={this.handleSlotSelect}
              />
           </div>
           <SideCalendar />
         </div>
     );
+  }
+}
+
+class NewJob extends Component {
+  state = {
+    startDate: moment(),
+    endDate: moment(),
+    employeesSelected: [],
+    selectedCustomer: '',
+  }
+
+  handleCustomer = (selectedCustomer) => {
+    this.setState({selectedCustomer});
+  }
+
+  handleChange = ({ startDate, endDate }) => {
+    startDate = startDate || this.state.startDate
+    endDate = endDate || this.state.endDate
+
+    if (startDate.isAfter(endDate)) {
+      endDate = startDate
+    }
+
+    this.setState({ startDate, endDate })
+  }
+  handleChangeStart = (startDate) => this.handleChange({ startDate })
+
+  handleChangeEnd = (endDate) => this.handleChange({ endDate })
+
+  handleSelectChange = (value) => {
+		this.setState({ employeesSelected: value });
+	}
+  render() {
+    const {selectedCustomer, employeesSelected} = this.state;
+    return (
+      <div className="new-job-view page-view">
+        <div className="page-header">
+          <h1>New Job</h1>
+        </div>
+        <div className="page-body">
+          <div className="tab-btn-group">
+            <Link to="/">
+              <button className="btn second-btn ">Cancel</button>
+            </Link>
+            <Link to="/">
+              <button className="btn second-btn btn-success">Save</button>
+            </Link>
+          </div>
+          <Tabs>
+            <TabList>
+              <Tab>Details</Tab>
+            </TabList>
+
+            <TabPanel>
+              <form className="person-form">
+                <div className="input-group">
+                  <input type="text" placeholder="Job title" />
+                </div>
+                <div className="input-group date-picker-group">
+                  <div className="pickers">
+                    <div>
+                      <label>Starts</label>
+                      <DatePicker
+                        selected={this.state.startDate}
+                        selectsStart
+                        startDate={this.state.startDate}
+                        endDate={this.state.endDate}
+                        onChange={this.handleChangeStart} 
+                        timeFormat="HH:mm"
+                        timeIntervals={15}
+                        timeCaption="Time"
+                        showTimeSelect
+                        dateFormat="LLL"
+                        calendarClassName="time-range-picker"
+                      />
+                    </div>
+                    <div>
+                      <label>Ends</label>
+                      <DatePicker
+                        selected={this.state.endDate}
+                        selectsEnd
+                        startDate={this.state.startDate}
+                        endDate={this.state.endDate}
+                        onChange={this.handleChangeEnd} 
+                        timeFormat="HH:mm"
+                        timeIntervals={15}
+                        timeCaption="Time"
+                        showTimeSelect
+                        dateFormat="LLL"
+                        calendarClassName="time-range-picker"
+                      />
+                    </div>
+                  </div>
+                  <div className="time-range">
+                    <span className="bordered-group"></span>
+                    3 Hours
+                  </div>
+                </div>
+                <div className="input-group">
+                  <div className="col-2">
+                    <div className="panel">
+                      <div className="header">
+                        <h2>Customer</h2>
+                      </div>
+                      <div className="panel-body">
+                        <Select
+                          name="form-field-name"
+                          value={selectedCustomer}
+                          onChange={this.handleCustomer}
+                          searchable
+                          options={[
+                            { value: 'Billy Joel', label: 'Billy Joel' },
+                            { value: 'Sarah Ann', label: 'Sarah Ann' },
+                          ]}
+                        />
+                      </div>
+                    </div>
+                    <div className="panel">
+                      <div className="header">
+                        <h2>Employees</h2>
+                      </div>
+                      <div className="panel-body">
+                        <Select
+                          name="form-field-name"
+                          multi
+                          value={employeesSelected}
+                          onChange={this.handleSelectChange}
+                          searchable
+                          className="tags"
+                          options={[
+                            { value: 'Billy Joel', label: 'Billy Joel' },
+                            { value: 'Sarah Ann', label: 'Sarah Ann' },
+                          ]}
+                        />
+                      </div>
+                    </div>
+                  </div>
+                  <div className="col-2">
+                  </div>
+                </div>
+                <div className="map">
+                  <MyMapComponent 
+                    isMarkerShown
+                    googleMapURL={googleMapUrl}
+                    loadingElement={<div style={{ height: `100%` }} />}
+                    containerElement={<div style={{ height: `100%` }} />}
+                    mapElement={<div style={{ height: `100%` }} />}
+                  />
+                </div>
+              </form>
+            </TabPanel>
+          </Tabs>
+        </div>
+      </div>
+    )
   }
 }
 
@@ -370,7 +540,9 @@ class Customers extends Component {
           <h1>New Customer</h1>
         </div>
         <div className="page-body">
-          <button className="btn second-btn customer-btn btn-success">Save customer</button>
+          <div className="tab-btn-group">
+            <button className="btn second-btn btn-success">Save customer</button>
+          </div>
           <Tabs>
             <TabList>
               <Tab>Details</Tab>
@@ -717,7 +889,9 @@ class MyAccount extends Component {
           <h1>My account</h1>
         </div>
         <div className="page-body">
-          <button className="btn second-btn account-btn btn-success">Save account</button>
+          <div className="tab-btn-group">
+            <button className="btn second-btn btn-success">Save account</button>
+          </div>
           <Tabs>
             <TabList>
               <Tab>Details</Tab>
@@ -823,12 +997,16 @@ class App extends Component {
       <Router>
       <div className="main-content">
         <SideNav />
-        <Route exact path="/" component={Schedule}/>
+        <Route exact path="/"  render={()=> (
+          <Redirect to="/schedule" />
+        )}/>
+        <Route path="/schedule" exact component={Schedule}/>
         <Route path="/notes" component={Notes}/>
         <Route path="/customers" component={Customers}/>
         <Route path="/invoices" component={Invoices}/>
         <Route path="/team-map" component={TeamMap}/>
         <Route path="/my-account" component={MyAccount}/>
+        <Route exact path="/schedule/new-job" component={NewJob}/>
       </div>
       </Router>
     );
