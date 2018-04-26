@@ -12,6 +12,8 @@ import {
   Link,
   Redirect
 } from 'react-router-dom'
+import Popover from 'react-popover'
+import onClickOutside from "react-onclickoutside";
 
 import { Tab, Tabs, TabList, TabPanel } from 'react-tabs'
 
@@ -47,44 +49,44 @@ class SideNav extends Component {
     return (
       <aside className="side-nav">
         <div className="logo">
-          <img src={logoImg}  alt="logo" width="25" height="28" />
+          <img src={logoImg} alt="logo" width="25" height="28" />
           <h2>Serviceworks</h2>
         </div>
         <div className="nav-items">
           <ul>
             <li>
               <NavLink to="/schedule">
-                <img src={schedule} alt=""/>
+                <img src={schedule} alt="" />
                 <span>Schedule</span>
               </NavLink>
             </li>
             <li>
               <NavLink to="/notes">
-                <img src={notes} alt=""/>
+                <img src={notes} alt="" />
                 <span>Notes</span>
               </NavLink>
             </li>
             <li>
               <NavLink to="/customers">
-                <img src={customers} alt=""/>
+                <img src={customers} alt="" />
                 <span>Customers</span>
               </NavLink>
             </li>
             <li>
               <NavLink to="/invoices">
-                <img src={invoices} alt=""/>
+                <img src={invoices} alt="" />
                 <span>Invoices</span>
               </NavLink>
             </li>
             <li>
               <NavLink to="/team-map">
-                <img src={map} alt=""/>
+                <img src={map} alt="" />
                 <span>Map</span>
               </NavLink>
             </li>
             <li>
               <NavLink to="/my-account">
-                <img src={gear} width="20" height="20" alt=""/>
+                <img src={gear} width="20" height="20" alt="" />
                 <span>My account</span>
               </NavLink>
             </li>
@@ -96,7 +98,7 @@ class SideNav extends Component {
 }
 
 class SideCalendar extends Component {
-  render () {
+  render() {
     return (
       <aside className="side-calendar side-area">
         <div className="side-header">
@@ -126,25 +128,25 @@ class Toolbar extends Component {
   view = view => {
     this.props.onViewChange(view);
   }
-  render () {
-    let {label, view, date} = this.props,
-    month = label.split(" ")[0].substring(0,3),
-    dateToday = new Date(),
-    dateSelected = new Date(date),
-    isToday = true,
-    pre,body;
+  render() {
+    let { label, view, date } = this.props,
+      month = label.split(" ")[0].substring(0, 3),
+      dateToday = new Date(),
+      dateSelected = new Date(date),
+      isToday = true,
+      pre, body;
 
-    dateToday.setHours(0,0,0,0);
-    dateSelected.setHours(0,0,0,0);
+    dateToday.setHours(0, 0, 0, 0);
+    dateSelected.setHours(0, 0, 0, 0);
     if (dateToday.getTime() === dateSelected.getTime()) {
       isToday = true;
-    }else {
+    } else {
       isToday = false;
     }
 
-    switch(view) {
+    switch (view) {
       case 'day':
-        let day = label.split(" ")[0].substring(0,3);
+        let day = label.split(" ")[0].substring(0, 3);
         let monthDay = label.split(" ").slice(1).join("");
         pre = day;
         body = monthDay;
@@ -160,10 +162,10 @@ class Toolbar extends Component {
         body = year;
         break;
       default:
-         pre = 'not';
-         body = 'found';
+        pre = 'not';
+        body = 'found';
     }
-    
+
 
     return (
       <div className="calendar-toolbar">
@@ -172,18 +174,18 @@ class Toolbar extends Component {
             type="button"
             onClick={this.navigate.bind(null, 'PREV')}
           >
-            <img src={chevron} alt="prev"  />
+            <img src={chevron} alt="prev" />
           </button>
           <span className="month-label"><strong>{pre}</strong> {body}</span>
           <button
             type="button"
             onClick={this.navigate.bind(null, 'NEXT')}
           >
-            <img src={chevron} alt="next"/>
+            <img src={chevron} alt="next" />
           </button>
         </div>
         <div className="view-area">
-          <div className="view-switcher"> 
+          <div className="view-switcher">
             <button
               type="button"
               onClick={this.view.bind(null, 'day')}
@@ -209,45 +211,79 @@ class Toolbar extends Component {
           <button
             type="button"
             onClick={this.navigate.bind(null, 'TODAY')}
-            className={"reset-day " + cn({'rbc-active': isToday })}
+            className={"reset-day " + cn({ 'rbc-active': isToday })}
           >
             Today
           </button>
 
         </div>
-       
+
       </div>
     )
   }
 }
 
+class CustomEvent extends Component {
+  state = {
+    isOpen: false,
+  }
+  handleSelect = (e) => {
+    this.setState({isOpen: true});
+  }
+  handleClickOutside = (e) => {
+    this.setState({isOpen: false});
+  }
+  render() {
+    const job = this.props.event;
+    console.log(job,'job');
+    const content = 
+      <div> 
+        <h1> {job.customer} </h1>
+      </div>;
+
+    return (
+      <div className="PopOver" onClick={this.handleSelect}>
+          <Popover  isOpen={this.state.isOpen} body={content}>
+            <div>{this.props.event.title}</div>
+          </Popover>
+      </div>
+    );
+  }
+}
+const DetailsPopover = onClickOutside(CustomEvent);  
+
 class Schedule extends Component {
   state = {
     openNewJob: false,
   }
-  handleSlotSelect = (slotInfo) => {
-    this.setState({openNewJob: true});
-  }
   render() {
-    let events = [];
+    let events = [
+      {
+        start: new Date(),
+        end: new Date(moment().add(5, "hours")),
+        title: "Window Job",
+        id: 1,
+        customer: 'Jim Banks',
+        employees: 'Sam Wilton'
+      }
+    ];
     if (this.state.openNewJob) {
       return <Redirect push to="/schedule/new-job" />
     }
     return (
-        <div className="schedule-view page-view">
-          <div className="calendar-wrapper">
-            <BigCalendar 
-              className="calendar" 
-              events={events} 
-              defaultDate={new Date()}
-              components={{toolbar: Toolbar}}
-              views={['day', 'week', 'month']}
-              selectable
-              onSelectSlot={this.handleSlotSelect}
-             />
-          </div>
-          <SideCalendar />
+      <div className="schedule-view page-view">
+        <div className="calendar-wrapper">
+          <BigCalendar
+            className="calendar"
+            events={events}
+            defaultDate={new Date()}
+            components={{ toolbar: Toolbar, event: DetailsPopover }}
+            views={['day', 'week', 'month']}
+            selectable
+          />
         </div>
+        <SideCalendar />
+      </div>
     );
   }
 }
@@ -261,7 +297,7 @@ class NewJob extends Component {
   }
 
   handleCustomer = (selectedCustomer) => {
-    this.setState({selectedCustomer});
+    this.setState({ selectedCustomer });
   }
 
   handleChange = ({ startDate, endDate }) => {
@@ -279,10 +315,10 @@ class NewJob extends Component {
   handleChangeEnd = (endDate) => this.handleChange({ endDate })
 
   handleSelectChange = (value) => {
-		this.setState({ employeesSelected: value });
-	}
+    this.setState({ employeesSelected: value });
+  }
   render() {
-    const {selectedCustomer, employeesSelected} = this.state;
+    const { selectedCustomer, employeesSelected } = this.state;
     return (
       <div className="new-job-view page-view">
         <div className="page-header">
@@ -316,7 +352,7 @@ class NewJob extends Component {
                         selectsStart
                         startDate={this.state.startDate}
                         endDate={this.state.endDate}
-                        onChange={this.handleChangeStart} 
+                        onChange={this.handleChangeStart}
                         timeFormat="HH:mm"
                         timeIntervals={15}
                         timeCaption="Time"
@@ -332,7 +368,7 @@ class NewJob extends Component {
                         selectsEnd
                         startDate={this.state.startDate}
                         endDate={this.state.endDate}
-                        onChange={this.handleChangeEnd} 
+                        onChange={this.handleChangeEnd}
                         timeFormat="HH:mm"
                         timeIntervals={15}
                         timeCaption="Time"
@@ -390,7 +426,7 @@ class NewJob extends Component {
                   </div>
                 </div>
                 <div className="map">
-                  <MyMapComponent 
+                  <MyMapComponent
                     isMarkerShown
                     googleMapURL={googleMapUrl}
                     loadingElement={<div style={{ height: `100%` }} />}
@@ -435,7 +471,7 @@ class Notes extends Component {
                           </div>
                         </div>
                         <div className="note-img">
-                          <img src={noteImg1} alt="note-img"/>
+                          <img src={noteImg1} alt="note-img" />
                         </div>
                       </div>
                       <div className="note-right">
@@ -451,7 +487,7 @@ class Notes extends Component {
                           </div>
                         </div>
                         <div className="note-img">
-                          <img src={noteImg1} alt="note-img"/>
+                          <img src={noteImg1} alt="note-img" />
                         </div>
                       </div>
                       <div className="note-right">
@@ -467,7 +503,7 @@ class Notes extends Component {
                           </div>
                         </div>
                         <div className="note-img">
-                          <img src={noteImg1} alt="note-img"/>
+                          <img src={noteImg1} alt="note-img" />
                         </div>
                       </div>
                       <div className="note-right">
@@ -488,7 +524,7 @@ class Notes extends Component {
                           </div>
                         </div>
                         <div className="note-img">
-                          <img src={noteImg1} alt="note-img"/>
+                          <img src={noteImg1} alt="note-img" />
                         </div>
                       </div>
                       <div className="note-right">
@@ -504,7 +540,7 @@ class Notes extends Component {
                           </div>
                         </div>
                         <div className="note-img">
-                          <img src={noteImg1} alt="note-img"/>
+                          <img src={noteImg1} alt="note-img" />
                         </div>
                       </div>
                       <div className="note-right">
@@ -514,7 +550,7 @@ class Notes extends Component {
                   </div>
                 </div>
               </div>
-              
+
             </div>
           </div>
         </div>
@@ -598,7 +634,7 @@ class Customers extends Component {
                     </div>
                     <div>
                       <div className="map">
-                        <MyMapComponent 
+                        <MyMapComponent
                           isMarkerShown
                           googleMapURL={googleMapUrl}
                           loadingElement={<div style={{ height: `100%` }} />}
@@ -656,16 +692,16 @@ class Invoices extends Component {
     selectedBilling: '',
   }
   handleCustomer = (selectedCustomer) => {
-    this.setState({selectedCustomer});
+    this.setState({ selectedCustomer });
   }
-  handleDate = (date) =>  {
-    this.setState({startDate: date });
+  handleDate = (date) => {
+    this.setState({ startDate: date });
   }
   handleBilling = (option) => {
-    this.setState({selectedBilling: option});
+    this.setState({ selectedBilling: option });
   }
   render() {
-    const { selectedCustomer, selectedBilling } = this.state; 
+    const { selectedCustomer, selectedBilling } = this.state;
     return (
       <div className="invoice-view page-view">
         <div className="page-header">
@@ -676,7 +712,7 @@ class Invoices extends Component {
           <div className="invoice-header">
             <form className="invoice-header-inputs">
               <div className="col-2">
-              <div>
+                <div>
                   <label>Customer</label>
                   <Select
                     name="form-field-name"
@@ -692,30 +728,30 @@ class Invoices extends Component {
                 <div className="invoice-meta">
                   <div>
                     <label>Invoice #</label>
-                    <input type="text" placeholder="Pending" disabled="true"/>
+                    <input type="text" placeholder="Pending" disabled="true" />
                   </div>
                   <div>
                     <label>Sent Date</label>
-                    <input type="text" placeholder="Not sent" disabled="true"/>
+                    <input type="text" placeholder="Not sent" disabled="true" />
                   </div>
                   <div>
                     <label>Due date</label>
                     <DatePicker
-                        selected={this.state.startDate}
-                        onChange={this.handleDate}
-                        placeholderText="Due date"
+                      selected={this.state.startDate}
+                      onChange={this.handleDate}
+                      placeholderText="Due date"
                     />
                   </div>
                 </div>
               </div>
               <div>
-                    <label>Title</label>
-                    <input type="text" placeholder="Untitled invoice"/>
+                <label>Title</label>
+                <input type="text" placeholder="Untitled invoice" />
               </div>
             </form>
             <div className="invoice-total">
-               <label>Total</label>
-               <h2>$250.56</h2>
+              <label>Total</label>
+              <h2>$250.56</h2>
             </div>
           </div>
           <div className="invoice-body">
@@ -747,7 +783,7 @@ class Invoices extends Component {
                           value={selectedBilling}
                           onChange={this.handleBilling}
                           searchable
-                          placeholder = "Hourly"
+                          placeholder="Hourly"
                           options={[
                             { value: 'hourly', label: 'Hourly' },
                             { value: 'fixed', label: 'Fixed' },
@@ -774,7 +810,7 @@ class Invoices extends Component {
                           value={selectedBilling}
                           onChange={this.handleBilling}
                           searchable
-                          placeholder = "Hourly"
+                          placeholder="Hourly"
                           options={[
                             { value: 'hourly', label: 'Hourly' },
                             { value: 'fixed', label: 'Fixed' },
@@ -845,38 +881,38 @@ class Invoices extends Component {
 class TeamMap extends Component {
   render() {
     return (
-        <div className="map-view page-view">
-          <div className="map">
-            <MyMapComponent
-              isMarkerShown
-              googleMapURL={googleMapUrl}
-              loadingElement={<div style={{ height: `100%` }} />}
-              containerElement={<div style={{ height: `100%` }} />}
-              mapElement={<div style={{ height: `100%` }} />}
-            />
-          </div>
-          <aside className="side-area">
-            <div className="side-header">
-              <h2>Customers</h2>
-              <hr/>
-            </div> 
-            <div className="side-body">
-              <div className="customer">
-                <label><input type="checkbox"/><span>All Customers</span></label>
-              </div>
-              <div className="customer">
-                <label><input type="checkbox"/><span>Jim Jones</span></label>
-              </div>
-              <div className="customer">
-                <label><input type="checkbox"/><span>Lilly Mack</span></label>
-              </div>
-              <div className="customer">
-                <label><input type="checkbox"/><span>Sammy Brown</span></label>
-              </div>
-              <button className="btn second-btn btn-success">Add Customer</button>
-            </div>
-          </aside>
+      <div className="map-view page-view">
+        <div className="map">
+          <MyMapComponent
+            isMarkerShown
+            googleMapURL={googleMapUrl}
+            loadingElement={<div style={{ height: `100%` }} />}
+            containerElement={<div style={{ height: `100%` }} />}
+            mapElement={<div style={{ height: `100%` }} />}
+          />
         </div>
+        <aside className="side-area">
+          <div className="side-header">
+            <h2>Customers</h2>
+            <hr />
+          </div>
+          <div className="side-body">
+            <div className="customer">
+              <label><input type="checkbox" /><span>All Customers</span></label>
+            </div>
+            <div className="customer">
+              <label><input type="checkbox" /><span>Jim Jones</span></label>
+            </div>
+            <div className="customer">
+              <label><input type="checkbox" /><span>Lilly Mack</span></label>
+            </div>
+            <div className="customer">
+              <label><input type="checkbox" /><span>Sammy Brown</span></label>
+            </div>
+            <button className="btn second-btn btn-success">Add Customer</button>
+          </div>
+        </aside>
+      </div>
     )
   }
 }
@@ -945,7 +981,7 @@ class MyAccount extends Component {
                     </div>
                     <div>
                       <div className="map">
-                        <MyMapComponent 
+                        <MyMapComponent
                           isMarkerShown
                           googleMapURL={googleMapUrl}
                           loadingElement={<div style={{ height: `100%` }} />}
@@ -995,19 +1031,19 @@ class App extends Component {
   render() {
     return (
       <Router>
-      <div className="main-content">
-        <SideNav />
-        <Route exact path="/"  render={()=> (
-          <Redirect to="/schedule" />
-        )}/>
-        <Route path="/schedule" exact component={Schedule}/>
-        <Route path="/notes" component={Notes}/>
-        <Route path="/customers" component={Customers}/>
-        <Route path="/invoices" component={Invoices}/>
-        <Route path="/team-map" component={TeamMap}/>
-        <Route path="/my-account" component={MyAccount}/>
-        <Route exact path="/schedule/new-job" component={NewJob}/>
-      </div>
+        <div className="main-content">
+          <SideNav />
+          <Route exact path="/" render={() => (
+            <Redirect to="/schedule" />
+          )} />
+          <Route path="/schedule" exact component={Schedule} />
+          <Route path="/notes" component={Notes} />
+          <Route path="/customers" component={Customers} />
+          <Route path="/invoices" component={Invoices} />
+          <Route path="/team-map" component={TeamMap} />
+          <Route path="/my-account" component={MyAccount} />
+          <Route exact path="/schedule/new-job" component={NewJob} />
+        </div>
       </Router>
     );
   }
