@@ -54,6 +54,7 @@ a, .btn {
   color: #333;
   font-weight: 500;
   border: 1px solid #C2CAD6;
+  justify-content: center;
   &:hover {
     box-shadow: none;
   }
@@ -530,7 +531,7 @@ label {
   font-weight: bold;
 }
 form {
-  input,select,.Select-control {
+  input,select,.Select-control, textarea {
     height: 34px;
     padding: 10px 16px;
     box-sizing: border-box;
@@ -925,5 +926,33 @@ form {
   }
   .map {
     height: 80px;
+  }
+}
+
+.new-note-view {
+  .page-header {
+    height: 40px;
+  }
+  .page-body {
+    background-color: #F5F6FA;
+    height: calc(100% - 85px);
+  }
+  .note {
+    margin: 0px auto;
+    width: 60%;
+    padding-top: 60px;
+    textarea {
+      resize: none;
+      height: 200px;
+    }
+    .control-area {
+      display: flex;
+      justify-content: flex-end;
+      button {
+        &:first-child {
+          margin-right: 20px;
+        }
+      }
+    }
   }
 }

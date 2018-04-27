@@ -45,7 +45,8 @@ a, .btn {
   background-image: none;
   color: #333;
   font-weight: 500;
-  border: 1px solid #C2CAD6; }
+  border: 1px solid #C2CAD6;
+  justify-content: center; }
   .second-btn:hover {
     box-shadow: none; }
 
@@ -391,7 +392,7 @@ label {
   font-size: 14px;
   font-weight: bold; }
 
-form input, form select, form .Select-control {
+form input, form select, form .Select-control, form textarea {
   height: 34px;
   padding: 10px 16px;
   box-sizing: border-box;
@@ -400,7 +401,7 @@ form input, form select, form .Select-control {
   font-size: 14px;
   width: 100%;
   margin-bottom: 15px; }
-  form input[disabled], form select[disabled], form .Select-control[disabled] {
+  form input[disabled], form select[disabled], form .Select-control[disabled], form textarea[disabled] {
     background-color: #eee;
     cursor: not-allowed; }
 
@@ -688,3 +689,23 @@ form.person-form {
       color: #2CA4DB; }
   .details-popover .map {
     height: 80px; }
+
+.new-note-view .page-header {
+  height: 40px; }
+
+.new-note-view .page-body {
+  background-color: #F5F6FA;
+  height: calc(100% - 85px); }
+
+.new-note-view .note {
+  margin: 0px auto;
+  width: 60%;
+  padding-top: 60px; }
+  .new-note-view .note textarea {
+    resize: none;
+    height: 200px; }
+  .new-note-view .note .control-area {
+    display: flex;
+    justify-content: flex-end; }
+    .new-note-view .note .control-area button:first-child {
+      margin-right: 20px; }

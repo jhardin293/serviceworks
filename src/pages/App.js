@@ -45,7 +45,6 @@ import location from './images/location.png'
 import employee from './images/employee.png'
 import date from './images/date.png'
 import customer from './images/customer.png'
-import closeDetails from './images/close-details.png'
 
 BigCalendar.setLocalizer(BigCalendar.momentLocalizer(moment));
 const googleMapUrl = 'https://maps.googleapis.com/maps/api/js?key=AIzaSyC4R6AN7SmujjPUIGKdyao2Kqitzr1kiRg&v=3.exp&libraries=geometry,drawing,places';
@@ -241,12 +240,11 @@ class CustomEvent extends Component {
   }
   render() {
     const job = this.props.event;
-    console.log(job,'job');
     const content = 
       <div className="details-popover ignore-react-onclickoutside"> 
         <div className="popover-header">
           <span>{job.title}</span>
-          <img src={closeDetails} alt="" onClick={this.handleClickOutside}/>
+          {/* <img src={closeDetails} alt="" onClick={this.handleClickOutside}/> */}
         </div>
         <ul>
           <li><img src={employee} alt=""/><span>{job.employees}</span></li>
@@ -476,7 +474,9 @@ class Notes extends Component {
       <div className="notes-view page-view">
         <div className="page-header">
           <h1>Notes</h1>
-          <button className="notes-btn btn"><img src={plus} alt="" /><span>New note</span></button>
+          <Link to="notes/new-note">
+            <button className="notes-btn btn"><img src={plus} alt="" /><span>New note</span></button>
+          </Link>
         </div>
         <div className="page-body">
           <div className="notes-list-wrapper">
@@ -582,6 +582,39 @@ class Notes extends Component {
           </div>
         </div>
       </div>
+    )
+  }
+}
+
+class NewNote extends Component {
+  state = {
+    title: '',
+  }
+  handleTitle = (e) => {
+    this.setState({title: e.target.value});
+  }
+  render() {
+    return (
+      <div className="new-note-view page-view">
+        <div className="page-header">
+          <h1>{this.state.title || 'New note'}</h1>
+          <Link to="/notes">
+            <button className="btn second-btn">Cancel</button>
+          </Link>
+        </div>
+        <div className="page-body">
+          <div className="note">
+            <form>
+              <input type="text" placeholder="New Note" value={this.state.title} onChange={this.handleTitle}/>
+              <textarea />
+              <div className="control-area"> 
+                <button className="btn second-btn">Add Photo</button>
+                <button className="btn second-btn success">Save</button>
+              </div>
+            </form>
+          </div>
+        </div>
+       </div>
     )
   }
 }
@@ -1064,12 +1097,13 @@ class App extends Component {
             <Redirect to="/schedule" />
           )} />
           <Route path="/schedule" exact component={Schedule} />
-          <Route path="/notes" component={Notes} />
+          <Route path="/notes" exact component={Notes} />
           <Route path="/customers" component={Customers} />
           <Route path="/invoices" component={Invoices} />
           <Route path="/team-map" component={TeamMap} />
           <Route path="/my-account" component={MyAccount} />
           <Route exact path="/schedule/new-job" component={NewJob} />
+          <Route exact path="/notes/new-note" component={NewNote} />
         </div>
       </Router>
     );
