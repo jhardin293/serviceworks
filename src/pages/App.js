@@ -41,6 +41,12 @@ import noteImg1 from './images/note-img-1.jpg'
 
 import threeDots from './images/three-dots.png'
 
+import location from './images/location.png'
+import employee from './images/employee.png'
+import date from './images/date.png'
+import customer from './images/customer.png'
+import closeDetails from './images/close-details.png'
+
 BigCalendar.setLocalizer(BigCalendar.momentLocalizer(moment));
 const googleMapUrl = 'https://maps.googleapis.com/maps/api/js?key=AIzaSyC4R6AN7SmujjPUIGKdyao2Kqitzr1kiRg&v=3.exp&libraries=geometry,drawing,places';
 
@@ -237,13 +243,33 @@ class CustomEvent extends Component {
     const job = this.props.event;
     console.log(job,'job');
     const content = 
-      <div> 
-        <h1> {job.customer} </h1>
+      <div className="details-popover ignore-react-onclickoutside"> 
+        <div className="popover-header">
+          <span>{job.title}</span>
+          <img src={closeDetails} alt="" onClick={this.handleClickOutside}/>
+        </div>
+        <ul>
+          <li><img src={employee} alt=""/><span>{job.employees}</span></li>
+          <li><img src={customer} alt=""/><span>{job.customer}</span></li>
+          <li><img src={date} alt=""/><div className="stack"><span>Saturday, Apr 21, 2018</span><span>1:00 am - 2:00 am</span></div></li>
+          <li><img src={location} alt=""/><div className="stack"><span>42 W 89th</span><span>New York, NY 10024</span></div></li>
+        </ul>
+        <div className="map">
+          <MyMapComponent
+            isMarkerShown
+            googleMapURL={googleMapUrl}
+            loadingElement={<div style={{ height: `100%` }} />}
+            containerElement={<div style={{ height: `100%` }} />}
+            mapElement={<div style={{ height: `100%` }} />}
+          />
+        </div>
+        <div className="details"><span><Link to="/schedule/new-job">show job details</Link></span></div>
+            
       </div>;
 
     return (
       <div className="PopOver" onClick={this.handleSelect}>
-          <Popover  isOpen={this.state.isOpen} body={content}>
+          <Popover  isOpen={this.state.isOpen} body={content} preferPlace='below'>
             <div>{this.props.event.title}</div>
           </Popover>
       </div>
@@ -251,6 +277,7 @@ class CustomEvent extends Component {
   }
 }
 const DetailsPopover = onClickOutside(CustomEvent);  
+//Refactor to remove plugin popover has an event for outside events
 
 class Schedule extends Component {
   state = {

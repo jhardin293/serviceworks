@@ -650,3 +650,41 @@ form.person-form {
   background-color: grey;
   width: 100%;
   height: 250px; }
+
+.Popover {
+  z-index: 4; }
+
+.details-popover {
+  background-color: white;
+  box-shadow: 0px 0px 19px 1px rgba(0, 0, 0, 0.15);
+  border-radius: 4px;
+  z-index: 9000;
+  width: 270px; }
+  .details-popover .popover-header {
+    background-color: #3A414D;
+    color: white;
+    padding: 10px 10px;
+    border-top-left-radius: 4px;
+    border-top-right-radius: 4px;
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between; }
+  .details-popover ul {
+    padding: 0px;
+    margin: 0px; }
+    .details-popover ul li {
+      list-style: none;
+      padding: 10px 10px;
+      border-bottom: 1px solid #efefef;
+      display: flex;
+      align-items: baseline; }
+      .details-popover ul li img {
+        margin-right: 10px; }
+      .details-popover ul li .stack span {
+        display: block; }
+  .details-popover .details {
+    padding: 10px 10px; }
+    .details-popover .details a {
+      color: #2CA4DB; }
+  .details-popover .map {
+    height: 80px; }
