@@ -628,16 +628,18 @@ const MyMapComponent = withScriptjs(withGoogleMap((props) =>
   </GoogleMap>
 ))
 
-class Customers extends Component {
+class NewCustomer extends Component {
   render() {
     return (
-      <div className="customers-view page-view">
+      <div className="new-customer-view page-view">
         <div className="page-header">
           <h1>New Customer</h1>
         </div>
         <div className="page-body">
           <div className="tab-btn-group">
-            <button className="btn second-btn btn-success">Save customer</button>
+            <Link to="/customers">
+              <button className="btn second-btn btn-success">Save customer</button>
+            </Link>
           </div>
           <Tabs>
             <TabList>
@@ -745,6 +747,54 @@ class Customers extends Component {
   }
 }
 
+class Customers extends Component {
+  render() {
+    return (
+      <div className="customer-view page-view">
+        <div className="page-header">
+          <h1>Customers</h1>
+          <Link to="customers/new-customer">
+            <button className="customer-btn btn"><img src={plus} alt="" /><span>New customer</span></button>
+          </Link>
+        </div>
+        <div className="page-body">
+          <div className="customer-list-wrapper">
+            <table className="panel">
+              <thead>
+                <tr className="header">
+                  <th><h2>Name</h2></th>
+                  <th><h2>Company</h2></th>
+                  <th><h2>Email</h2></th>
+                  <th><h2>Phone number</h2></th>
+                </tr>
+              </thead>
+              <tbody className="panel-body">
+                <tr>
+                  <td><Link to="customers/new-customer">Sally May</Link></td>
+                  <td>Mc Donalds</td>
+                  <td>sallyma@gmail.com</td>
+                  <td>415-747-2345</td>
+                </tr>
+                <tr>
+                  <td><Link to="customers/new-customer">Sally May</Link></td>
+                  <td>Mc Donalds</td>
+                  <td>sallyma@gmail.com</td>
+                  <td>415-747-2345</td>
+                </tr>
+                <tr>
+                  <td><Link to="customers/new-customer">Sally May</Link></td>
+                  <td>Mc Donalds</td>
+                  <td>sallyma@gmail.com</td>
+                  <td>415-747-2345</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    )
+  }
+}
 
 class Invoices extends Component {
   state = {
@@ -1098,12 +1148,13 @@ class App extends Component {
           )} />
           <Route path="/schedule" exact component={Schedule} />
           <Route path="/notes" exact component={Notes} />
-          <Route path="/customers" component={Customers} />
+          <Route path="/customers" exact component={Customers} />
           <Route path="/invoices" component={Invoices} />
           <Route path="/team-map" component={TeamMap} />
           <Route path="/my-account" component={MyAccount} />
           <Route exact path="/schedule/new-job" component={NewJob} />
           <Route exact path="/notes/new-note" component={NewNote} />
+          <Route exact path="/customers/new-customer" component={NewCustomer} />
         </div>
       </Router>
     );

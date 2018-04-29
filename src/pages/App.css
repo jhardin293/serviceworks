@@ -70,6 +70,17 @@ a, .btn {
       color: #90969D;
       margin: 0px 10px;
       font-size: 14px; }
+  .panel tr.header {
+    display: table-row; }
+    .panel tr.header h2 {
+      margin: 0px; }
+    .panel tr.header th {
+      text-align: left;
+      padding: 6px 6px 6px 14px; }
+      .panel tr.header th:first-child {
+        border-top-left-radius: 4px; }
+      .panel tr.header th:last-child {
+        border-top-right-radius: 4px; }
   .panel .panel-body {
     border: 1px solid #eaeded;
     border-bottom-left-radius: 4px;
@@ -103,7 +114,7 @@ a, .btn {
   align-items: center;
   width: 100%;
   margin-top: 20px;
-  margin-bottom: 25px; }
+  margin-bottom: 30px; }
   .page-header h1 {
     font-size: 24px;
     margin-left: 20px; }
@@ -381,9 +392,24 @@ a, .btn {
   border: none;
   border-bottom: 3px solid; }
 
-.customers-view .map {
+.new-customer-view .map {
   height: 285px;
   width: 100%; }
+
+.customer-view .customer-list-wrapper {
+  padding: 0px 20px; }
+
+.customer-view .panel {
+  width: 100%; }
+  .customer-view .panel .panel-body tr {
+    background-color: #F6F8FA;
+    border-bottom: 1px solid #dfe4ea; }
+    .customer-view .panel .panel-body tr td {
+      padding: 15px; }
+      .customer-view .panel .panel-body tr td a {
+        color: #fe8812; }
+    .customer-view .panel .panel-body tr:nth-child(even) {
+      background-color: #fff; }
 
 label {
   display: block;
@@ -499,17 +525,6 @@ form.person-form {
 .invoice-view .panel {
   width: 100%;
   margin-bottom: 40px; }
-  .invoice-view .panel .header {
-    display: table-row; }
-    .invoice-view .panel .header h2 {
-      margin: 0px; }
-    .invoice-view .panel .header th {
-      text-align: left;
-      padding: 6px 6px 6px 14px; }
-      .invoice-view .panel .header th:first-child {
-        border-top-left-radius: 4px; }
-      .invoice-view .panel .header th:last-child {
-        border-top-right-radius: 4px; }
   .invoice-view .panel .line-item {
     height: 54px;
     background-color: #fafafa;

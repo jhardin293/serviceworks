@@ -84,6 +84,22 @@ a, .btn {
       font-size: 14px;
     }
   }
+  tr.header {
+    display: table-row;
+    h2 {
+      margin: 0px;
+    }
+    th {
+      text-align: left;
+      padding: 6px 6px 6px 14px;
+      &:first-child {
+        border-top-left-radius: 4px;
+      }
+      &:last-child {
+        border-top-right-radius: 4px;
+      }
+    }
+  }
   .panel-body {
     border: 1px solid #eaeded;
     border-bottom-left-radius: 4px;
@@ -126,7 +142,7 @@ a, .btn {
   align-items: center;
   width: 100%;
   margin-top: 20px;
-  margin-bottom: 25px;
+  margin-bottom: 30px;
   h1 {
     font-size: 24px;
     margin-left: 20px;
@@ -516,10 +532,34 @@ a, .btn {
   }
 }
 
-.customers-view {
+.new-customer-view {
   .map {
     height: 285px;
     width: 100%;
+  }
+}
+
+.customer-view {
+  .customer-list-wrapper {
+    padding: 0px 20px;
+  }
+  .panel {
+    width: 100%;
+    .panel-body {
+      tr {
+        background-color: #F6F8FA;
+        border-bottom: 1px solid #dfe4ea;
+        td {
+          padding: 15px;
+          a {
+            color: #fe8812;
+          }
+        }
+        &:nth-child(even) {
+          background-color: #fff;
+        }
+      }
+    }
   }
 }
 
@@ -669,22 +709,6 @@ form {
   .panel {
     width: 100%;
     margin-bottom: 40px;
-    .header {
-      display: table-row;
-      h2 {
-        margin: 0px;
-      }
-      th {
-        text-align: left;
-        padding: 6px 6px 6px 14px;
-        &:first-child {
-          border-top-left-radius: 4px;
-        }
-        &:last-child {
-          border-top-right-radius: 4px;
-        }
-      }
-    }
     .line-item {
       height: 54px;
       background-color: #fafafa;
