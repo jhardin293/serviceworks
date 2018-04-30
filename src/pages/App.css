@@ -390,40 +390,40 @@ a, .btn {
   border: none;
   border-bottom: 3px solid; }
 
-.new-customer-view .map {
+.person-view .map {
   height: 285px;
   width: 100%; }
 
-.new-customer-view .tab-header {
+.person-view .tab-header {
   margin-bottom: 20px; }
-  .new-customer-view .tab-header a {
+  .person-view .tab-header a {
     display: flex;
     align-items: center;
     color: #7D3884; }
-    .new-customer-view .tab-header a span {
+    .person-view .tab-header a span {
       margin-right: 5px;
       font-size: 18px; }
-    .new-customer-view .tab-header a h2 {
+    .person-view .tab-header a h2 {
       font-size: 18px; }
-  .new-customer-view .tab-header.notes a {
+  .person-view .tab-header.notes a {
     color: #61A0C5; }
-  .new-customer-view .tab-header.invoices a {
+  .person-view .tab-header.invoices a {
     color: #7087D7; }
 
-.new-customer-view .panel {
+.person-view .panel {
   width: 100%; }
-  .new-customer-view .panel .panel-body tr {
+  .person-view .panel .panel-body tr {
     background-color: #F6F8FA;
     border-bottom: 1px solid #dfe4ea; }
-    .new-customer-view .panel .panel-body tr td {
+    .person-view .panel .panel-body tr td {
       padding: 15px; }
-      .new-customer-view .panel .panel-body tr td a {
+      .person-view .panel .panel-body tr td a {
         color: #7D3884; }
-    .new-customer-view .panel .panel-body tr:nth-child(even) {
+    .person-view .panel .panel-body tr:nth-child(even) {
       background-color: #fff; }
-  .new-customer-view .panel.invoices .header th:nth-child(1) {
+  .person-view .panel.invoices .header th:nth-child(1) {
     width: 1%; }
-  .new-customer-view .panel.invoices .panel-body tr td a {
+  .person-view .panel.invoices .panel-body tr td a {
     color: black; }
 
 .customer-view .customer-btn {
@@ -669,6 +669,9 @@ form.person-form {
         color: black; }
     .account-view .panel .panel-body tr:nth-child(even) {
       background-color: #fff; }
+
+.new-employee-view .react-tabs .react-tabs__tab-list .react-tabs__tab.react-tabs__tab--selected {
+  color: #6BE1A7; }
 
 .new-job-view .react-tabs .react-tabs__tab-list .react-tabs__tab.react-tabs__tab--selected {
   color: #DF6B68; }

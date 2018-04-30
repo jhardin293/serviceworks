@@ -531,7 +531,7 @@ a, .btn {
   }
 }
 
-.new-customer-view {
+.person-view {
   .map {
     height: 285px;
     width: 100%;
@@ -913,6 +913,12 @@ form {
         }
       }
     }
+  }
+}
+
+.new-employee-view {
+  .react-tabs .react-tabs__tab-list .react-tabs__tab.react-tabs__tab--selected {
+    color: #6BE1A7;
   }
 }
 
