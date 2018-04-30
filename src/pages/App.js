@@ -770,7 +770,111 @@ class NewCustomer extends Component {
               </div>
             </TabPanel>
             <TabPanel>
-              <h2>Any content 1</h2>
+              <div className="tab-header notes"> 
+                <Link to="/notes/new-note">
+                  <span>+</span><h2>New Note</h2>
+                </Link>
+              </div>
+              <div className="page-body">
+                <div className="notes-list panel">
+                  <div className="header">
+                    <h2>Note text</h2>
+                    <h2>Created</h2>
+                  </div>
+                  <div className="panel-body">
+                    <div className="sort-group">
+                      <div className="month-group"><span>March 2018</span></div>
+                      <div className="group-body">
+                        <div className="note">
+                          <div className="note-left">
+                            <div className="note-text">
+                              <div className="note-title">This is the first note</div>
+                              <div className="note-body">
+                                <p>This is the body text of the note. Im sure a lot better content will be written here</p>
+                              </div>
+                            </div>
+                            <div className="note-img">
+                              <img src={noteImg1} alt="note-img" />
+                            </div>
+                          </div>
+                          <div className="note-right">
+                            <div className="note-created">3/07/18</div>
+                          </div>
+                        </div>
+                        <div className="note">
+                          <div className="note-left">
+                            <div className="note-text">
+                              <div className="note-title">This is the first note</div>
+                              <div className="note-body">
+                                <p>This is the body text of the note. Im sure a lot better content will be written here</p>
+                              </div>
+                            </div>
+                            <div className="note-img">
+                              <img src={noteImg1} alt="note-img" />
+                            </div>
+                          </div>
+                          <div className="note-right">
+                            <div className="note-created">3/07/18</div>
+                          </div>
+                        </div>
+                        <div className="note">
+                          <div className="note-left">
+                            <div className="note-text">
+                              <div className="note-title">This is the first note</div>
+                              <div className="note-body">
+                                <p>This is the body text of the note. Im sure a lot better content will be written here</p>
+                              </div>
+                            </div>
+                            <div className="note-img">
+                              <img src={noteImg1} alt="note-img" />
+                            </div>
+                          </div>
+                          <div className="note-right">
+                            <div className="note-created">3/07/18</div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    <div className="sort-group">
+                      <div className="month-group"><span>March 2018</span></div>
+                      <div className="group-body">
+                        <div className="note">
+                          <div className="note-left">
+                            <div className="note-text">
+                              <div className="note-title">This is the first note</div>
+                              <div className="note-body">
+                                <p>This is the body text of the note. Im sure a lot better content will be written here</p>
+                              </div>
+                            </div>
+                            <div className="note-img">
+                              <img src={noteImg1} alt="note-img" />
+                            </div>
+                          </div>
+                          <div className="note-right">
+                            <div className="note-created">3/07/18</div>
+                          </div>
+                        </div>
+                        <div className="note">
+                          <div className="note-left">
+                            <div className="note-text">
+                              <div className="note-title">This is the first note</div>
+                              <div className="note-body">
+                                <p>This is the body text of the note. Im sure a lot better content will be written here</p>
+                              </div>
+                            </div>
+                            <div className="note-img">
+                              <img src={noteImg1} alt="note-img" />
+                            </div>
+                          </div>
+                          <div className="note-right">
+                            <div className="note-created">3/07/18</div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
             </TabPanel>
             <TabPanel>
               <h2>Any content 2</h2>

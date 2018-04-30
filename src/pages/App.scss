@@ -77,10 +77,9 @@ a, .btn {
     display: flex;
     border-top-left-radius: 4px;
     border-top-right-radius: 4px;
-    padding: 10px 0px;
+    padding: 6px 6px 6px 14px;
     h2 {
       color: #90969D;
-      margin: 0px 10px;
       font-size: 14px;
     }
   }
@@ -421,65 +420,65 @@ a, .btn {
   .notes-btn {
     background-image: linear-gradient(90deg, #1EE7DD 0%,  #61A0C5 100%);
   }
-  .notes-list-wrapper {
-    padding: 0px 20px;
-  }
-  .notes-list {
-    .header {
-      h2 {
-        &:first-child {
-          width: 80%;
-        }
+}
+
+.notes-list-wrapper {
+  padding: 0px 20px;
+}
+.notes-list {
+  .header {
+    h2 {
+      &:first-child {
+        width: 83%;
       }
     }
-    .sort-group {
-      .month-group {
-        background-color: #C9D1DA; 
-        padding-top: 4px;
-        padding-bottom: 5px;
-        span {
-          display: block;
-          margin-left: 10px;
-          color: white;
+  }
+  .sort-group {
+    .month-group {
+      background-color: #C9D1DA; 
+      padding: 6px 6px 6px 14px;
+      span {
+        display: block;
+        font-size: 14px;
+        color: white;
+      }
+    }
+    .group-body {
+      .note {
+        display: flex;
+        padding-top: 15px;
+        padding-bottom: 15px;
+        border-bottom: 1px solid #c5c7c8;
+        &:hover {
+          background-color: #F6F8FA;
+        }
+        &:last-child {
+          border-bottom: none;
+        }
+        .note-left {
+          width: 80%;
+          margin:0px 10px;
+          display: flex;
+          justify-content: space-between;
+          .note-text {
+            margin-right: 20px;
+          }
+          .note-title {
+            font-weight: bold;
+            margin-bottom: 10px;
+          }
+        }
+        .note-right {
+          .note-created {
+            margin-left: 10px;
+          }
         }
       }
-      .group-body {
-        .note {
-          display: flex;
-          padding-top: 15px;
-          padding-bottom: 15px;
-          border-bottom: 1px solid #c5c7c8;
-          &:hover {
-            background-color: #F6F8FA;
-          }
-          &:last-child {
-            border-bottom: none;
-          }
-          .note-left {
-            width: 80%;
-            margin:0px 10px;
-            display: flex;
-            justify-content: space-between;
-            .note-text {
-              margin-right: 20px;
-            }
-            .note-title {
-              font-weight: bold;
-              margin-bottom: 10px;
-            }
-          }
-          .note-right {
-            .note-created {
-              margin-left: 10px;
-            }
-          }
-        }
-        .note-img {
-          margin-right: 30px;
-          img {
-            width: 100px;
-            height: 100px;
-          }
+      .note-img {
+        margin-right: 30px;
+        img {
+          width: 100px;
+          height: 100px;
         }
       }
     }
@@ -549,6 +548,11 @@ a, .btn {
       }
       h2 {
         font-size: 18px;
+      }
+    }
+    &.notes {
+      a {
+        color: #61A0C5;
       }
     }
   }
