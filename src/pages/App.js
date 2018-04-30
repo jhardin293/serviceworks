@@ -731,7 +731,43 @@ class NewCustomer extends Component {
               </form>
             </TabPanel>
             <TabPanel>
-              <h2>Any content 2</h2>
+              <div className="tab-header"> 
+                <Link to="/schedule/new-job">
+                  <span>+</span><h2>New Job</h2>
+                </Link>
+              </div>
+              <div className="tab-body">
+                <table className="panel">
+                  <thead>
+                    <tr className="header">
+                      <th><h2>Job name</h2></th>
+                      <th><h2>Date</h2></th>
+                      <th><h2>Time</h2></th>
+                      <th><h2>Location</h2></th>
+                    </tr>
+                  </thead>
+                  <tbody className="panel-body">
+                    <tr>
+                      <td><Link to="/schedule/new-job">Window cleaning</Link></td>
+                      <td>April 21, 2018</td>
+                      <td>1:00am - 2:00 am</td>
+                      <td>42 W 89th St, New York</td>
+                    </tr>
+                    <tr>
+                      <td><Link to="/schedule/new-job">Window cleaning</Link></td>
+                      <td>April 21, 2018</td>
+                      <td>1:00am - 2:00 am</td>
+                      <td>42 W 89th St, New York</td>
+                    </tr>
+                    <tr>
+                      <td><Link to="/schedule/new-job">Window cleaning</Link></td>
+                      <td>April 21, 2018</td>
+                      <td>1:00am - 2:00 am</td>
+                      <td>42 W 89th St, New York</td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
             </TabPanel>
             <TabPanel>
               <h2>Any content 1</h2>

@@ -537,6 +537,39 @@ a, .btn {
     height: 285px;
     width: 100%;
   }
+  .tab-header {
+    margin-bottom: 20px;
+    a {
+      display: flex;
+      align-items: center;
+      color: #7D3884;
+      span {
+        margin-right: 5px;
+        font-size: 18px;
+      }
+      h2 {
+        font-size: 18px;
+      }
+    }
+  }
+  .panel {
+    width: 100%;
+    .panel-body {
+      tr {
+        background-color: #F6F8FA;
+        border-bottom: 1px solid #dfe4ea;
+        td {
+          padding: 15px;
+          a {
+            color: #7D3884;
+          }
+        }
+        &:nth-child(even) {
+          background-color: #fff;
+        }
+      }
+    }
+  }
 }
 
 .customer-view {
