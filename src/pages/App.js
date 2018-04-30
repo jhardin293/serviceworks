@@ -877,7 +877,64 @@ class NewCustomer extends Component {
               </div>
             </TabPanel>
             <TabPanel>
-              <h2>Any content 2</h2>
+              <div className="tab-header invoices"> 
+                <Link to="/invoices">
+                  <span>+</span><h2>New Invoice</h2>
+                </Link>
+              </div>
+              <div className="tab-body">
+                <table className="panel invoices">
+                  <thead>
+                    <tr className="header">
+                      <th><h2>Number</h2></th>
+                      <th><h2>Customer</h2></th>
+                      <th><h2>Title</h2></th>
+                      <th><h2>Date</h2></th>
+                      <th><h2>Amount due</h2></th>
+                      <th><h2>Status</h2></th>
+                      <th></th>
+                    </tr>
+                  </thead>
+                  <tbody className="panel-body">
+                    <tr>
+                      <td><Link to="/invoices/new-invoice">0001</Link></td>
+                      <td><Link to="customers/new-customer">Sally May</Link></td>
+                      <td><Link to="/invoices/new-invoice">Window cleaning</Link></td>
+                      <td>4/28/18</td>
+                      <td>$240</td>
+                      <td>Current</td>
+                      <td><img src={threeDots} alt="item-menu" /></td>
+                    </tr>
+                    <tr>
+                      <td><Link to="/invoices/new-invoice">0001</Link></td>
+                      <td><Link to="customers/new-customer">Sally May</Link></td>
+                      <td><Link to="/invoices/new-invoice">Window cleaning</Link></td>
+                      <td>4/28/18</td>
+                      <td>$240</td>
+                      <td>Current</td>
+                      <td><img src={threeDots} alt="item-menu" /></td>
+                    </tr>
+                    <tr>
+                      <td><Link to="/invoices/new-invoice">0001</Link></td>
+                      <td><Link to="customers/new-customer">Sally May</Link></td>
+                      <td><Link to="/invoices/new-invoice">Window cleaning</Link></td>
+                      <td>4/28/18</td>
+                      <td>$240</td>
+                      <td>Current</td>
+                      <td><img src={threeDots} alt="item-menu" /></td>
+                    </tr>
+                    <tr>
+                      <td><Link to="/invoices/new-invoice">0001</Link></td>
+                      <td><Link to="customers/new-customer">Sally May</Link></td>
+                      <td><Link to="/invoices/new-invoice">Window cleaning</Link></td>
+                      <td>4/28/18</td>
+                      <td>$240</td>
+                      <td>Current</td>
+                      <td><img src={threeDots} alt="item-menu" /></td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
             </TabPanel>
           </Tabs>
         </div>
@@ -937,6 +994,77 @@ class Customers extends Component {
 }
 
 class Invoices extends Component {
+  render() {
+    return (
+      <div className="invoice-view page-view">
+        <div className="page-header">
+          <h1>Invoices</h1>
+          <Link to="/invoices/new-invoice">
+            <button className="invoice-btn btn"><img src={plus} alt="" /><span>New invoices</span></button>
+          </Link>
+        </div>
+        <div className="page-body">
+          <div className="invoice-list-wrapper">
+            <table className="panel">
+              <thead>
+                <tr className="header">
+                  <th><h2>Number</h2></th>
+                  <th><h2>Customer</h2></th>
+                  <th><h2>Title</h2></th>
+                  <th><h2>Date</h2></th>
+                  <th><h2>Amount due</h2></th>
+                  <th><h2>Status</h2></th>
+                  <th></th>
+                </tr>
+              </thead>
+              <tbody className="panel-body">
+                <tr>
+                  <td><Link to="/invoices/new-invoice">0001</Link></td>
+                  <td><Link to="customers/new-customer">Sally May</Link></td>
+                  <td><Link to="/invoices/new-invoice">Window cleaning</Link></td>
+                  <td>4/28/18</td>
+                  <td>$240</td>
+                  <td>Current</td>
+                  <td><img src={threeDots} alt="item-menu" /></td>
+                </tr>
+                <tr>
+                  <td><Link to="/invoices/new-invoice">0001</Link></td>
+                  <td><Link to="customers/new-customer">Sally May</Link></td>
+                  <td><Link to="/invoices/new-invoice">Window cleaning</Link></td>
+                  <td>4/28/18</td>
+                  <td>$240</td>
+                  <td>Current</td>
+                  <td><img src={threeDots} alt="item-menu" /></td>
+                </tr>
+                <tr>
+                  <td><Link to="/invoices/new-invoice">0001</Link></td>
+                  <td><Link to="customers/new-customer">Sally May</Link></td>
+                  <td><Link to="/invoices/new-invoice">Window cleaning</Link></td>
+                  <td>4/28/18</td>
+                  <td>$240</td>
+                  <td>Current</td>
+                  <td><img src={threeDots} alt="item-menu" /></td>
+                </tr>
+                <tr>
+                  <td><Link to="/invoices/new-invoice">0001</Link></td>
+                  <td><Link to="customers/new-customer">Sally May</Link></td>
+                  <td><Link to="/invoices/new-invoice">Window cleaning</Link></td>
+                  <td>4/28/18</td>
+                  <td>$240</td>
+                  <td>Current</td>
+                  <td><img src={threeDots} alt="item-menu" /></td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    )
+  }
+}
+
+
+class NewInvoice extends Component {
   state = {
     selectedCustomer: '',
     selectedBilling: '',
@@ -953,10 +1081,12 @@ class Invoices extends Component {
   render() {
     const { selectedCustomer, selectedBilling } = this.state;
     return (
-      <div className="invoice-view page-view">
+      <div className="new-invoice-view page-view">
         <div className="page-header">
           <h1>Bathroom tiling</h1>
-          <button className="btn second-btn btn-success">Save invoice</button>
+          <Link to="/invoices">
+            <button className="btn second-btn btn-success">Save invoice</button>
+          </Link>
         </div>
         <div className="page-body">
           <div className="invoice-header">
@@ -1266,7 +1396,32 @@ class MyAccount extends Component {
               </form>
             </TabPanel>
             <TabPanel>
-              <h2>Any content 2</h2>
+              <div className="tab-header">
+                <h2>BensWorth Cleaning Company</h2>
+                <button className="invoice-btn btn"><img src={plus} alt="" /><span>New employee</span></button>
+              </div>
+              <div className="employee-list-wrapper">
+                <table className="panel">
+                  <thead>
+                    <tr className="header">
+                      <th><h2>Name</h2></th>
+                      <th><h2>Email</h2></th>
+                      <th><h2>Phone</h2></th>
+                      <th><h2>Role</h2></th>
+                      <th></th>
+                    </tr>
+                  </thead>
+                  <tbody className="panel-body">
+                    <tr>
+                      <td><Link to="/my-account/new-employee">Benny Himsworth</Link></td>
+                      <td>bhimsworth@gmail.com</td>
+                      <td>343-234-9292</td>
+                      <td>Owner</td>
+                      <td><img src={threeDots} alt="item-menu" /></td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
             </TabPanel>
           </Tabs>
         </div>
@@ -1289,12 +1444,13 @@ class App extends Component {
           <Route path="/schedule" exact component={Schedule} />
           <Route path="/notes" exact component={Notes} />
           <Route path="/customers" exact component={Customers} />
-          <Route path="/invoices" component={Invoices} />
+          <Route path="/invoices" exact component={Invoices} />
           <Route path="/team-map" component={TeamMap} />
           <Route path="/my-account" component={MyAccount} />
           <Route exact path="/schedule/new-job" component={NewJob} />
           <Route exact path="/notes/new-note" component={NewNote} />
           <Route exact path="/customers/new-customer" component={NewCustomer} />
+          <Route exact path="/invoices/new-invoice" component={NewInvoice} />
         </div>
       </Router>
     );

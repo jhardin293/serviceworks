@@ -407,6 +407,8 @@ a, .btn {
       font-size: 18px; }
   .new-customer-view .tab-header.notes a {
     color: #61A0C5; }
+  .new-customer-view .tab-header.invoices a {
+    color: #7087D7; }
 
 .new-customer-view .panel {
   width: 100%; }
@@ -419,6 +421,13 @@ a, .btn {
         color: #7D3884; }
     .new-customer-view .panel .panel-body tr:nth-child(even) {
       background-color: #fff; }
+  .new-customer-view .panel.invoices .header th:nth-child(1) {
+    width: 1%; }
+  .new-customer-view .panel.invoices .panel-body tr td a {
+    color: black; }
+
+.customer-view .customer-btn {
+  background-image: linear-gradient(90deg, #FE6AAC 0%, #FE8812 100%); }
 
 .customer-view .customer-list-wrapper {
   padding: 0px 20px; }
@@ -497,63 +506,63 @@ form .react-datepicker {
 form.person-form {
   max-width: 1080px; }
 
-.invoice-view label {
+.new-invoice-view label {
   font-size: 14px;
   color: #333; }
 
-.invoice-view input, .invoice-view select, .invoice-view .Select-control {
+.new-invoice-view input, .new-invoice-view select, .new-invoice-view .Select-control {
   height: 34px;
   font-size: 14px;
   padding-top: 9px;
   padding-left: 9px; }
 
-.invoice-view .page-header {
+.new-invoice-view .page-header {
   height: 68px; }
-  .invoice-view .page-header h1 {
+  .new-invoice-view .page-header h1 {
     font-size: 36px;
     margin-left: 40px; }
-  .invoice-view .page-header .btn {
+  .new-invoice-view .page-header .btn {
     margin-right: 40px; }
 
-.invoice-view .page-body {
+.new-invoice-view .page-body {
   background-color: #F5F6FA;
   height: calc(100% - 75px); }
 
-.invoice-view .invoice-header {
+.new-invoice-view .invoice-header {
   padding: 40px;
   display: flex;
   justify-content: space-between; }
 
-.invoice-view .invoice-header-inputs {
+.new-invoice-view .invoice-header-inputs {
   width: 60%; }
-  .invoice-view .invoice-header-inputs .invoice-meta {
+  .new-invoice-view .invoice-header-inputs .invoice-meta {
     display: flex; }
-    .invoice-view .invoice-header-inputs .invoice-meta > div {
+    .new-invoice-view .invoice-header-inputs .invoice-meta > div {
       margin-right: 10px; }
-      .invoice-view .invoice-header-inputs .invoice-meta > div:last-child {
+      .new-invoice-view .invoice-header-inputs .invoice-meta > div:last-child {
         margin-right: 0px; }
 
-.invoice-view .invoice-total label {
+.new-invoice-view .invoice-total label {
   text-align: right; }
 
-.invoice-view .invoice-total h2 {
+.new-invoice-view .invoice-total h2 {
   font-size: 36px;
   color: #4CC2F0; }
 
-.invoice-view .react-tabs.alt .react-tabs__tab-list {
+.new-invoice-view .react-tabs.alt .react-tabs__tab-list {
   height: 37px; }
-  .invoice-view .react-tabs.alt .react-tabs__tab-list .react-tabs__tab.react-tabs__tab--selected {
+  .new-invoice-view .react-tabs.alt .react-tabs__tab-list .react-tabs__tab.react-tabs__tab--selected {
     color: #4CC2F0;
     height: 35px; }
 
-.invoice-view .panel {
+.new-invoice-view .panel {
   width: 100%;
   margin-bottom: 40px; }
-  .invoice-view .panel .line-item {
+  .new-invoice-view .panel .line-item {
     height: 54px;
     background-color: #fafafa;
     border-bottom: 1px solid #dfe4ea; }
-    .invoice-view .panel .line-item input {
+    .new-invoice-view .panel .line-item input {
       height: 34px;
       font-size: 14px;
       padding-top: 0px;
@@ -562,44 +571,44 @@ form.person-form {
       width: 100%;
       box-sizing: border-box;
       padding-right: 9px; }
-    .invoice-view .panel .line-item .Select {
+    .new-invoice-view .panel .line-item .Select {
       height: 34px; }
-      .invoice-view .panel .line-item .Select .Select-control {
+      .new-invoice-view .panel .line-item .Select .Select-control {
         height: 34px;
         padding-top: 0px; }
-        .invoice-view .panel .line-item .Select .Select-control .Select-input {
+        .new-invoice-view .panel .line-item .Select .Select-control .Select-input {
           height: 30px; }
-          .invoice-view .panel .line-item .Select .Select-control .Select-input input {
+          .new-invoice-view .panel .line-item .Select .Select-control .Select-input input {
             height: 0px;
             border: 0px; }
-    .invoice-view .panel .line-item td:first-child {
+    .new-invoice-view .panel .line-item td:first-child {
       width: 30%; }
-      .invoice-view .panel .line-item td:first-child input {
+      .new-invoice-view .panel .line-item td:first-child input {
         border-radius: 0px; }
-    .invoice-view .panel .line-item td:nth-child(n + 2) {
+    .new-invoice-view .panel .line-item td:nth-child(n + 2) {
       width: 10%; }
-      .invoice-view .panel .line-item td:nth-child(n + 2) input {
+      .new-invoice-view .panel .line-item td:nth-child(n + 2) input {
         text-align: right; }
-    .invoice-view .panel .line-item .line-total {
+    .new-invoice-view .panel .line-item .line-total {
       display: flex;
       justify-content: space-between;
       padding-right: 20px; }
-      .invoice-view .panel .line-item .line-total img {
+      .new-invoice-view .panel .line-item .line-total img {
         cursor: pointer; }
-  .invoice-view .panel td {
+  .new-invoice-view .panel td {
     vertical-align: middle;
     padding: 15px 10px; }
-  .invoice-view .panel .new-line-item {
+  .new-invoice-view .panel .new-line-item {
     background-color: white;
     color: #4CC2F0;
     font-size: 14px;
     cursor: pointer; }
 
-.invoice-view .invoice-footer h5 {
+.new-invoice-view .invoice-footer h5 {
   font-size: 14px;
   margin-bottom: 10px; }
 
-.invoice-view textarea {
+.new-invoice-view textarea {
   padding: 6px 12px;
   border: 1px solid #ccc;
   border-radius: 4px;
@@ -614,7 +623,8 @@ form.person-form {
   .map-view .side-area {
     position: absolute;
     right: 0;
-    top: 0; }
+    top: 0;
+    width: 280px; }
     .map-view .side-area .side-header {
       margin-top: 40px; }
       .map-view .side-area .side-header h2 {
@@ -639,6 +649,26 @@ form.person-form {
 .account-view .map {
   height: 285px;
   width: 100%; }
+
+.account-view .tab-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 40px; }
+  .account-view .tab-header .btn {
+    background-image: linear-gradient(90deg, #6BE1A7 0%, #5CB6B5 100%); }
+
+.account-view .panel {
+  width: 100%; }
+  .account-view .panel .panel-body tr {
+    background-color: #F6F8FA;
+    border-bottom: 1px solid #dfe4ea; }
+    .account-view .panel .panel-body tr td {
+      padding: 15px; }
+      .account-view .panel .panel-body tr td a {
+        color: black; }
+    .account-view .panel .panel-body tr:nth-child(even) {
+      background-color: #fff; }
 
 .new-job-view .react-tabs .react-tabs__tab-list .react-tabs__tab.react-tabs__tab--selected {
   color: #DF6B68; }
@@ -748,3 +778,23 @@ form.person-form {
     justify-content: flex-end; }
     .new-note-view .note .control-area button:first-child {
       margin-right: 20px; }
+
+.invoice-view .invoice-list-wrapper {
+  padding: 0px 20px; }
+
+.invoice-view .invoice-btn {
+  background-image: linear-gradient(90deg, #7087D7 0%, #4CC2F0 100%); }
+
+.invoice-view .panel {
+  width: 100%; }
+  .invoice-view .panel .header th:nth-child(1) {
+    width: 1%; }
+  .invoice-view .panel .panel-body tr {
+    background-color: #F6F8FA;
+    border-bottom: 1px solid #dfe4ea; }
+    .invoice-view .panel .panel-body tr td {
+      padding: 15px; }
+      .invoice-view .panel .panel-body tr td a {
+        color: black; }
+    .invoice-view .panel .panel-body tr:nth-child(even) {
+      background-color: #fff; }

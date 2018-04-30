@@ -555,6 +555,11 @@ a, .btn {
         color: #61A0C5;
       }
     }
+    &.invoices {
+      a {
+        color: #7087D7;
+      }
+    }
   }
   .panel {
     width: 100%;
@@ -573,10 +578,21 @@ a, .btn {
         }
       }
     }
+    &.invoices {
+      .header th:nth-child(1) {
+        width: 1%;
+      }
+      .panel-body tr td a {
+        color: black ;
+      }
+    }
   }
 }
 
 .customer-view {
+  .customer-btn {
+    background-image: linear-gradient(90deg, #FE6AAC 0%, #FE8812 100%);
+  }
   .customer-list-wrapper {
     padding: 0px 20px;
   }
@@ -681,7 +697,7 @@ form {
 }
 
 
-.invoice-view {
+.new-invoice-view {
   label {
     font-size: 14px;
     color: #333;
@@ -834,6 +850,7 @@ form {
     position: absolute;
     right: 0;
     top: 0;
+    width: 280px;
     .side-header {
       margin-top: 40px;
       h2 {
@@ -869,6 +886,33 @@ form {
   .map {
     height: 285px;
     width: 100%;
+  }
+  .tab-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 40px;
+    .btn {
+      background-image: linear-gradient(90deg, #6BE1A7 0%, #5CB6B5 100%);
+    }
+  }
+  .panel {
+    width: 100%;
+    .panel-body {
+      tr {
+        background-color: #F6F8FA;
+        border-bottom: 1px solid #dfe4ea;
+        td {
+          padding: 15px;
+          a {
+            color: black;
+          }
+        }
+        &:nth-child(even) {
+          background-color: #fff;
+        }
+      }
+    }
   }
 }
 
@@ -1012,6 +1056,41 @@ form {
       button {
         &:first-child {
           margin-right: 20px;
+        }
+      }
+    }
+  }
+}
+
+
+.invoice-view {
+  .invoice-list-wrapper {
+    padding: 0px 20px;
+  }
+  .invoice-btn {
+    background-image: linear-gradient(90deg, #7087D7 0%, #4CC2F0 100%);
+  }
+  .panel {
+    width: 100%;
+    .header {
+      th {
+        &:nth-child(1) {
+          width: 1%;
+        }
+      }
+    }
+    .panel-body {
+      tr {
+        background-color: #F6F8FA;
+        border-bottom: 1px solid #dfe4ea;
+        td {
+          padding: 15px;
+          a {
+            color: black;
+          }
+        }
+        &:nth-child(even) {
+          background-color: #fff;
         }
       }
     }
