@@ -46,10 +46,65 @@ import employee from './images/employee.png'
 import date from './images/date.png'
 import customer from './images/customer.png'
 
-import {ref} from '../config/constants';
+import {ref} from '../config/constants'
+
+import { Provider } from 'react-redux'
+import { connect } from 'react-redux'
+import { createStore, applyMiddleware } from 'redux'
+import thunk from 'redux-thunk'
+import { combineReducers } from 'redux'
 
 BigCalendar.setLocalizer(BigCalendar.momentLocalizer(moment));
 const googleMapUrl = 'https://maps.googleapis.com/maps/api/js?key=AIzaSyC4R6AN7SmujjPUIGKdyao2Kqitzr1kiRg&v=3.exp&libraries=geometry,drawing,places';
+
+
+
+//Actions 
+const getJobs = () => {
+  return (dispatch) => {
+    let jobs = []
+    ref.collection('jobs').get().then((snap) => {
+      snap.forEach((doc) => {
+        jobs.push(doc.data());
+      })
+      dispatch({
+        type: 'GET_JOBS',
+        payload: jobs
+      })
+    })   
+  }
+}
+
+//Reducers
+const jobsInitState = {
+  jobs: [],
+}
+const jobsReducer = (state = jobsInitState, action) => {
+  switch(action.type) {
+    case 'GET_JOBS':
+      console.log(action,'reducer');
+      return {
+        ...state,
+        jobs: action.payload
+      }
+    default:
+      return state;
+  }
+}
+
+const rootReducer = combineReducers({
+  jobs: jobsReducer
+})
+
+//Store
+const initialState = {};
+const middleware = [thunk];
+const store = createStore(
+  rootReducer, 
+  initialState, 
+  applyMiddleware(...middleware)
+);
+
 
 class SideNav extends Component {
   render() {
@@ -279,24 +334,19 @@ class CustomEvent extends Component {
 const DetailsPopover = onClickOutside(CustomEvent);  
 //Refactor to remove plugin popover has an event for outside events
 
-let jobId = 0;
-let events = [];
 
-class Schedule extends Component {
+class ScheduleComp extends Component {
   state = {
     openNewJob: false,
   }
 
   componentWillMount() {
-    ref.collection('jobs').get().then((snap) => {
-      snap.forEach((doc) => {
-        events.push(doc.data());
-      })
-    })   
-    // console.log(ref, 'ref');
+    this.props.getJobs();
   }
 
   render() {
+    let jobs = this.props.jobs.jobs;
+    // console.log(,'props');
     if (this.state.openNewJob) {
       return <Redirect push to="/schedule/new-job" />
     }
@@ -305,7 +355,7 @@ class Schedule extends Component {
         <div className="calendar-wrapper">
           <BigCalendar
             className="calendar"
-            events={events}
+            events={jobs}
             defaultDate={new Date()}
             components={{ toolbar: Toolbar, event: DetailsPopover }}
             views={['day', 'week', 'month']}
@@ -317,6 +367,13 @@ class Schedule extends Component {
     );
   }
 }
+const mapStateToProps = state => ({
+  jobs: state.jobs
+});
+const Schedule = connect(mapStateToProps, {getJobs})(ScheduleComp);
+
+
+
 
 class NewJob extends Component {
   state = {
@@ -358,13 +415,11 @@ class NewJob extends Component {
       start:new Date(this.state.startDate),
       end: new Date(this.state.endDate),
       title: this.state.title,
-      id: jobId++,
       customer: this.state.selectedCustomer.value ,
       employees: [this.state.employeesSelected[0].value],
       location: ''
     }
 
-    events.push(newJob);
     this.setState({newJobCreated: true});
 
     ref.collection('jobs').add(newJob);
@@ -1787,28 +1842,31 @@ class MyAccount extends Component {
 }
 
 
+
 class App extends Component {
   render() {
     return (
-      <Router>
-        <div className="main-content">
-          <SideNav />
-          <Route exact path="/" render={() => (
-            <Redirect to="/schedule" />
-          )} />
-          <Route path="/schedule" exact component={Schedule} />
-          <Route path="/notes" exact component={Notes} />
-          <Route path="/customers" exact component={Customers} />
-          <Route path="/invoices" exact component={Invoices} />
-          <Route path="/team-map" component={TeamMap} />
-          <Route path="/my-account" exact component={MyAccount} />
-          <Route exact path="/schedule/new-job" component={NewJob} />
-          <Route exact path="/notes/new-note" component={NewNote} />
-          <Route exact path="/customers/new-customer" component={NewCustomer} />
-          <Route exact path="/invoices/new-invoice" component={NewInvoice} />
-          <Route exact path="/my-account/new-employee" component={NewEmployee} />
-        </div>
-      </Router>
+      <Provider store={store}>
+        <Router>
+          <div className="main-content">
+            <SideNav />
+            <Route exact path="/" render={() => (
+              <Redirect to="/schedule" />
+            )} />
+            <Route path="/schedule" exact component={Schedule} />
+            <Route path="/notes" exact component={Notes} />
+            <Route path="/customers" exact component={Customers} />
+            <Route path="/invoices" exact component={Invoices} />
+            <Route path="/team-map" component={TeamMap} />
+            <Route path="/my-account" exact component={MyAccount} />
+            <Route exact path="/schedule/new-job" component={NewJob} />
+            <Route exact path="/notes/new-note" component={NewNote} />
+            <Route exact path="/customers/new-customer" component={NewCustomer} />
+            <Route exact path="/invoices/new-invoice" component={NewInvoice} />
+            <Route exact path="/my-account/new-employee" component={NewEmployee} />
+          </div>
+        </Router>
+      </Provider>
     );
   }
 }
