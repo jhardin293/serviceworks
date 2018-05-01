@@ -2,13 +2,14 @@ import * as firebase from 'firebase';
 import '@firebase/firestore'
 
 const config = {
-    apiKey: "AIzaSyAgDMwPF8pd1sEkylXyOYavylEHeb_OAjI",
-    authDomain: "trip-keep.firebaseapp.com",
-    databaseURL: "https://trip-keep.firebaseio.com",
-    projectId: "trip-keep",
-    storageBucket: "trip-keep.appspot.com",
-    messagingSenderId: "615283482660"
-  };
+  apiKey: "AIzaSyCd3KzpKOlhsGaPvwJO2BhbQ3dQXy8HyLE",
+  authDomain: "serviceworks-77dce.firebaseapp.com",
+  databaseURL: "https://serviceworks-77dce.firebaseio.com",
+  projectId: "serviceworks-77dce",
+  storageBucket: "serviceworks-77dce.appspot.com",
+  messagingSenderId: "497523663623"
+};
+
 firebase.initializeApp(config);
 const firestore = firebase.firestore();
 const storage = firebase.storage().ref();

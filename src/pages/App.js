@@ -46,6 +46,8 @@ import employee from './images/employee.png'
 import date from './images/date.png'
 import customer from './images/customer.png'
 
+import {ref} from '../config/constants';
+
 BigCalendar.setLocalizer(BigCalendar.momentLocalizer(moment));
 const googleMapUrl = 'https://maps.googleapis.com/maps/api/js?key=AIzaSyC4R6AN7SmujjPUIGKdyao2Kqitzr1kiRg&v=3.exp&libraries=geometry,drawing,places';
 
@@ -277,21 +279,24 @@ class CustomEvent extends Component {
 const DetailsPopover = onClickOutside(CustomEvent);  
 //Refactor to remove plugin popover has an event for outside events
 
+let jobId = 0;
+let events = [];
+
 class Schedule extends Component {
   state = {
     openNewJob: false,
   }
+
+  componentWillMount() {
+    ref.collection('jobs').get().then((snap) => {
+      snap.forEach((doc) => {
+        events.push(doc.data());
+      })
+    })   
+    // console.log(ref, 'ref');
+  }
+
   render() {
-    let events = [
-      {
-        start: new Date(),
-        end: new Date(moment().add(5, "hours")),
-        title: "Window Job",
-        id: 1,
-        customer: 'Jim Banks',
-        employees: 'Sam Wilton'
-      }
-    ];
     if (this.state.openNewJob) {
       return <Redirect push to="/schedule/new-job" />
     }
@@ -317,8 +322,14 @@ class NewJob extends Component {
   state = {
     startDate: moment(),
     endDate: moment(),
-    employeesSelected: [],
+    employeesSelected: [''],
     selectedCustomer: '',
+    title: '',
+    newJobCreated: false,
+  }
+
+  onChange = (e) => {
+    this.setState({ [e.target.name]: e.target.value });
   }
 
   handleCustomer = (selectedCustomer) => {
@@ -342,21 +353,38 @@ class NewJob extends Component {
   handleSelectChange = (value) => {
     this.setState({ employeesSelected: value });
   }
+  onSubmit = () => {
+    let newJob = {
+      start:new Date(this.state.startDate),
+      end: new Date(this.state.endDate),
+      title: this.state.title,
+      id: jobId++,
+      customer: this.state.selectedCustomer.value ,
+      employees: [this.state.employeesSelected[0].value],
+      location: ''
+    }
+
+    events.push(newJob);
+    this.setState({newJobCreated: true});
+
+    ref.collection('jobs').add(newJob);
+  }
   render() {
     const { selectedCustomer, employeesSelected } = this.state;
+    if (this.state.newJobCreated === true) {
+      return <Redirect to="/" />
+    }
     return (
       <div className="new-job-view page-view">
         <div className="page-header">
-          <h1>New Job</h1>
+          <h1>{this.state.title || 'New Job'}</h1>
         </div>
         <div className="page-body">
           <div className="tab-btn-group">
             <Link to="/">
               <button className="btn second-btn ">Cancel</button>
             </Link>
-            <Link to="/">
-              <button className="btn second-btn btn-success">Save</button>
-            </Link>
+            <button className="btn second-btn btn-success" onClick={this.onSubmit}>Save</button>
           </div>
           <Tabs>
             <TabList>
@@ -366,7 +394,13 @@ class NewJob extends Component {
             <TabPanel>
               <form className="person-form">
                 <div className="input-group">
-                  <input type="text" placeholder="Job title" />
+                  <input 
+                    type="text" 
+                    name="title"
+                    placeholder="Job title" 
+                    onChange={this.onChange} 
+                    value={this.state.title}
+                  />
                 </div>
                 <div className="input-group date-picker-group">
                   <div className="pickers">
