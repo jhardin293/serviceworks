@@ -50,7 +50,7 @@ import {ref} from '../config/constants'
 
 import { Provider } from 'react-redux'
 import { connect } from 'react-redux'
-import { createStore, applyMiddleware } from 'redux'
+import { createStore, applyMiddleware, compose } from 'redux'
 import thunk from 'redux-thunk'
 import { combineReducers } from 'redux'
 
@@ -69,22 +69,45 @@ const getJobs = () => {
       })
       dispatch({
         type: 'GET_JOBS',
-        payload: jobs
+        payload: jobs,
+        status: 'success'
       })
+     console.log(store.getState().jobs.jobs, 'store');
     })   
   }
 }
 
+const newJob = (job) => {
+  console.log(job,'job');
+  ref.collection('jobs').add(job)
+    .then((job) => {
+      console.log(job);
+      store.dispatch({
+        type: 'GET_JOBS',
+        status: 'pending',
+        payload: store.getState().jobs.jobs
+      })
+     store.dispatch(getJobs());
+    })
+}
+
 //Reducers
+//I just want a reducer that controrls the jobs array
 const jobsInitState = {
   jobs: [],
+  status: 'init'
 }
+//So can I genericly call a dispatfh funcition with a string and payload and it automagicaly gets handled by the correct reducer.
+//How big does an average reducer get?
+//If I cant change the route of the view in the reducer do I change in it in a action or do I have to update the strore so that it is reflected in a a HOC?
 const jobsReducer = (state = jobsInitState, action) => {
+  console.log('state:',state ,'action payload:', action.payload);
   switch(action.type) {
     case 'GET_JOBS':
-      console.log(action,'reducer');
+      console.log('state:', state,);
       return {
         ...state,
+        status: action.status,
         jobs: action.payload
       }
     default:
@@ -102,7 +125,10 @@ const middleware = [thunk];
 const store = createStore(
   rootReducer, 
   initialState, 
-  applyMiddleware(...middleware)
+  compose(
+    applyMiddleware(...middleware),
+    window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__()
+  )
 );
 
 
@@ -112,7 +138,7 @@ class SideNav extends Component {
       <aside className="side-nav">
         <div className="logo">
           <img src={logoImg} alt="logo" width="25" height="28" />
-          <h2>Serviceworks</h2>
+          <h2>Despacito</h2>
         </div>
         <div className="nav-items">
           <ul>
@@ -336,6 +362,10 @@ const DetailsPopover = onClickOutside(CustomEvent);
 
 
 class ScheduleComp extends Component {
+  static propTypes = {
+    jobs: PropTypes.object.isRequired,
+    getJobs: PropTypes.func.isRequired
+  }
   state = {
     openNewJob: false,
   }
@@ -345,6 +375,7 @@ class ScheduleComp extends Component {
   }
 
   render() {
+    //Is the double nested structure correct?
     let jobs = this.props.jobs.jobs;
     // console.log(,'props');
     if (this.state.openNewJob) {
@@ -411,7 +442,7 @@ class NewJob extends Component {
     this.setState({ employeesSelected: value });
   }
   onSubmit = () => {
-    let newJob = {
+    let job = {
       start:new Date(this.state.startDate),
       end: new Date(this.state.endDate),
       title: this.state.title,
@@ -419,13 +450,14 @@ class NewJob extends Component {
       employees: [this.state.employeesSelected[0].value],
       location: ''
     }
-
+    // This should take the newJob object and send to 
     this.setState({newJobCreated: true});
-
-    ref.collection('jobs').add(newJob);
+    
+    newJob(job);
   }
   render() {
     const { selectedCustomer, employeesSelected } = this.state;
+    console.log(this, 'this in new job');
     if (this.state.newJobCreated === true) {
       return <Redirect to="/" />
     }
