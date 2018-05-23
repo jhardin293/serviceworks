@@ -72,14 +72,14 @@ const getJobs = () => {
         payload: jobs,
         status: 'success'
       })
-     console.log(store.getState().jobs.jobs, 'store');
     })   
   }
 }
 
 const newJob = (job) => {
-  console.log(job,'job');
-  ref.collection('jobs').add(job)
+  const jobRef = ref.collection('jobs').doc();
+  job.id = jobRef.id;
+  jobRef.set(job)
     .then((job) => {
       console.log(job);
       store.dispatch({
@@ -101,7 +101,6 @@ const jobsInitState = {
 //How big does an average reducer get?
 //If I cant change the route of the view in the reducer do I change in it in a action or do I have to update the strore so that it is reflected in a a HOC?
 const jobsReducer = (state = jobsInitState, action) => {
-  console.log('state:',state ,'action payload:', action.payload);
   switch(action.type) {
     case 'GET_JOBS':
       console.log('state:', state,);
@@ -316,6 +315,7 @@ class CustomEvent extends Component {
     isOpen: false,
   }
   handleSelect = (e) => {
+    console.log(e);
     this.setState({isOpen: true});
   }
   handleClickOutside = (e) => {
@@ -323,31 +323,33 @@ class CustomEvent extends Component {
   }
   render() {
     const job = this.props.event;
+    console.log(job, 'job');
     const content = 
-      <div className="details-popover ignore-react-onclickoutside"> 
-        <div className="popover-header">
-          <span>{job.title}</span>
-          {/* <img src={closeDetails} alt="" onClick={this.handleClickOutside}/> */}
-        </div>
-        <ul>
-          <li><img src={employee} alt=""/><span>{job.employees}</span></li>
-          <li><img src={customer} alt=""/><span>{job.customer}</span></li>
-          <li><img src={date} alt=""/><div className="stack"><span>Saturday, Apr 21, 2018</span><span>1:00 am - 2:00 am</span></div></li>
-          <li><img src={location} alt=""/><div className="stack"><span>42 W 89th</span><span>New York, NY 10024</span></div></li>
-        </ul>
-        <div className="map">
-          <MyMapComponent
-            isMarkerShown
-            googleMapURL={googleMapUrl}
-            loadingElement={<div style={{ height: `100%` }} />}
-            containerElement={<div style={{ height: `100%` }} />}
-            mapElement={<div style={{ height: `100%` }} />}
-          />
-        </div>
-        <div className="details"><span><Link to="/schedule/new-job">show job details</Link></span></div>
-            
-      </div>;
+    <div className="details-popover ignore-react-onclickoutside"> 
+      <div className="popover-header">
+        <span>{job.title}</span>
+        {/* <img src={closeDetails} alt="" onClick={this.handleClickOutside}/> */}
+      </div>
+      <ul>
+        <li><img src={employee} alt=""/><span>{job.employees[0].label}</span></li>
+        <li><img src={customer} alt=""/><span>{job.customer.label}</span></li>
+        <li><img src={date} alt=""/><div className="stack"><span>Saturday, Apr 21, 2018</span><span>1:00 am - 2:00 am</span></div></li>
+        <li><img src={location} alt=""/><div className="stack"><span>42 W 89th</span><span>New York, NY 10024</span></div></li>
+      </ul>
+      <div className="map">
+        <MyMapComponent
+          isMarkerShown
+          googleMapURL={googleMapUrl}
+          loadingElement={<div style={{ height: `100%` }} />}
+          containerElement={<div style={{ height: `100%` }} />}
+          mapElement={<div style={{ height: `100%` }} />}
+        />
+      </div>
+      <div className="details"><span><Link to="/schedule/new-job">show job details</Link></span></div>
+          
+    </div>;
 
+      console.log(content,'content');
     return (
       <div className="PopOver" onClick={this.handleSelect}>
           <Popover  isOpen={this.state.isOpen} body={content} preferPlace='below'>
@@ -377,7 +379,6 @@ class ScheduleComp extends Component {
   render() {
     //Is the double nested structure correct?
     let jobs = this.props.jobs.jobs;
-    // console.log(,'props');
     if (this.state.openNewJob) {
       return <Redirect push to="/schedule/new-job" />
     }
@@ -406,72 +407,61 @@ const Schedule = connect(mapStateToProps, {getJobs})(ScheduleComp);
 
 
 
-class NewJob extends Component {
-  state = {
-    startDate: moment(),
-    endDate: moment(),
-    employeesSelected: [''],
-    selectedCustomer: '',
-    title: '',
-    newJobCreated: false,
+class JobDetails extends Component {
+  constructor (props) {
+    super(props);
+    this.state = {
+      job: {
+        start: moment(props.job.start),
+        end: moment(props.job.end),
+        employees:  props.job.employees,
+        customer: props.job.customer,
+        title: props.job.title,
+      },
+      exit: props.exit,
+    }
   }
 
   onChange = (e) => {
-    this.setState({ [e.target.name]: e.target.value });
+    this.setState({ job: {...this.state.job,[e.target.name]: e.target.value }});
   }
 
-  handleCustomer = (selectedCustomer) => {
-    this.setState({ selectedCustomer });
+  handleCustomer = (customer) => {
+    this.setState({job: {...this.state.job, customer }});
   }
 
-  handleChange = ({ startDate, endDate }) => {
-    startDate = startDate || this.state.startDate
-    endDate = endDate || this.state.endDate
+  handleChange = ({ start, end }) => {
+    start = start || this.state.job.start
+    end = end || this.state.job.end
 
-    if (startDate.isAfter(endDate)) {
-      endDate = startDate
+    if (start.isAfter(end)) {
+      end = start
     }
-
-    this.setState({ startDate, endDate })
+    this.setState({job: {...this.state.job, start, end }});
   }
-  handleChangeStart = (startDate) => this.handleChange({ startDate })
+  handleChangeStart = (start) => this.handleChange({ start })
 
-  handleChangeEnd = (endDate) => this.handleChange({ endDate })
+  handleChangeEnd = (end) => this.handleChange({ end })
 
   handleSelectChange = (value) => {
-    this.setState({ employeesSelected: value });
-  }
-  onSubmit = () => {
-    let job = {
-      start:new Date(this.state.startDate),
-      end: new Date(this.state.endDate),
-      title: this.state.title,
-      customer: this.state.selectedCustomer.value ,
-      employees: [this.state.employeesSelected[0].value],
-      location: ''
-    }
-    // This should take the newJob object and send to 
-    this.setState({newJobCreated: true});
-    
-    newJob(job);
+    this.setState({job: {...this.state.job, employees: value }});
   }
   render() {
-    const { selectedCustomer, employeesSelected } = this.state;
-    console.log(this, 'this in new job');
-    if (this.state.newJobCreated === true) {
+    const { customer, employees } = this.state.job;
+    if (this.props.exit === true) {
       return <Redirect to="/" />
     }
     return (
       <div className="new-job-view page-view">
         <div className="page-header">
-          <h1>{this.state.title || 'New Job'}</h1>
+          <h1>{this.state.job.title || 'New Job'}</h1>
         </div>
         <div className="page-body">
           <div className="tab-btn-group">
             <Link to="/">
               <button className="btn second-btn ">Cancel</button>
             </Link>
-            <button className="btn second-btn btn-success" onClick={this.onSubmit}>Save</button>
+            <button className="btn second-btn btn-success" onClick={(e)=> this.props.onSave(this.state.job, e)}>Save</button>
           </div>
           <Tabs>
             <TabList>
@@ -486,7 +476,7 @@ class NewJob extends Component {
                     name="title"
                     placeholder="Job title" 
                     onChange={this.onChange} 
-                    value={this.state.title}
+                    value={this.state.job.title}
                   />
                 </div>
                 <div className="input-group date-picker-group">
@@ -494,10 +484,10 @@ class NewJob extends Component {
                     <div>
                       <label>Starts</label>
                       <DatePicker
-                        selected={this.state.startDate}
+                        selected={this.state.job.start}
                         selectsStart
-                        startDate={this.state.startDate}
-                        endDate={this.state.endDate}
+                        start={this.state.job.start}
+                        end={this.state.job.end}
                         onChange={this.handleChangeStart}
                         timeFormat="HH:mm"
                         timeIntervals={15}
@@ -510,10 +500,10 @@ class NewJob extends Component {
                     <div>
                       <label>Ends</label>
                       <DatePicker
-                        selected={this.state.endDate}
+                        selected={this.state.job.end}
                         selectsEnd
-                        startDate={this.state.startDate}
-                        endDate={this.state.endDate}
+                        start={this.state.job.start}
+                        end={this.state.job.end}
                         onChange={this.handleChangeEnd}
                         timeFormat="HH:mm"
                         timeIntervals={15}
@@ -538,7 +528,7 @@ class NewJob extends Component {
                       <div className="panel-body">
                         <Select
                           name="form-field-name"
-                          value={selectedCustomer}
+                          value={customer}
                           onChange={this.handleCustomer}
                           searchable
                           options={[
@@ -556,7 +546,7 @@ class NewJob extends Component {
                         <Select
                           name="form-field-name"
                           multi
-                          value={employeesSelected}
+                          value={employees}
                           onChange={this.handleSelectChange}
                           searchable
                           className="tags"
@@ -587,6 +577,53 @@ class NewJob extends Component {
       </div>
     )
   }
+}
+
+class NewJob extends Component {
+  state = {
+    job : {
+      start: moment(),
+      end: moment(),
+      employees:  [''],
+      customer: '',
+      title:  '',
+    },
+    exit: false,
+  }
+
+  onSave = (job) => {
+    // let job = {
+    //   start:new Date(this.state.start),
+    //   end: new Date(this.state.end),
+    //   title: this.state.title,
+    //   customer: this.state.customer.value ,
+    //   employees: [this.state.employees[0].value],
+    //   location: ''
+    // }
+    // // This should take the newJob object and send to 
+    // this.setState({newJobCreated: true});
+    
+    job.start = new Date(job.start);
+    job.end = new Date(job.end);
+    console.log(job);
+    newJob(job);
+    this.setState({exit: true});
+  }
+  render() {
+    return (
+      <JobDetails job={this.state.job} onSave={this.onSave}  exit={this.state.exit}/>
+    )
+  }  
+}
+
+class EditJob extends Component {
+  
+  render() {
+    const job = this.props.location.state;
+    return (
+      <JobDetails job={job} />
+    )
+  }  
 }
 
 class Notes extends Component {
@@ -1187,24 +1224,24 @@ class Invoices extends Component {
 
 class NewInvoice extends Component {
   state = {
-    selectedCustomer: '',
+    customer: '',
     selectedBilling: '',
   }
-  handleCustomer = (selectedCustomer) => {
-    this.setState({ selectedCustomer });
+  handleCustomer = (customer) => {
+    this.setState({ customer });
   }
   handleDate = (date) => {
-    this.setState({ startDate: date });
+    this.setState({ start: date });
   }
   handleBilling = (option) => {
     this.setState({ selectedBilling: option });
   }
   render() {
-    const { selectedCustomer, selectedBilling } = this.state;
+    const { customer, selectedBilling } = this.state;
     return (
       <div className="new-invoice-view page-view">
         <div className="page-header">
-          <h1>Bathroom tiling</h1>
+          <h1>Running up a check</h1>
           <Link to="/invoices">
             <button className="btn second-btn btn-success">Save invoice</button>
           </Link>
@@ -1217,7 +1254,7 @@ class NewInvoice extends Component {
                   <label>Customer</label>
                   <Select
                     name="form-field-name"
-                    value={selectedCustomer}
+                    value={customer}
                     onChange={this.handleCustomer}
                     searchable
                     options={[
@@ -1238,7 +1275,7 @@ class NewInvoice extends Component {
                   <div>
                     <label>Due date</label>
                     <DatePicker
-                      selected={this.state.startDate}
+                      selected={this.state.start}
                       onChange={this.handleDate}
                       placeholderText="Due date"
                     />
@@ -1252,7 +1289,7 @@ class NewInvoice extends Component {
             </form>
             <div className="invoice-total">
               <label>Total</label>
-              <h2>$250.56</h2>
+              <h2>$1,000,000</h2>
             </div>
           </div>
           <div className="invoice-body">
@@ -1297,7 +1334,7 @@ class NewInvoice extends Component {
                       <td><input type="text" placeholder="0" /></td>
                       <td>
                         <div className="line-total">
-                          <span className="line-value">$100</span>
+                          <span className="line-value">$500,000</span>
                           <img src={threeDots} alt="item-menu" />
                         </div>
                       </td>
@@ -1324,7 +1361,7 @@ class NewInvoice extends Component {
                       <td><input type="text" placeholder="0" /></td>
                       <td>
                         <div className="line-total">
-                          <span className="line-value">$100</span>
+                          <span className="line-value">$500,000</span>
                           <img src={threeDots} alt="item-menu" />
                         </div>
                       </td>
@@ -1354,7 +1391,7 @@ class NewInvoice extends Component {
                       <td><input type="text" placeholder="0" /></td>
                       <td>
                         <div className="line-total">
-                          <span className="line-value">$100</span>
+                          <span className="line-value">$500,000</span>
                           <img src={threeDots} alt="item-menu" />
                         </div>
                       </td>
@@ -1892,6 +1929,7 @@ class App extends Component {
             <Route path="/team-map" component={TeamMap} />
             <Route path="/my-account" exact component={MyAccount} />
             <Route exact path="/schedule/new-job" component={NewJob} />
+            <Route exact path="/schedule/edit-job" component={EditJob} />
             <Route exact path="/notes/new-note" component={NewNote} />
             <Route exact path="/customers/new-customer" component={NewCustomer} />
             <Route exact path="/invoices/new-invoice" component={NewInvoice} />
