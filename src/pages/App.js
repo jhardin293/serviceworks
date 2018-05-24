@@ -79,9 +79,24 @@ const getJobs = () => {
 const newJob = (job) => {
   const jobRef = ref.collection('jobs').doc();
   job.id = jobRef.id;
+
   jobRef.set(job)
     .then((job) => {
-      console.log(job);
+      store.dispatch({
+        type: 'GET_JOBS',
+        status: 'pending',
+        payload: store.getState().jobs.jobs
+      })
+     store.dispatch(getJobs());
+    })
+}
+
+const editJob = (job) => {
+  const id = job.id;
+  const jobRef = ref.collection('jobs').doc(job.id);
+
+  jobRef.update(job)
+    .then((job) => {
       store.dispatch({
         type: 'GET_JOBS',
         status: 'pending',
@@ -103,7 +118,6 @@ const jobsInitState = {
 const jobsReducer = (state = jobsInitState, action) => {
   switch(action.type) {
     case 'GET_JOBS':
-      console.log('state:', state,);
       return {
         ...state,
         status: action.status,
@@ -315,7 +329,6 @@ class CustomEvent extends Component {
     isOpen: false,
   }
   handleSelect = (e) => {
-    console.log(e);
     this.setState({isOpen: true});
   }
   handleClickOutside = (e) => {
@@ -323,7 +336,6 @@ class CustomEvent extends Component {
   }
   render() {
     const job = this.props.event;
-    console.log(job, 'job');
     const content = 
     <div className="details-popover ignore-react-onclickoutside"> 
       <div className="popover-header">
@@ -345,11 +357,20 @@ class CustomEvent extends Component {
           mapElement={<div style={{ height: `100%` }} />}
         />
       </div>
-      <div className="details"><span><Link to="/schedule/new-job">show job details</Link></span></div>
+      <div className="details">
+        <span>
+          <Link 
+            to={{
+              pathname: "/schedule/edit-job",
+              state: {job}
+              }} >
+            show job details
+          </Link>
+        </span>
+      </div>
           
     </div>;
 
-      console.log(content,'content');
     return (
       <div className="PopOver" onClick={this.handleSelect}>
           <Popover  isOpen={this.state.isOpen} body={content} preferPlace='below'>
@@ -417,6 +438,7 @@ class JobDetails extends Component {
         employees:  props.job.employees,
         customer: props.job.customer,
         title: props.job.title,
+        id: props.job.id || ''
       },
       exit: props.exit,
     }
@@ -592,21 +614,10 @@ class NewJob extends Component {
   }
 
   onSave = (job) => {
-    // let job = {
-    //   start:new Date(this.state.start),
-    //   end: new Date(this.state.end),
-    //   title: this.state.title,
-    //   customer: this.state.customer.value ,
-    //   employees: [this.state.employees[0].value],
-    //   location: ''
-    // }
-    // // This should take the newJob object and send to 
-    // this.setState({newJobCreated: true});
-    
     job.start = new Date(job.start);
     job.end = new Date(job.end);
-    console.log(job);
     newJob(job);
+
     this.setState({exit: true});
   }
   render() {
@@ -617,11 +628,29 @@ class NewJob extends Component {
 }
 
 class EditJob extends Component {
-  
+  job =   this.props.location.state.job
+  state = {
+    job : {
+      start: moment(this.job.start),
+      end: moment(this.job.end),
+      employees: this.job.employees,
+      customer: this.job.customer,
+      title:  this.job.title,
+      id: this.job.id
+    },
+    exit: false,
+  }
+  onSave = (job) => {
+    const jobClone = {...job};
+    jobClone.start = new Date(jobClone.start);
+    jobClone.end = new Date(jobClone.end);
+    editJob(jobClone);
+
+    this.setState({exit: true});
+  }
   render() {
-    const job = this.props.location.state;
     return (
-      <JobDetails job={job} />
+      <JobDetails job={this.state.job} onSave={this.onSave} exit={this.state.exit}/>
     )
   }  
 }
