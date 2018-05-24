@@ -69,6 +69,23 @@ a, .btn {
   }
 }
 
+.btn-cancel {
+  transition: background-color 0.3s ease;
+  &:hover {
+    background-color: #C2CAD6; 
+    color: white;
+  }
+}
+
+.btn-delete {
+  border: 1px solid#ff2f2f;
+  transition: background-color 0.3s ease;
+  &:hover {
+    background-color: #ff2f2f; 
+    color: white;
+  }
+}
+
 .panel {
   border-collapse: collapse;
   .header {
@@ -125,10 +142,11 @@ a, .btn {
       position: absolute;
       right: 20px;
       top: 2px;
-      button {
+      * {
         justify-content: center;
-        &:first-child {
-          margin-right: 15px;
+        margin-right: 15px;
+        &:last-child {
+          margin-right: 0px;
         }
       }
     }

@@ -57,6 +57,19 @@ a, .btn {
     background-color: #4bc074;
     color: white; }
 
+.btn-cancel {
+  transition: background-color 0.3s ease; }
+  .btn-cancel:hover {
+    background-color: #C2CAD6;
+    color: white; }
+
+.btn-delete {
+  border: 1px solid #ff2f2f;
+  transition: background-color 0.3s ease; }
+  .btn-delete:hover {
+    background-color: #ff2f2f;
+    color: white; }
+
 .panel {
   border-collapse: collapse; }
   .panel .header {
@@ -102,10 +115,11 @@ a, .btn {
       position: absolute;
       right: 20px;
       top: 2px; }
-      .page-view .page-body .tab-btn-group button {
-        justify-content: center; }
-        .page-view .page-body .tab-btn-group button:first-child {
-          margin-right: 15px; }
+      .page-view .page-body .tab-btn-group * {
+        justify-content: center;
+        margin-right: 15px; }
+        .page-view .page-body .tab-btn-group *:last-child {
+          margin-right: 0px; }
 
 .page-header {
   display: flex;

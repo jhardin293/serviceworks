@@ -106,6 +106,21 @@ const editJob = (job) => {
     })
 }
 
+const deleteJob = (id) => {
+  const jobRef = ref.collection('jobs').doc(id);
+  jobRef.delete()
+    .then(() => {
+      store.dispatch({
+        type: 'GET_JOBS',
+        status: 'pending',
+        payload: store.getState().jobs.jobs
+      })
+     store.dispatch(getJobs());
+    })
+}
+
+
+
 //Reducers
 //I just want a reducer that controrls the jobs array
 const jobsInitState = {
@@ -441,12 +456,14 @@ class JobDetails extends Component {
         id: props.job.id || ''
       },
       exit: props.exit,
+      allowDelete: props.allowDelete
     }
   }
 
   onChange = (e) => {
     this.setState({ job: {...this.state.job,[e.target.name]: e.target.value }});
   }
+
 
   handleCustomer = (customer) => {
     this.setState({job: {...this.state.job, customer }});
@@ -470,6 +487,7 @@ class JobDetails extends Component {
   }
   render() {
     const { customer, employees } = this.state.job;
+    const allowDelete = this.state.allowDelete;
     if (this.props.exit === true) {
       return <Redirect to="/" />
     }
@@ -481,9 +499,20 @@ class JobDetails extends Component {
         <div className="page-body">
           <div className="tab-btn-group">
             <Link to="/">
-              <button className="btn second-btn ">Cancel</button>
+              <button className="btn second-btn btn-cancel ">Cancel</button>
             </Link>
-            <button className="btn second-btn btn-success" onClick={(e)=> this.props.onSave(this.state.job, e)}>Save</button>
+            {allowDelete &&
+              <button 
+                className="btn second-btn btn-delete" 
+                onClick={(e)=> this.props.onDelete(this.state.job.id, e)}>
+                Delete
+              </button>
+            }
+            <button 
+              className="btn second-btn btn-success" 
+              onClick={(e)=> this.props.onSave(this.state.job, e)}>
+              Save
+            </button>
           </div>
           <Tabs>
             <TabList>
@@ -648,9 +677,21 @@ class EditJob extends Component {
 
     this.setState({exit: true});
   }
+
+  onDelete = (id) => {
+    deleteJob(id);
+    this.setState({exit: true});
+  }
+
   render() {
     return (
-      <JobDetails job={this.state.job} onSave={this.onSave} exit={this.state.exit}/>
+      <JobDetails 
+        job={this.state.job} 
+        onSave={this.onSave} 
+        onDelete={this.onDelete}
+        exit={this.state.exit} 
+        allowDelete="true"
+      />
     )
   }  
 }
