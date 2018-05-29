@@ -349,10 +349,12 @@ class SideNav extends Component {
 }
 
 class SideCalendar extends Component {
+
   render() {
     const highlightDates = this.props.jobs.map((job) => {
       return moment(job.start)
     })
+
     console.log(highlightDates,'hi');
     return (
       <aside className="side-calendar side-area">
@@ -361,7 +363,12 @@ class SideCalendar extends Component {
             <button className="job-btn btn"><img src={plus} alt="" /><span>New job</span></button>
           </Link>
         </div>
-        <DatePicker calendarClassName="in-line" inline highlightDates={highlightDates}/>
+        <DatePicker 
+          calendarClassName="in-line" 
+          inline 
+          highlightDates={highlightDates}
+          onSelect={this.props.handleSelect}
+        />
       </aside>
     )
   }
@@ -553,10 +560,26 @@ class ScheduleComp extends Component {
   }
   state = {
     openNewJob: false,
+    view: 'month',
+    selectedDay: new Date()
   }
 
   componentWillMount() {
     this.props.getJobs();
+  }
+
+  handleSelect = (date) => {
+    console.log(date,'date');
+    this.setState({view: 'day', selectedDay: date.toDate()});
+  }
+
+  onView = (view) => {
+    console.log(view);
+    this.setState({view})
+  }
+
+  onNavigate = (nav) => {
+    console.log(nav);
   }
 
   render() {
@@ -573,11 +596,14 @@ class ScheduleComp extends Component {
             events={jobs}
             defaultDate={new Date()}
             components={{ toolbar: Toolbar, event: DetailsPopover }}
+            date={this.state.selectedDay}
+            onNavigate={this.onNavigate}
             views={['day', 'week', 'month']}
-            selectable
+            view={this.state.view}
+            onView={this.onView}
           />
         </div>
-        <SideCalendar jobs={jobs} />
+        <SideCalendar jobs={jobs} handleSelect={this.handleSelect}/>
       </div>
     );
   }
