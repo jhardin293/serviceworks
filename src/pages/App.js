@@ -124,6 +124,7 @@ const newJob = (job) => {
 
   jobRef.set(job)
     .then((job) => {
+      console.log(job,'job saved');
       store.dispatch({
         type: 'GET_JOBS',
         status: 'pending',
@@ -161,6 +162,37 @@ const deleteJob = (id) => {
 }
 
 
+const getNotes = () => {
+  return (dispatch) => {
+    let notes = []
+    ref.collection('notes').get().then((snap) => {
+      snap.forEach((doc) => {
+        notes.push(doc.data());
+      })
+      console.log(notes,'notes list');
+      dispatch({
+        type: 'GET_NOTES',
+        payload: notes,
+        status: 'success'
+      })
+    })   
+  }
+}
+
+const newNote = (note) => {
+  const noteRef = ref.collection('notes').doc();
+  note.id = noteRef.id;
+
+  noteRef.set(note)
+    .then((note) => {
+      store.dispatch({
+        type: 'GET_NOTES',
+        status: 'pending',
+        payload: store.getState().notes.notes
+      })
+     store.dispatch(getNotes());
+    })
+}
 
 //Reducers
 //I just want a reducer that controrls the jobs array
@@ -184,8 +216,27 @@ const jobsReducer = (state = jobsInitState, action) => {
   }
 }
 
+const notesInitState = {
+  notes: [],
+  status: 'init'
+}
+
+const notesReducer = (state = notesInitState, action) => {
+  switch(action.type) {
+    case 'GET_NOTES':
+      return {
+        ...state,
+        status: action.status,
+        notes: action.payload
+      }
+    default:
+      return state;
+  }
+}
+
 const rootReducer = combineReducers({
-  jobs: jobsReducer
+  jobs: jobsReducer,
+  notes: notesReducer
 })
 
 //Store
@@ -355,7 +406,6 @@ class SideCalendar extends Component {
       return moment(job.start)
     })
 
-    console.log(highlightDates,'hi');
     return (
       <aside className="side-calendar side-area">
         <div className="side-header">
@@ -900,8 +950,34 @@ class EditJob extends Component {
   }  
 }
 
-class Notes extends Component {
+class NotesComp extends Component {
+
+  componentWillMount() {
+    this.props.getNotes();
+  }
   render() {
+    const notes = this.props.notes.notes;
+    const notesList = notes.map((note)=> {
+      return (
+        <div className="note" key={note.id}>
+          <div className="note-left">
+            <div className="note-text">
+              <div className="note-title">{note.title}</div>
+              <div className="note-body">
+                <p>{note.body}</p>
+              </div>
+            </div>
+            <div className="note-img">
+              <img src={noteImg1} alt="note-img" />
+            </div>
+          </div>
+          <div className="note-right">
+            <div className="note-created">3/07/18</div>
+          </div>
+        </div>
+      )
+    })
+    console.log(notes,'props');
     return (
       <div className="notes-view page-view">
         <div className="page-header">
@@ -919,93 +995,9 @@ class Notes extends Component {
               </div>
               <div className="panel-body">
                 <div className="sort-group">
-                  <div className="month-group"><span>March 2018</span></div>
+                  {/* <div className="month-group"><span>March 2018</span></div> */}
                   <div className="group-body">
-                    <div className="note">
-                      <div className="note-left">
-                        <div className="note-text">
-                          <div className="note-title">This is the first note</div>
-                          <div className="note-body">
-                            <p>This is the body text of the note. Im sure a lot better content will be written here</p>
-                          </div>
-                        </div>
-                        <div className="note-img">
-                          <img src={noteImg1} alt="note-img" />
-                        </div>
-                      </div>
-                      <div className="note-right">
-                        <div className="note-created">3/07/18</div>
-                      </div>
-                    </div>
-                    <div className="note">
-                      <div className="note-left">
-                        <div className="note-text">
-                          <div className="note-title">This is the first note</div>
-                          <div className="note-body">
-                            <p>This is the body text of the note. Im sure a lot better content will be written here</p>
-                          </div>
-                        </div>
-                        <div className="note-img">
-                          <img src={noteImg1} alt="note-img" />
-                        </div>
-                      </div>
-                      <div className="note-right">
-                        <div className="note-created">3/07/18</div>
-                      </div>
-                    </div>
-                    <div className="note">
-                      <div className="note-left">
-                        <div className="note-text">
-                          <div className="note-title">This is the first note</div>
-                          <div className="note-body">
-                            <p>This is the body text of the note. Im sure a lot better content will be written here</p>
-                          </div>
-                        </div>
-                        <div className="note-img">
-                          <img src={noteImg1} alt="note-img" />
-                        </div>
-                      </div>
-                      <div className="note-right">
-                        <div className="note-created">3/07/18</div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-                <div className="sort-group">
-                  <div className="month-group"><span>March 2018</span></div>
-                  <div className="group-body">
-                    <div className="note">
-                      <div className="note-left">
-                        <div className="note-text">
-                          <div className="note-title">This is the first note</div>
-                          <div className="note-body">
-                            <p>This is the body text of the note. Im sure a lot better content will be written here</p>
-                          </div>
-                        </div>
-                        <div className="note-img">
-                          <img src={noteImg1} alt="note-img" />
-                        </div>
-                      </div>
-                      <div className="note-right">
-                        <div className="note-created">3/07/18</div>
-                      </div>
-                    </div>
-                    <div className="note">
-                      <div className="note-left">
-                        <div className="note-text">
-                          <div className="note-title">This is the first note</div>
-                          <div className="note-body">
-                            <p>This is the body text of the note. Im sure a lot better content will be written here</p>
-                          </div>
-                        </div>
-                        <div className="note-img">
-                          <img src={noteImg1} alt="note-img" />
-                        </div>
-                      </div>
-                      <div className="note-right">
-                        <div className="note-created">3/07/18</div>
-                      </div>
-                    </div>
+                    {notesList}
                   </div>
                 </div>
               </div>
@@ -1018,18 +1010,36 @@ class Notes extends Component {
   }
 }
 
+const mapNoteStateToProps = state => ({
+  notes: state.notes
+});
+const Notes = connect(mapNoteStateToProps, {getNotes})(NotesComp);
+
 class NewNote extends Component {
   state = {
-    title: '',
+    note: {
+      title: '',
+      body: ''
+    },
+    exit: false
   }
-  handleTitle = (e) => {
-    this.setState({title: e.target.value});
+
+  onChange = (e) => {
+    this.setState({ note: {...this.state.note,[e.target.name]: e.target.value }});
+  }
+
+  onSave = (e,note) => {
+    e.preventDefault()
+    const noteClone = {...note};
+    newNote(noteClone);
+
+    // this.setState({exit: true});
   }
   render() {
     return (
       <div className="new-note-view page-view">
         <div className="page-header">
-          <h1>{this.state.title || 'New note'}</h1>
+          <h1>{this.state.note.title || 'New note'}</h1>
           <Link to="/notes">
             <button className="btn second-btn">Cancel</button>
           </Link>
@@ -1037,11 +1047,12 @@ class NewNote extends Component {
         <div className="page-body">
           <div className="note">
             <form>
-              <input type="text" placeholder="New Note" value={this.state.title} onChange={this.handleTitle}/>
-              <textarea />
+              <input type="text" name="title" placeholder="New Note" value={this.state.note.title} onChange={this.onChange}/>
+              <textarea name="body" value={this.state.note.body} onChange={this.onChange}/>
               <div className="control-area"> 
                 <button className="btn second-btn">Add Photo</button>
-                <button className="btn second-btn success">Save</button>
+                <button className="btn second-btn success" 
+                onClick={(e)=> this.onSave(e,this.state.note)}>Save</button>
               </div>
             </form>
           </div>
@@ -1680,6 +1691,7 @@ class TeamMap extends Component {
     return (
       <div className="map-view page-view">
         <div className="map">
+          <Map  latLng={{lat:37,lng:-122}}/>
         </div>
         <aside className="side-area">
           <div className="side-header">
