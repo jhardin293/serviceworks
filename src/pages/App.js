@@ -3,6 +3,7 @@ import PropTypes from 'prop-types'
 import cn from 'classnames'
 import BigCalendar from 'react-big-calendar'
 import moment from 'moment'
+import momentDurationFormatSetup from 'moment-duration-format'
 import DatePicker from 'react-datepicker'
 import Select from 'react-select'
 import {
@@ -17,7 +18,6 @@ import onClickOutside from "react-onclickoutside";
 
 import { Tab, Tabs, TabList, TabPanel } from 'react-tabs'
 
-import { withScriptjs, withGoogleMap, GoogleMap, Marker } from "react-google-maps"
 
 import 'react-big-calendar/lib/css/react-big-calendar.css'
 import 'react-datepicker/dist/react-datepicker-cssmodules.css'
@@ -53,10 +53,10 @@ import { connect } from 'react-redux'
 import { createStore, applyMiddleware, compose } from 'redux'
 import thunk from 'redux-thunk'
 import { combineReducers } from 'redux'
+import GoogleMapReact from 'google-map-react';
+import PlacesAutocomplete, { geocodeByAddress, getLatLng } from 'react-places-autocomplete'
 
 BigCalendar.setLocalizer(BigCalendar.momentLocalizer(moment));
-const googleMapUrl = 'https://maps.googleapis.com/maps/api/js?key=AIzaSyC4R6AN7SmujjPUIGKdyao2Kqitzr1kiRg&v=3.exp&libraries=geometry,drawing,places';
-
 
 
 //Actions 
@@ -92,7 +92,6 @@ const newJob = (job) => {
 }
 
 const editJob = (job) => {
-  const id = job.id;
   const jobRef = ref.collection('jobs').doc(job.id);
 
   jobRef.update(job)
@@ -159,6 +158,131 @@ const store = createStore(
   )
 );
 
+class LocationSearchInput extends Component {
+  state = {
+    address: this.props.address
+  }
+ 
+ 
+  render() {
+    return (
+      <PlacesAutocomplete
+        value={this.props.address}
+        onChange={this.props.onLocationChange}
+        onSelect={this.props.getLocation}
+      >
+        {({ getInputProps, suggestions, getSuggestionItemProps }) => (
+          <div>
+            <input
+              {...getInputProps({
+                placeholder: 'Search Places ...',
+                className: 'location-search-input'
+              })}
+            />
+            <div className="autocomplete-dropdown-container">
+              {suggestions.map(suggestion => {
+                const className = suggestion.active ? 'suggestion-item--active' : 'suggestion-item';
+                // inline style for demonstration purpose
+                const style = suggestion.active
+                            ? { backgroundColor: '#fafafa', cursor: 'pointer' }
+                            : { backgroundColor: '#ffffff', cursor: 'pointer' };
+                return (
+                  <div {...getSuggestionItemProps(suggestion, { className, style })}>
+                    <span>{suggestion.description}</span>
+                  </div>
+                )
+              })}
+            </div>
+          </div>
+        )}
+      </PlacesAutocomplete>
+    );
+  }
+}
+
+class MapMarker extends Component {
+  render() {
+    return(
+      <div 
+      >
+          <h1>JUStin</h1>
+      </div>
+    )
+  }
+}
+
+ 
+class Map extends Component {
+  static defaultProps = {
+    center: {
+      lat: 59.95,
+      lng: 30.33
+    },
+    zoom: 11,
+  };
+
+
+  onChange = (center, zoom, bounds, marginBounds) => {
+    console.log(center, zoom, bounds, marginBounds, 'change');
+  }
+ 
+
+  render() {
+    return (
+      // Important! Always set the container height explicitly
+        <div style={{ height: '100%', width: '100%' }}>
+          <GoogleMapReact
+            bootstrapURLKeys={{ key: 'AIzaSyDA4lSVtu-jB1h7VbTCTpSGf_Qv5UEuS6A'}}
+            defaultCenter={this.props.center}
+            defaultZoom={this.props.zoom}
+            onChange={this.onChange}
+            center={[this.props.latLng.lat,this.props.latLng.lng]}
+          >
+            <MapMarker
+              lat={this.props.latLng.lat}
+              lng={this.props.latLng.lng}
+            />
+
+          </GoogleMapReact>
+        </div>
+    );
+  }
+}
+
+class MapSearch extends Component {
+  state = {
+    address: '',
+    latLng: {
+      lat: 37.7749295,
+      lng: -122.41941550000001
+    }
+  }
+
+  onLocationChange = (address) => {
+    this.setState({ address })
+  }
+
+  getLocation = (address) => {
+    this.setState({ address })
+    geocodeByAddress(address)
+      .then(results => getLatLng(results[0]))
+      .then((latLng) => {
+        this.setState({latLng});
+        console.log('Success', latLng);
+      }
+      )
+      .catch(error => console.error('Error', error))
+  }
+  render() {
+    return (
+      <div style={{ height: '100%', width: '100%' }}>
+        <LocationSearchInput  getLocation={this.getLocation} onLocationChange={this.onLocationChange} address={this.state.address}/>
+        <Map latLng={this.state.latLng} />
+      </div>
+    )
+  }
+}
+ 
 
 class SideNav extends Component {
   render() {
@@ -364,13 +488,6 @@ class CustomEvent extends Component {
         <li><img src={location} alt=""/><div className="stack"><span>42 W 89th</span><span>New York, NY 10024</span></div></li>
       </ul>
       <div className="map">
-        <MyMapComponent
-          isMarkerShown
-          googleMapURL={googleMapUrl}
-          loadingElement={<div style={{ height: `100%` }} />}
-          containerElement={<div style={{ height: `100%` }} />}
-          mapElement={<div style={{ height: `100%` }} />}
-        />
       </div>
       <div className="details">
         <span>
@@ -485,9 +602,14 @@ class JobDetails extends Component {
   handleSelectChange = (value) => {
     this.setState({job: {...this.state.job, employees: value }});
   }
+
+  handleMarkerClick = () => {
+    console.log(arguments, 'clicked')
+  }
   render() {
-    const { customer, employees } = this.state.job;
+    const { customer, employees, start, end } = this.state.job;
     const allowDelete = this.state.allowDelete;
+    const duration =  moment.duration(end.diff(start)).format("d [days]  h [hours]  m [minutes]");
     if (this.props.exit === true) {
       return <Redirect to="/" />
     }
@@ -567,7 +689,7 @@ class JobDetails extends Component {
                   </div>
                   <div className="time-range">
                     <span className="bordered-group"></span>
-                    3 Hours
+                    {duration}
                   </div>
                 </div>
                 <div className="input-group">
@@ -613,13 +735,7 @@ class JobDetails extends Component {
                   </div>
                 </div>
                 <div className="map">
-                  <MyMapComponent
-                    isMarkerShown
-                    googleMapURL={googleMapUrl}
-                    loadingElement={<div style={{ height: `100%` }} />}
-                    containerElement={<div style={{ height: `100%` }} />}
-                    mapElement={<div style={{ height: `100%` }} />}
-                  />
+                  <MapSearch />
                 </div>
               </form>
             </TabPanel>
@@ -643,9 +759,10 @@ class NewJob extends Component {
   }
 
   onSave = (job) => {
-    job.start = new Date(job.start);
-    job.end = new Date(job.end);
-    newJob(job);
+    const jobClone = {...job};
+    jobClone.start = new Date(jobClone.start);
+    jobClone.end = new Date(jobClone.end);
+    newJob(jobClone);
 
     this.setState({exit: true});
   }
@@ -847,14 +964,6 @@ class NewNote extends Component {
   }
 }
 
-const MyMapComponent = withScriptjs(withGoogleMap((props) =>
-  <GoogleMap
-    defaultZoom={8}
-    defaultCenter={{ lat: 37.9678761, lng: -121.7594383 }}
-  >
-    {props.isMarkerShown && <Marker position={{ lat: 37.9678761, lng: -121.7594383 }} />}
-  </GoogleMap>
-))
 
 class NewCustomer extends Component {
   render() {
@@ -924,13 +1033,6 @@ class NewCustomer extends Component {
                     </div>
                     <div>
                       <div className="map">
-                        <MyMapComponent
-                          isMarkerShown
-                          googleMapURL={googleMapUrl}
-                          loadingElement={<div style={{ height: `100%` }} />}
-                          containerElement={<div style={{ height: `100%` }} />}
-                          mapElement={<div style={{ height: `100%` }} />}
-                        />
                       </div>
                     </div>
                   </div>
@@ -1491,13 +1593,6 @@ class TeamMap extends Component {
     return (
       <div className="map-view page-view">
         <div className="map">
-          <MyMapComponent
-            isMarkerShown
-            googleMapURL={googleMapUrl}
-            loadingElement={<div style={{ height: `100%` }} />}
-            containerElement={<div style={{ height: `100%` }} />}
-            mapElement={<div style={{ height: `100%` }} />}
-          />
         </div>
         <aside className="side-area">
           <div className="side-header">
@@ -1596,13 +1691,6 @@ class NewEmployee extends Component {
                     </div>
                     <div>
                       <div className="map">
-                        <MyMapComponent
-                          isMarkerShown
-                          googleMapURL={googleMapUrl}
-                          loadingElement={<div style={{ height: `100%` }} />}
-                          containerElement={<div style={{ height: `100%` }} />}
-                          mapElement={<div style={{ height: `100%` }} />}
-                        />
                       </div>
                     </div>
                   </div>
@@ -1908,13 +1996,6 @@ class MyAccount extends Component {
                     </div>
                     <div>
                       <div className="map">
-                        <MyMapComponent
-                          isMarkerShown
-                          googleMapURL={googleMapUrl}
-                          loadingElement={<div style={{ height: `100%` }} />}
-                          containerElement={<div style={{ height: `100%` }} />}
-                          mapElement={<div style={{ height: `100%` }} />}
-                        />
                       </div>
                     </div>
                   </div>
