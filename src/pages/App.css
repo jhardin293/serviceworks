@@ -293,6 +293,14 @@ a, .btn {
 .side-calendar .job-btn {
   background-image: linear-gradient(90deg, #DF6B68 0%, #7D3884 100%); }
 
+.react-datepicker-popper {
+  z-index: 2; }
+
+.react-datepicker__day--highlighted {
+  background-color: #3174ad; }
+  .react-datepicker__day--highlighted:hover {
+    background-color: #265985; }
+
 .react-datepicker {
   background-color: #f3f5f9;
   box-shadow: 0 6px 12px rgba(0, 0, 0, 0.175);

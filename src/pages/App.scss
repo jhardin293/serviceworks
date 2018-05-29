@@ -386,6 +386,15 @@ a, .btn {
   }
 }
 
+.react-datepicker-popper {
+  z-index: 2;
+}
+.react-datepicker__day--highlighted {
+  background-color: #3174ad;
+  &:hover {
+    background-color: #265985;
+  }
+}
 .react-datepicker {
   background-color: #f3f5f9;
   box-shadow: 0 6px 12px rgba(0,0,0,.175);

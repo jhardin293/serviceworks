@@ -350,6 +350,10 @@ class SideNav extends Component {
 
 class SideCalendar extends Component {
   render() {
+    const highlightDates = this.props.jobs.map((job) => {
+      return moment(job.start)
+    })
+    console.log(highlightDates,'hi');
     return (
       <aside className="side-calendar side-area">
         <div className="side-header">
@@ -357,7 +361,7 @@ class SideCalendar extends Component {
             <button className="job-btn btn"><img src={plus} alt="" /><span>New job</span></button>
           </Link>
         </div>
-        <DatePicker calendarClassName="in-line" inline />
+        <DatePicker calendarClassName="in-line" inline highlightDates={highlightDates}/>
       </aside>
     )
   }
@@ -490,7 +494,6 @@ class CustomEvent extends Component {
           end = moment(job.end);
     const duration =  moment.duration(end.diff(start)).format("d [days]  h [hours]  m [minutes]");
     const employees = arrayToSentence(job.employees.map((employee, idx) => employee.label));
-    console.log(employees,'employees');
     const content = 
     <div className="details-popover ignore-react-onclickoutside"> 
       <div className="popover-header">
@@ -574,7 +577,7 @@ class ScheduleComp extends Component {
             selectable
           />
         </div>
-        <SideCalendar />
+        <SideCalendar jobs={jobs} />
       </div>
     );
   }
