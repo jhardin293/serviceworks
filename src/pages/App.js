@@ -214,18 +214,8 @@ class MapMarker extends Component {
  
 class Map extends Component {
   static defaultProps = {
-    center: {
-      lat: 59.95,
-      lng: 30.33
-    },
     zoom: 11,
   };
-
-
-  onChange = (center, zoom, bounds, marginBounds) => {
-    console.log(center, zoom, bounds, marginBounds, 'change');
-  }
- 
 
   render() {
     return (
@@ -233,9 +223,7 @@ class Map extends Component {
         <div style={{ height: '100%', width: '100%' }}>
           <GoogleMapReact
             bootstrapURLKeys={{ key: 'AIzaSyDA4lSVtu-jB1h7VbTCTpSGf_Qv5UEuS6A'}}
-            defaultCenter={this.props.center}
             defaultZoom={this.props.zoom}
-            onChange={this.onChange}
             center={[this.props.latLng.lat,this.props.latLng.lng]}
           >
             <MapMarker
@@ -250,34 +238,13 @@ class Map extends Component {
 }
 
 class MapSearch extends Component {
-  state = {
-    address: '',
-    latLng: {
-      lat: 37.7749295,
-      lng: -122.41941550000001
-    }
-  }
 
-  onLocationChange = (address) => {
-    this.setState({ address })
-  }
 
-  getLocation = (address) => {
-    this.setState({ address })
-    geocodeByAddress(address)
-      .then(results => getLatLng(results[0]))
-      .then((latLng) => {
-        this.setState({latLng});
-        console.log('Success', latLng);
-      }
-      )
-      .catch(error => console.error('Error', error))
-  }
   render() {
     return (
       <div style={{ height: '100%', width: '100%' }}>
-        <LocationSearchInput  getLocation={this.getLocation} onLocationChange={this.onLocationChange} address={this.state.address}/>
-        <Map latLng={this.state.latLng} />
+        <LocationSearchInput  getLocation={this.props.getLocation} onLocationChange={this.props.onLocationChange} address={this.props.address}/>
+        <Map latLng={this.props.latLng} />
       </div>
     )
   }
@@ -570,7 +537,9 @@ class JobDetails extends Component {
         employees:  props.job.employees,
         customer: props.job.customer,
         title: props.job.title,
-        id: props.job.id || ''
+        id: props.job.id || '',
+        latLng: props.job.latLng, 
+        address: props.job.address || '',
       },
       exit: props.exit,
       allowDelete: props.allowDelete
@@ -579,6 +548,22 @@ class JobDetails extends Component {
 
   onChange = (e) => {
     this.setState({ job: {...this.state.job,[e.target.name]: e.target.value }});
+  }
+
+  getLocation = (address) => {
+    this.setState({job:{...this.state.job, address}})
+    geocodeByAddress(address)
+      .then(results => getLatLng(results[0]))
+      .then((latLng) => {
+        this.setState({job:{...this.state.job, latLng}})
+        console.log('Success', latLng);
+      })
+      .catch(error => console.error('Error', error))
+  }
+
+  onLocationChange = (address) => {
+    console.log(address, 'chang');
+    this.setState({job:{...this.state.job, address}})
   }
 
 
@@ -607,6 +592,7 @@ class JobDetails extends Component {
     console.log(arguments, 'clicked')
   }
   render() {
+    console.log(this.state.job,'jobinit');
     const { customer, employees, start, end } = this.state.job;
     const allowDelete = this.state.allowDelete;
     const duration =  moment.duration(end.diff(start)).format("d [days]  h [hours]  m [minutes]");
@@ -735,7 +721,12 @@ class JobDetails extends Component {
                   </div>
                 </div>
                 <div className="map">
-                  <MapSearch />
+                  <MapSearch 
+                    getLocation={this.getLocation} 
+                    address={this.state.job.address} 
+                    latLng={this.state.job.latLng}
+                    onLocationChange={this.onLocationChange}
+                  />
                 </div>
               </form>
             </TabPanel>
@@ -754,6 +745,10 @@ class NewJob extends Component {
       employees:  [''],
       customer: '',
       title:  '',
+      latLng: {
+        lat: 37.7749295,
+        lng: -122.41941550000001 
+      },
     },
     exit: false,
   }
