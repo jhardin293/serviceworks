@@ -777,7 +777,9 @@ class EditJob extends Component {
       employees: this.job.employees,
       customer: this.job.customer,
       title:  this.job.title,
-      id: this.job.id
+      id: this.job.id,
+      latLng: this.job.latLng,
+      address: this.job.address
     },
     exit: false,
   }
