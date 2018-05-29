@@ -486,6 +486,9 @@ form .Select-control {
     form .Select-control .Select-input input {
       height: 0px; }
 
+form .Select-menu-outer {
+  z-index: 2; }
+
 form .input-group {
   margin-bottom: 15px; }
 
@@ -819,3 +822,29 @@ form.person-form {
         color: black; }
     .invoice-view .panel .panel-body tr:nth-child(even) {
       background-color: #fff; }
+
+.map-search {
+  position: relative;
+  height: 100%;
+  width: 100%; }
+  .map-search .location-search-input {
+    position: absolute;
+    top: 10px;
+    z-index: 1;
+    width: 98%;
+    margin-left: auto;
+    margin-right: auto;
+    left: 0;
+    right: 0; }
+  .map-search .autocomplete-dropdown-container {
+    position: absolute;
+    top: 50px;
+    z-index: 1;
+    width: 98%;
+    margin-left: auto;
+    margin-right: auto;
+    left: 0;
+    right: 0; }
+  .map-search .suggestion-item {
+    display: block;
+    padding: 10px 20px; }

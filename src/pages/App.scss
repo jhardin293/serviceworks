@@ -666,6 +666,9 @@ form {
       }
     }
   }
+  .Select-menu-outer {
+    z-index: 2;
+  }
   .input-group {
     margin-bottom: 15px;
   }
@@ -1124,5 +1127,36 @@ form {
         }
       }
     }
+  }
+}
+
+
+.map-search {
+  position: relative;
+  height: 100%;
+  width: 100%;
+  .location-search-input {
+    position: absolute;
+    top: 10px;
+    z-index: 1;
+    width: 98%;
+    margin-left: auto;
+    margin-right: auto;
+    left: 0;
+    right: 0;
+  }
+  .autocomplete-dropdown-container {
+    position: absolute;
+    top: 50px;
+    z-index: 1;
+    width: 98%;
+    margin-left: auto;
+    margin-right: auto;
+    left: 0;
+    right: 0;
+  }
+  .suggestion-item {
+    display: block;
+    padding: 10px 20px;
   }
 }

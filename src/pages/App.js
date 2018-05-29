@@ -46,6 +46,8 @@ import employee from './images/employee.png'
 import date from './images/date.png'
 import customer from './images/customer.png'
 
+import mapMarker from './images/map-marker.svg'
+
 import {ref} from '../config/constants'
 
 import { Provider } from 'react-redux'
@@ -59,6 +61,45 @@ import PlacesAutocomplete, { geocodeByAddress, getLatLng } from 'react-places-au
 momentDurationFormatSetup(moment);
 BigCalendar.setLocalizer(BigCalendar.momentLocalizer(moment));
 
+
+
+/*!
+ * array-to-sentence | ISC (c) Shinnosuke Watanabe
+ * https://github.com/shinnn/array-to-sentence
+*/
+var OPTION_NAMES = ['separator', 'lastSeparator'];
+function arrayToSentence(arr, options) {
+	if (!Array.isArray(arr)) {
+		throw new TypeError('Expected an array, but got a non-array value ' + arr + '.');
+	}
+
+	options = Object.assign({
+		separator: ', ',
+		lastSeparator: ' and ',
+	}, options);
+
+	for (var i = 0; i < 2; i++) {
+		if (typeof options[OPTION_NAMES[i]] !== 'string') {
+			throw new TypeError(
+				'Expected `' +
+				OPTION_NAMES[i] +
+				'` option to be a string, but got a non-string value ' +
+				options[OPTION_NAMES[i]] +
+				'.'
+			);
+		}
+	}
+
+	if (arr.length === 0) {
+		return '';
+	}
+
+	if (arr.length === 1) {
+		return arr[0];
+	}
+
+	return arr.slice(0, -1).join(options.separator) + options.lastSeparator + arr[arr.length - 1];
+}
 
 //Actions 
 const getJobs = () => {
@@ -182,8 +223,9 @@ class LocationSearchInput extends Component {
             />
             <div className="autocomplete-dropdown-container">
               {suggestions.map(suggestion => {
-                const className = suggestion.active ? 'suggestion-item--active' : 'suggestion-item';
+                const className = 'suggestion-item';
                 // inline style for demonstration purpose
+                console.log(className,'class name');
                 const style = suggestion.active
                             ? { backgroundColor: '#fafafa', cursor: 'pointer' }
                             : { backgroundColor: '#ffffff', cursor: 'pointer' };
@@ -204,9 +246,8 @@ class LocationSearchInput extends Component {
 class MapMarker extends Component {
   render() {
     return(
-      <div 
-      >
-          <h1>JUStin</h1>
+      <div>
+        <img src={mapMarker} alt="" />
       </div>
     )
   }
@@ -239,12 +280,14 @@ class Map extends Component {
 }
 
 class MapSearch extends Component {
-
-
   render() {
     return (
-      <div style={{ height: '100%', width: '100%' }}>
-        <LocationSearchInput  getLocation={this.props.getLocation} onLocationChange={this.props.onLocationChange} address={this.props.address}/>
+      <div className="map-search">
+        <LocationSearchInput 
+          getLocation={this.props.getLocation} 
+          onLocationChange={this.props.onLocationChange} 
+          address={this.props.address}
+        />
         <Map latLng={this.props.latLng} />
       </div>
     )
@@ -446,7 +489,8 @@ class CustomEvent extends Component {
           start = moment(job.start),
           end = moment(job.end);
     const duration =  moment.duration(end.diff(start)).format("d [days]  h [hours]  m [minutes]");
-    console.log(start,'duration');
+    const employees = arrayToSentence(job.employees.map((employee, idx) => employee.label));
+    console.log(employees,'employees');
     const content = 
     <div className="details-popover ignore-react-onclickoutside"> 
       <div className="popover-header">
@@ -454,7 +498,7 @@ class CustomEvent extends Component {
         {/* <img src={closeDetails} alt="" onClick={this.handleClickOutside}/> */}
       </div>
       <ul>
-        <li><img src={employee} alt=""/><span>{job.employees[0].label}</span></li>
+        <li><img src={employee} alt=""/>{employees}</li>
         <li><img src={customer} alt=""/><span>{job.customer.label}</span></li>
         <li>
           <img src={date} alt=""/>
