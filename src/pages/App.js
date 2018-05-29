@@ -56,6 +56,7 @@ import { combineReducers } from 'redux'
 import GoogleMapReact from 'google-map-react';
 import PlacesAutocomplete, { geocodeByAddress, getLatLng } from 'react-places-autocomplete'
 
+momentDurationFormatSetup(moment);
 BigCalendar.setLocalizer(BigCalendar.momentLocalizer(moment));
 
 
@@ -441,7 +442,11 @@ class CustomEvent extends Component {
     this.setState({isOpen: false});
   }
   render() {
-    const job = this.props.event;
+    const job = this.props.event,
+          start = moment(job.start),
+          end = moment(job.end);
+    const duration =  moment.duration(end.diff(start)).format("d [days]  h [hours]  m [minutes]");
+    console.log(start,'duration');
     const content = 
     <div className="details-popover ignore-react-onclickoutside"> 
       <div className="popover-header">
@@ -451,10 +456,21 @@ class CustomEvent extends Component {
       <ul>
         <li><img src={employee} alt=""/><span>{job.employees[0].label}</span></li>
         <li><img src={customer} alt=""/><span>{job.customer.label}</span></li>
-        <li><img src={date} alt=""/><div className="stack"><span>Saturday, Apr 21, 2018</span><span>1:00 am - 2:00 am</span></div></li>
-        <li><img src={location} alt=""/><div className="stack"><span>42 W 89th</span><span>New York, NY 10024</span></div></li>
+        <li>
+          <img src={date} alt=""/>
+          <div className="stack">
+            <span>{start.format('lll')}</span>
+            <span>{end.format('lll')}</span>
+            <span>{duration}</span>
+          </div>
+        </li>
+        <li>
+          <img src={location} alt=""/>
+          <div className="stack"><span>{job.address}</span></div>
+        </li>
       </ul>
       <div className="map">
+        <Map latLng={job.latLng} />
       </div>
       <div className="details">
         <span>
@@ -595,6 +611,7 @@ class JobDetails extends Component {
     console.log(this.state.job,'jobinit');
     const { customer, employees, start, end } = this.state.job;
     const allowDelete = this.state.allowDelete;
+    console.log(end,'end');
     const duration =  moment.duration(end.diff(start)).format("d [days]  h [hours]  m [minutes]");
     if (this.props.exit === true) {
       return <Redirect to="/" />

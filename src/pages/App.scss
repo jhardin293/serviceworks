@@ -1043,6 +1043,12 @@ form {
       .stack {
         span {
           display: block;
+          &:nth-child(2) {
+            margin-bottom: 4px;
+          }
+          &:nth-child(3) {
+            font-weight: bold;
+          }
         }
       }
     }

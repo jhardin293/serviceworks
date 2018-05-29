@@ -769,6 +769,10 @@ form.person-form {
         margin-right: 10px; }
       .details-popover ul li .stack span {
         display: block; }
+        .details-popover ul li .stack span:nth-child(2) {
+          margin-bottom: 4px; }
+        .details-popover ul li .stack span:nth-child(3) {
+          font-weight: bold; }
   .details-popover .details {
     padding: 10px 10px; }
     .details-popover .details a {
