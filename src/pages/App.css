@@ -373,6 +373,10 @@ a, .btn {
       margin-bottom: 10px; }
   .notes-list .sort-group .group-body .note .note-right .note-created {
     margin-left: 10px; }
+    .notes-list .sort-group .group-body .note .note-right .note-created span {
+      display: block; }
+      .notes-list .sort-group .group-body .note .note-right .note-created span:first-child {
+        font-weight: bold; }
 
 .notes-list .sort-group .group-body .note-img {
   margin-right: 30px; }

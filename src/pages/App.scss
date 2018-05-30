@@ -498,6 +498,12 @@ a, .btn {
         .note-right {
           .note-created {
             margin-left: 10px;
+            span {
+              display: block;
+              &:first-child {
+                font-weight: bold;
+              }
+            }
           }
         }
       }

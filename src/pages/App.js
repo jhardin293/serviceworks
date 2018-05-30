@@ -182,6 +182,7 @@ const getNotes = () => {
 const newNote = (note) => {
   const noteRef = ref.collection('notes').doc();
   note.id = noteRef.id;
+  note.last_edit = new Date();
 
   noteRef.set(note)
     .then((note) => {
@@ -956,7 +957,10 @@ class NotesComp extends Component {
     this.props.getNotes();
   }
   render() {
-    const notes = this.props.notes.notes;
+    const notes = this.props.notes.notes.sort((a,b)=> {
+      return b.last_edit - a.last_edit; 
+    });
+
     const notesList = notes.map((note)=> {
       return (
         <div className="note" key={note.id}>
@@ -972,12 +976,14 @@ class NotesComp extends Component {
             </div>
           </div>
           <div className="note-right">
-            <div className="note-created">3/07/18</div>
+            <div className="note-created ">
+              <span>{moment(note.last_edit).format('L')}</span>
+              <span>{moment(note.last_edit).format('LT')}</span>
+            </div>
           </div>
         </div>
       )
     })
-    console.log(notes,'props');
     return (
       <div className="notes-view page-view">
         <div className="page-header">
@@ -991,7 +997,7 @@ class NotesComp extends Component {
             <div className="notes-list panel">
               <div className="header">
                 <h2>Note text</h2>
-                <h2>Created</h2>
+                <h2>Updated</h2>
               </div>
               <div className="panel-body">
                 <div className="sort-group">
@@ -1033,9 +1039,12 @@ class NewNote extends Component {
     const noteClone = {...note};
     newNote(noteClone);
 
-    // this.setState({exit: true});
+    this.setState({exit: true});
   }
   render() {
+    if (this.state.exit === true) {
+      return <Redirect to="/notes" />
+    }
     return (
       <div className="new-note-view page-view">
         <div className="page-header">
