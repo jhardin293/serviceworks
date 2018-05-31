@@ -48,7 +48,7 @@ import customer from './images/customer.png'
 
 import mapMarker from './images/map-marker.svg'
 
-import {ref} from '../config/constants'
+import {ref, storageRef} from '../config/constants'
 
 import { Provider } from 'react-redux'
 import { connect } from 'react-redux'
@@ -60,6 +60,10 @@ import PlacesAutocomplete, { geocodeByAddress, getLatLng } from 'react-places-au
 
 momentDurationFormatSetup(moment);
 BigCalendar.setLocalizer(BigCalendar.momentLocalizer(moment));
+
+const notesImgRef = storageRef.child('notes/');
+
+
 
 
 
@@ -193,6 +197,18 @@ const newNote = (note) => {
       })
      store.dispatch(getNotes());
     })
+}
+
+
+const uploadImage = (file, id) => {
+  return new Promise((resolve, reject)=>{
+    notesImgRef.child(file.name).put(file).then((snapshot) => {
+        if (snapshot) {
+          const url = snapshot.downloadURL;
+          resolve(url);
+        }
+    });
+  });
 }
 
 //Reducers
@@ -972,7 +988,7 @@ class NotesComp extends Component {
               </div>
             </div>
             <div className="note-img">
-              <img src={noteImg1} alt="note-img" />
+              <img src={note.image} alt="note-img" />
             </div>
           </div>
           <div className="note-right">
@@ -1025,7 +1041,8 @@ class NewNote extends Component {
   state = {
     note: {
       title: '',
-      body: ''
+      body: '',
+      image: ''
     },
     exit: false
   }
@@ -1040,6 +1057,16 @@ class NewNote extends Component {
     newNote(noteClone);
 
     this.setState({exit: true});
+  }
+  handleUpload = (e) => {
+   //Make sure photo is uploaded before your alowed to save note;
+   const file = e.target.files[0];
+   if (file) {
+     uploadImage(file).then((url) => {
+       this.setState({note: {...this.state.note, image: url }});
+       console.log(url,'url');
+     })
+   }
   }
   render() {
     if (this.state.exit === true) {
@@ -1059,11 +1086,16 @@ class NewNote extends Component {
               <input type="text" name="title" placeholder="New Note" value={this.state.note.title} onChange={this.onChange}/>
               <textarea name="body" value={this.state.note.body} onChange={this.onChange}/>
               <div className="control-area"> 
-                <button className="btn second-btn">Add Photo</button>
+                <input className="btn second-btn" type="file" name="Add Photo" onChange={this.handleUpload}/> 
                 <button className="btn second-btn success" 
                 onClick={(e)=> this.onSave(e,this.state.note)}>Save</button>
               </div>
             </form>
+            <div>
+              {this.state.note.image.length > 0 &&
+                <img src={this.state.note.image} alt="" />
+              }
+            </div>
           </div>
         </div>
        </div>
