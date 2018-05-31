@@ -133,6 +133,15 @@ a, .btn {
     margin-left: 20px; }
   .page-header .btn {
     margin-right: 20px; }
+  .page-header .tab-btn-group {
+    display: flex;
+    position: absolute;
+    right: 20px; }
+    .page-header .tab-btn-group * {
+      justify-content: center;
+      margin-right: 15px; }
+    .page-header .tab-btn-group *:last-child {
+      margin-right: 0px; }
 
 .side-nav {
   width: 200px;

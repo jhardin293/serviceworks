@@ -212,6 +212,18 @@ const editNote = (note) => {
     })
 }
 
+const deleteNote = (id) => {
+  const jobRef = ref.collection('notes').doc(id);
+  jobRef.delete()
+    .then(() => {
+      store.dispatch({
+        type: 'GET_NOTES',
+        status: 'pending',
+        payload: store.getState().notes.notes
+      })
+     store.dispatch(getNotes());
+    })
+}
 
 const uploadImage = (file, id) => {
   return new Promise((resolve, reject)=>{
@@ -1068,6 +1080,11 @@ class EditNote extends Component {
     exit: false
   }
 
+  onDelete = (id) => {
+    deleteNote(id);
+    this.setState({exit: true});
+  }
+
   onSave = (e,note) => {
     const noteClone = {...note};
     noteClone.last_edit = new Date();
@@ -1079,7 +1096,12 @@ class EditNote extends Component {
 
   render() {
     return (
-      <NoteDetails note={this.state.note} exit={this.state.exit} onSave={this.onSave}/>
+      <NoteDetails 
+        note={this.state.note} 
+        exit={this.state.exit} 
+        onSave={this.onSave} 
+        onDelete={this.onDelete}
+        allowDelete={true}/>
     )
   }
 }
@@ -1120,7 +1142,8 @@ class NoteDetails extends Component {
         image: props.note.image,
         id: props.note.id || ''
       },
-      onSave: props.onSave
+      onSave: props.onSave,
+      allowDelete: props.allowDelete
     }
   }
 
@@ -1144,7 +1167,7 @@ class NoteDetails extends Component {
    }
   }
   render() {
-    console.log(this.state.note,'not in det');
+    const allowDelete = this.state.allowDelete;
     if (this.props.exit === true) {
       return <Redirect to="/notes" />
     }
@@ -1152,9 +1175,23 @@ class NoteDetails extends Component {
       <div className="new-note-view page-view">
         <div className="page-header">
           <h1>{this.state.note.title || 'New note'}</h1>
-          <Link to="/notes">
-            <button className="btn second-btn">Cancel</button>
-          </Link>
+          <div className="tab-btn-group">
+            <Link to="/notes">
+              <button className="btn second-btn btn-cancel ">Cancel</button>
+            </Link>
+            {allowDelete &&
+              <button 
+                className="btn second-btn btn-delete" 
+                onClick={(e)=> this.props.onDelete(this.state.note.id, e)}>
+                Delete
+              </button>
+            }
+            <button 
+              className="btn second-btn success btn-success" 
+              onClick={(e)=> this.onSave(e,this.state.note)}>
+              Save
+            </button>
+          </div>
         </div>
         <div className="page-body">
           <div className="note">
@@ -1162,9 +1199,7 @@ class NoteDetails extends Component {
               <input type="text" name="title" placeholder="New Note" value={this.state.note.title} onChange={this.onChange}/>
               <textarea name="body" value={this.state.note.body} onChange={this.onChange}/>
               <div className="control-area"> 
-                <input className="btn second-btn" type="file" name="Add Photo" onChange={this.handleUpload}/> 
-                <button className="btn second-btn success" 
-                onClick={(e)=> this.onSave(e,this.state.note)}>Save</button>
+                <input type="file" name="Add Photo" onChange={this.handleUpload}/> 
               </div>
             </form>
             <div>

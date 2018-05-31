@@ -167,6 +167,18 @@ a, .btn {
   .btn {
     margin-right: 20px;
   }
+  .tab-btn-group {
+    display: flex;
+    position: absolute;
+    right: 20px;
+    * {
+      justify-content: center;
+      margin-right: 15px;
+    }
+    *:last-child {
+      margin-right: 0px; 
+    }
+  }
 }
 
 .side-nav {
