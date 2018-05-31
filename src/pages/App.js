@@ -1031,11 +1031,15 @@ class NotesComp extends Component {
     )
   }
 }
-
 const mapNoteStateToProps = state => ({
   notes: state.notes
 });
 const Notes = connect(mapNoteStateToProps, {getNotes})(NotesComp);
+
+
+// class EditNote extends Component {
+
+// }
 
 class NewNote extends Component {
   state = {
@@ -1047,17 +1051,43 @@ class NewNote extends Component {
     exit: false
   }
 
+  onSave = (e,note) => {
+    const noteClone = {...note};
+    newNote(noteClone);
+
+    this.setState({exit: true});
+  }
+
+  render() {
+    return (
+      <NoteDetails note={this.state.note} exit={this.state.exit} onSave={this.onSave}/>
+    )
+  }
+}
+
+class NoteDetails extends Component {
+
+  constructor (props) {
+    super(props);
+    this.state = {
+      note: {
+        title: props.note.title,
+        body: props.note.body,
+        image: props.note.image
+      },
+      onSave: props.onSave
+    }
+  }
+
   onChange = (e) => {
     this.setState({ note: {...this.state.note,[e.target.name]: e.target.value }});
   }
 
   onSave = (e,note) => {
     e.preventDefault()
-    const noteClone = {...note};
-    newNote(noteClone);
-
-    this.setState({exit: true});
+    this.props.onSave(e, note)
   }
+
   handleUpload = (e) => {
    //Make sure photo is uploaded before your alowed to save note;
    const file = e.target.files[0];
@@ -1069,7 +1099,7 @@ class NewNote extends Component {
    }
   }
   render() {
-    if (this.state.exit === true) {
+    if (this.props.exit === true) {
       return <Redirect to="/notes" />
     }
     return (
