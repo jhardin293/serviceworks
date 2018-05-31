@@ -356,7 +356,8 @@ a, .btn {
   display: flex;
   padding-top: 15px;
   padding-bottom: 15px;
-  border-bottom: 1px solid #c5c7c8; }
+  border-bottom: 1px solid #c5c7c8;
+  color: black; }
   .notes-list .sort-group .group-body .note:hover {
     background-color: #F6F8FA; }
   .notes-list .sort-group .group-body .note:last-child {

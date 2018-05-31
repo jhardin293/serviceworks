@@ -186,9 +186,22 @@ const getNotes = () => {
 const newNote = (note) => {
   const noteRef = ref.collection('notes').doc();
   note.id = noteRef.id;
-  note.last_edit = new Date();
 
   noteRef.set(note)
+    .then((note) => {
+      store.dispatch({
+        type: 'GET_NOTES',
+        status: 'pending',
+        payload: store.getState().notes.notes
+      })
+     store.dispatch(getNotes());
+    })
+}
+
+const editNote = (note) => {
+  const noteRef = ref.collection('notes').doc(note.id);
+
+  noteRef.update(note)
     .then((note) => {
       store.dispatch({
         type: 'GET_NOTES',
@@ -979,25 +992,31 @@ class NotesComp extends Component {
 
     const notesList = notes.map((note)=> {
       return (
-        <div className="note" key={note.id}>
-          <div className="note-left">
-            <div className="note-text">
-              <div className="note-title">{note.title}</div>
-              <div className="note-body">
-                <p>{note.body}</p>
+        <Link 
+          key={note.id}
+          className="note"
+          to={{
+            pathname: "/notes/edit-note",
+            state: {note}
+        }} >
+            <div className="note-left">
+              <div className="note-text">
+                <div className="note-title">{note.title}</div>
+                <div className="note-body">
+                  <p>{note.body}</p>
+                </div>
+              </div>
+              <div className="note-img">
+                <img src={note.image} alt="note-img" />
               </div>
             </div>
-            <div className="note-img">
-              <img src={note.image} alt="note-img" />
+            <div className="note-right">
+              <div className="note-created ">
+                <span>{moment(note.last_edit).format('L')}</span>
+                <span>{moment(note.last_edit).format('LT')}</span>
+              </div>
             </div>
-          </div>
-          <div className="note-right">
-            <div className="note-created ">
-              <span>{moment(note.last_edit).format('L')}</span>
-              <span>{moment(note.last_edit).format('LT')}</span>
-            </div>
-          </div>
-        </div>
+        </Link>
       )
     })
     return (
@@ -1037,9 +1056,33 @@ const mapNoteStateToProps = state => ({
 const Notes = connect(mapNoteStateToProps, {getNotes})(NotesComp);
 
 
-// class EditNote extends Component {
+class EditNote extends Component {
+  note =   this.props.location.state.note
+  state = {
+    note: {
+      title: this.note.title,
+      body: this.note.body || '',
+      image: this.note.image || '',
+      id: this.note.id
+    },
+    exit: false
+  }
 
-// }
+  onSave = (e,note) => {
+    const noteClone = {...note};
+    noteClone.last_edit = new Date();
+    console.log(noteClone,'edit note clone')
+    editNote(noteClone);
+
+    this.setState({exit: true});
+  }
+
+  render() {
+    return (
+      <NoteDetails note={this.state.note} exit={this.state.exit} onSave={this.onSave}/>
+    )
+  }
+}
 
 class NewNote extends Component {
   state = {
@@ -1053,6 +1096,7 @@ class NewNote extends Component {
 
   onSave = (e,note) => {
     const noteClone = {...note};
+    noteClone.last_edit = new Date();
     newNote(noteClone);
 
     this.setState({exit: true});
@@ -1073,7 +1117,8 @@ class NoteDetails extends Component {
       note: {
         title: props.note.title,
         body: props.note.body,
-        image: props.note.image
+        image: props.note.image,
+        id: props.note.id || ''
       },
       onSave: props.onSave
     }
@@ -1099,6 +1144,7 @@ class NoteDetails extends Component {
    }
   }
   render() {
+    console.log(this.state.note,'not in det');
     if (this.props.exit === true) {
       return <Redirect to="/notes" />
     }
@@ -2252,6 +2298,7 @@ class App extends Component {
             <Route exact path="/schedule/new-job" component={NewJob} />
             <Route exact path="/schedule/edit-job" component={EditJob} />
             <Route exact path="/notes/new-note" component={NewNote} />
+            <Route exact path="/notes/edit-note" component={EditNote} />
             <Route exact path="/customers/new-customer" component={NewCustomer} />
             <Route exact path="/invoices/new-invoice" component={NewInvoice} />
             <Route exact path="/my-account/new-employee" component={NewEmployee} />
