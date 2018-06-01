@@ -106,6 +106,8 @@ function arrayToSentence(arr, options) {
 }
 
 //Actions 
+
+//Jobs
 const getJobs = () => {
   return (dispatch) => {
     let jobs = []
@@ -128,7 +130,6 @@ const newJob = (job) => {
 
   jobRef.set(job)
     .then((job) => {
-      console.log(job,'job saved');
       store.dispatch({
         type: 'GET_JOBS',
         status: 'pending',
@@ -166,6 +167,7 @@ const deleteJob = (id) => {
 }
 
 
+//Notes
 const getNotes = () => {
   return (dispatch) => {
     let notes = []
@@ -173,7 +175,6 @@ const getNotes = () => {
       snap.forEach((doc) => {
         notes.push(doc.data());
       })
-      console.log(notes,'notes list');
       dispatch({
         type: 'GET_NOTES',
         payload: notes,
@@ -236,16 +237,73 @@ const uploadImage = (file, id) => {
   });
 }
 
+//Customers
+const getCustomers = () => {
+  return (dispatch) => {
+    let customers = []
+    ref.collection('customers').get().then((snap) => {
+      snap.forEach((doc) => {
+        customers.push(doc.data());
+      })
+      dispatch({
+        type: 'GET_CUSTOMERS',
+        payload: customers,
+        status: 'success'
+      })
+    })   
+  }
+}
+
+const newCustomer = (customer) => {
+  const customerRef = ref.collection('customers').doc();
+  customer.id = customerRef.id;
+
+  customerRef.set(customer)
+    .then((customer) => {
+      store.dispatch({
+        type: 'GET_CUSTOMER',
+        status: 'pending',
+        payload: store.getState().customers.customers
+      })
+     store.dispatch(getCustomers());
+    })
+}
+
+const editCustomer = (customer) => {
+  const customerRef = ref.collection('customers').doc(customer.id);
+
+  customerRef.update(customer)
+    .then((customer) => {
+      store.dispatch({
+        type: 'GET_CUSTOMER',
+        status: 'pending',
+        payload: store.getState().customers.customers
+      })
+     store.dispatch(getCustomers());
+    })
+}
+
+
 //Reducers
 //I just want a reducer that controrls the jobs array
-const jobsInitState = {
-  jobs: [],
-  status: 'init'
+const initState = {
+  jobsInt: {
+    jobs: [],
+    status: 'init'
+  },
+  notesInt: {
+    notes: [],
+    status: 'init'
+  },
+  customersInt: {
+    customers: [],
+    status: 'init'
+  }
 }
 //So can I genericly call a dispatfh funcition with a string and payload and it automagicaly gets handled by the correct reducer.
 //How big does an average reducer get?
 //If I cant change the route of the view in the reducer do I change in it in a action or do I have to update the strore so that it is reflected in a a HOC?
-const jobsReducer = (state = jobsInitState, action) => {
+const jobsReducer = (state = initState.jobsInt, action) => {
   switch(action.type) {
     case 'GET_JOBS':
       return {
@@ -258,12 +316,7 @@ const jobsReducer = (state = jobsInitState, action) => {
   }
 }
 
-const notesInitState = {
-  notes: [],
-  status: 'init'
-}
-
-const notesReducer = (state = notesInitState, action) => {
+const notesReducer = (state = initState.notesInt, action) => {
   switch(action.type) {
     case 'GET_NOTES':
       return {
@@ -276,9 +329,23 @@ const notesReducer = (state = notesInitState, action) => {
   }
 }
 
+const customersReducer = (state = initState.customersInt, action) => {
+  switch(action.type) {
+    case 'GET_CUSTOMERS':
+      return {
+        ...state,
+        status: action.status,
+        customers: action.payload
+      }
+    default:
+      return state;
+  }
+}
+
 const rootReducer = combineReducers({
   jobs: jobsReducer,
-  notes: notesReducer
+  notes: notesReducer,
+  customers: customersReducer
 })
 
 //Store
@@ -318,7 +385,6 @@ class LocationSearchInput extends Component {
               {suggestions.map(suggestion => {
                 const className = 'suggestion-item';
                 // inline style for demonstration purpose
-                console.log(className,'class name');
                 const style = suggestion.active
                             ? { backgroundColor: '#fafafa', cursor: 'pointer' }
                             : { backgroundColor: '#ffffff', cursor: 'pointer' };
@@ -661,7 +727,6 @@ class ScheduleComp extends Component {
   }
 
   handleSelect = (date) => {
-    console.log(date,'date');
     this.setState({view: 'day', selectedDay: date.toDate()});
   }
 
@@ -773,10 +838,8 @@ class JobDetails extends Component {
     console.log(arguments, 'clicked')
   }
   render() {
-    console.log(this.state.job,'jobinit');
     const { customer, employees, start, end } = this.state.job;
     const allowDelete = this.state.allowDelete;
-    console.log(end,'end');
     const duration =  moment.duration(end.diff(start)).format("d [days]  h [hours]  m [minutes]");
     if (this.props.exit === true) {
       return <Redirect to="/" />
@@ -1215,17 +1278,125 @@ class NoteDetails extends Component {
 }
 
 
-class NewCustomer extends Component {
+class EditCustomer extends Component {
+  customer =   this.props.location.state.customer
+  state = {
+    customer: {
+      name: this.customer.name || '',
+      company: this.customer.company || '',
+      email: this.customer.email || '',
+      phone: this.customer.phone || '',
+      address: this.customer.address || '',
+      latLng: this.customer.latLng || {lat:37,lng:-122},
+      id: this.customer.id
+    },
+    exit: false
+  }
+
+  onSave = (customer) => {
+    const customerClone = {...customer};
+    customerClone.last_edit = new Date();
+    console.log(customerClone,'edit on save');
+    editCustomer(customerClone);
+
+    this.setState({exit: true});
+  }
+
   render() {
+    return (
+      <CustomerDetails customer={this.state.customer} onSave={this.onSave} exit={this.state.exit} />
+    )
+  }
+}
+class NewCustomer extends Component {
+  state = {
+    customer: {
+      name: '',
+      company: '',
+      email: '',
+      phone: '',
+      address: '',
+      latLng: {lat:37,lng:-122}
+    },
+    exit: false
+  }
+
+  onSave = (customer) => {
+    const customerClone = {...customer};
+    customerClone.last_edit = new Date();
+    newCustomer(customerClone);
+
+    this.setState({exit: true});
+  }
+  render() {
+    return (
+      <CustomerDetails customer={this.state.customer} onSave={this.onSave} exit={this.state.exit} />
+    )
+  }
+}
+
+class CustomerDetails extends Component {
+  constructor (props) {
+    super(props);
+    this.state = {
+      customer: {
+        name: props.customer.name,
+        company: props.customer.company,
+        email: props.customer.email,
+        phone: props.customer.phone,
+        address: props.customer.address,
+        latLng: props.customer.latLng,
+        id: props.customer.id || ''
+      }
+    }
+  }
+
+  onChange = (e) => {
+    this.setState({ customer: {...this.state.customer,[e.target.name]: e.target.value }});
+  }
+
+  getLocation = (address) => {
+    this.setState({customer:{...this.state.customer, address}})
+    geocodeByAddress(address)
+      .then(results => getLatLng(results[0]))
+      .then((latLng) => {
+        this.setState({customer:{...this.state.customer, latLng}})
+        console.log('Success', latLng);
+      })
+      .catch(error => console.error('Error', error))
+  }
+
+  onLocationChange = (address) => {
+    console.log(address, 'chang');
+    this.setState({customer:{...this.state.customer, address}})
+  }
+
+  onSave = () => {
+    this.props.onSave(this.state.customer);
+  }
+  headerDisplay = () => {
+    const customer = this.state.customer,
+    company = customer.company,
+    name = customer.name;
+    if (name && company) {
+      return name + " : " + company;
+    }else if (company) {
+      return company;
+    }else {
+      return name;
+    }
+  }
+  render() {
+    const customer = this.state.customer;
     return (
       <div className="new-customer-view person-view page-view">
         <div className="page-header">
-          <h1>New Customer</h1>
+          <h1>{this.headerDisplay() || 'New Customer'}</h1>
         </div>
         <div className="page-body">
           <div className="tab-btn-group">
             <Link to="/customers">
-              <button className="btn second-btn btn-success">Save customer</button>
+              <button className="btn second-btn btn-success" onClick={this.onSave}>Save customer</button>
             </Link>
           </div>
           <Tabs>
@@ -1239,72 +1410,47 @@ class NewCustomer extends Component {
             <TabPanel>
               <form className="person-form">
                 <div className="input-group">
-                  <label>
-                    Name and company
-                  </label>
                   <div className="col-2">
                     <div>
-                      <input type="text" placeholder="First name" />
-                    </div>
-                    <div>
-                      <input type="text" placeholder="Last name" />
-                    </div>
-                  </div>
-                  <div className="col-2">
-                    <div>
-                      <input type="text" placeholder="Company" />
-                    </div>
-                    <div>
-                      <input type="text" placeholder="Nickname" />
-                    </div>
-                  </div>
-                </div>
-                <div className="input-group">
-                  <label>
-                    Address
-                  </label>
-                  <div className="col-2 with-map">
-                    <div className="col-1">
-                      <input type="text" placeholder="Street address" />
-                      <input type="text" placeholder="Apt / suite / floor" />
-                      <input type="text" placeholder="City" />
-                      <input type="text" placeholder="State" />
-                      <div className="row col-80">
-                        <div>
-                          <select>
-                            <option>California</option>
-                            <option>New York</option>
-                          </select>
-                        </div>
-                        <div>
-                          <input type="text" placeholder="Zip code" />
-                        </div>
+                      <div>
+                        <label>
+                          Name
+                        </label>
+                        <input type="text" value={customer.name} name="name" onChange={this.onChange} />
+                      </div>
+                      <div>
+                        <label>
+                          Company
+                        </label>
+                        <input type="text" value={customer.company} name="company" onChange={this.onChange}/>
+                      </div>
+                      <div>
+                        <label>
+                          Email
+                        </label>
+                        <input type="text" value={customer.email} name="email"  onChange={this.onChange}/>
+                      </div>
+                      <div>
+                        <label>
+                          Phone
+                        </label>
+                        <input type="text" value={customer.phone} name="phone" onChange={this.onChange}/>
+                      </div>
+                      <div>
+                        <label>
+                          Address
+                        </label>
+                        <LocationSearchInput 
+                          getLocation={this.getLocation} 
+                          onLocationChange={this.onLocationChange} 
+                          address={this.state.customer.address}
+                        />
                       </div>
                     </div>
                     <div>
                       <div className="map">
+                        <Map  latLng={this.state.customer.latLng}/>
                       </div>
-                    </div>
-                  </div>
-                </div>
-                <div className="input-group">
-                  <label>
-                    Contact
-                  </label>
-                  <div className="col-2">
-                    <div>
-                      <input type="text" placeholder="Mobile phone" />
-                    </div>
-                    <div>
-                      <input type="text" placeholder="Home phone" />
-                    </div>
-                  </div>
-                  <div className="col-2">
-                    <div>
-                      <input type="text" placeholder="Email" />
-                    </div>
-                    <div>
-                      <input type="text" placeholder="Office phone" />
                     </div>
                   </div>
                 </div>
@@ -1524,8 +1670,39 @@ class NewCustomer extends Component {
   }
 }
 
-class Customers extends Component {
+class CustomersComp extends Component {
+  componentWillMount() {
+    this.props.getCustomers();
+  }
   render() {
+
+    const customers = this.props.customers.customers;
+    // const notes = this.props.notes.notes.sort((a,b)=> {
+    //   return b.last_edit - a.last_edit; 
+    // });
+    
+        
+
+    const customersList = customers.map((customer)=> {
+      return (
+        <tr key={customer.id}>
+          <td>
+            <Link 
+              key={customer.id}
+              to={{
+                pathname: "customers/edit-customer",
+                state: {customer}
+              }} >
+              {customer.name}
+            </Link>
+          </td>
+          <td>{customer.company || '' }</td>
+          <td>{customer.email}</td>
+          <td>{customer.phone}</td>
+        </tr>
+      )
+    })
+    console.log(this.props, 'props');
     return (
       <div className="customer-view page-view">
         <div className="page-header">
@@ -1546,24 +1723,7 @@ class Customers extends Component {
                 </tr>
               </thead>
               <tbody className="panel-body">
-                <tr>
-                  <td><Link to="customers/new-customer">Sally May</Link></td>
-                  <td>Mc Donalds</td>
-                  <td>sallyma@gmail.com</td>
-                  <td>415-747-2345</td>
-                </tr>
-                <tr>
-                  <td><Link to="customers/new-customer">Sally May</Link></td>
-                  <td>Mc Donalds</td>
-                  <td>sallyma@gmail.com</td>
-                  <td>415-747-2345</td>
-                </tr>
-                <tr>
-                  <td><Link to="customers/new-customer">Sally May</Link></td>
-                  <td>Mc Donalds</td>
-                  <td>sallyma@gmail.com</td>
-                  <td>415-747-2345</td>
-                </tr>
+                {customersList}
               </tbody>
             </table>
           </div>
@@ -1572,6 +1732,7 @@ class Customers extends Component {
     )
   }
 }
+const Customers = connect(state => ({ customers: state.customers}), {getCustomers})(CustomersComp);
 
 class Invoices extends Component {
   render() {
@@ -2335,6 +2496,7 @@ class App extends Component {
             <Route exact path="/notes/new-note" component={NewNote} />
             <Route exact path="/notes/edit-note" component={EditNote} />
             <Route exact path="/customers/new-customer" component={NewCustomer} />
+            <Route exact path="/customers/edit-customer" component={EditCustomer} />
             <Route exact path="/invoices/new-invoice" component={NewInvoice} />
             <Route exact path="/my-account/new-employee" component={NewEmployee} />
           </div>

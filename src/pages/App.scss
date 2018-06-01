@@ -579,8 +579,9 @@ a, .btn {
 
 .person-view {
   .map {
-    height: 285px;
     width: 100%;
+    margin-top: 21px;
+    height: 319px;
   }
   .tab-header {
     margin-bottom: 20px;
@@ -711,7 +712,7 @@ form {
   }
   .col-2 {
     display: flex;
-    align-items: flex-end;
+    // align-items: flex-end;
     > div  {
       &:first-child {
         margin-right: 20px;
