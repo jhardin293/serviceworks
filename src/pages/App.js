@@ -214,8 +214,8 @@ const editNote = (note) => {
 }
 
 const deleteNote = (id) => {
-  const jobRef = ref.collection('notes').doc(id);
-  jobRef.delete()
+  const noteRef = ref.collection('notes').doc(id);
+  noteRef.delete()
     .then(() => {
       store.dispatch({
         type: 'GET_NOTES',
@@ -280,6 +280,19 @@ const editCustomer = (customer) => {
         payload: store.getState().customers.customers
       })
      store.dispatch(getCustomers());
+    })
+}
+
+const deleteCustomer = (id) => {
+  const customerRef = ref.collection('customers').doc(id);
+  customerRef.delete()
+    .then(() => {
+      store.dispatch({
+        type: 'GET_CUSTOMER',
+        status: 'pending',
+        payload: store.getState().customers.customers
+      })
+     store.dispatch(getNotes());
     })
 }
 
@@ -1293,6 +1306,11 @@ class EditCustomer extends Component {
     exit: false
   }
 
+  onDelete = (id) => {
+    deleteCustomer(id);
+    this.setState({exit: true});
+  }
+
   onSave = (customer) => {
     const customerClone = {...customer};
     customerClone.last_edit = new Date();
@@ -1304,7 +1322,13 @@ class EditCustomer extends Component {
 
   render() {
     return (
-      <CustomerDetails customer={this.state.customer} onSave={this.onSave} exit={this.state.exit} />
+      <CustomerDetails 
+        customer={this.state.customer} 
+        onSave={this.onSave} 
+        exit={this.state.exit} 
+        allowDelete
+        onDelete={this.onDelete}
+      />
     )
   }
 }
@@ -1361,13 +1385,11 @@ class CustomerDetails extends Component {
       .then(results => getLatLng(results[0]))
       .then((latLng) => {
         this.setState({customer:{...this.state.customer, latLng}})
-        console.log('Success', latLng);
       })
       .catch(error => console.error('Error', error))
   }
 
   onLocationChange = (address) => {
-    console.log(address, 'chang');
     this.setState({customer:{...this.state.customer, address}})
   }
 
@@ -1387,7 +1409,12 @@ class CustomerDetails extends Component {
     }
   }
   render() {
-    const customer = this.state.customer;
+    const customer = this.state.customer,
+      allowDelete = this.props.allowDelete;
+
+    if (this.props.exit === true) {
+      return <Redirect to="/customers" />
+    }
     return (
       <div className="new-customer-view person-view page-view">
         <div className="page-header">
@@ -1395,6 +1422,16 @@ class CustomerDetails extends Component {
         </div>
         <div className="page-body">
           <div className="tab-btn-group">
+            <Link to="/customers">
+              <button className="btn second-btn btn-cancel ">Cancel</button>
+            </Link>
+            {allowDelete &&
+              <button 
+                className="btn second-btn btn-delete" 
+                onClick={(e)=> this.props.onDelete(customer.id, e)}>
+                Delete
+              </button>
+            }
             <Link to="/customers">
               <button className="btn second-btn btn-success" onClick={this.onSave}>Save customer</button>
             </Link>
