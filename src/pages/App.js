@@ -1713,12 +1713,18 @@ class CustomersComp extends Component {
   }
   render() {
 
-    const customers = this.props.customers.customers;
-    // const notes = this.props.notes.notes.sort((a,b)=> {
-    //   return b.last_edit - a.last_edit; 
-    // });
+    const customers = this.props.customers.customers.sort((a,b) => {
+      const nameA = a.name.toLowerCase(),
+        nameB = b.name.toLowerCase();
+      if (nameA < nameB) {
+        return -1;
+      }else if (nameA > nameB) {
+        return 1;
+      }else {
+        return 0;
+      }
+    });
     
-        
 
     const customersList = customers.map((customer)=> {
       return (
@@ -1739,7 +1745,7 @@ class CustomersComp extends Component {
         </tr>
       )
     })
-    console.log(this.props, 'props');
+
     return (
       <div className="customer-view page-view">
         <div className="page-header">
