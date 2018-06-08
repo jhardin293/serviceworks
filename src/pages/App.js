@@ -238,7 +238,9 @@ const uploadImage = (file, id) => {
 }
 
 //Customers
+
 const getCustomers = () => {
+  console.log(Promise, 'pC');
   return (dispatch) => {
     let customers = []
     ref.collection('customers').get().then((snap) => {
@@ -361,9 +363,17 @@ const rootReducer = combineReducers({
   customers: customersReducer
 })
 
+const vanillaPromise = store => next => action => {
+  console.log('action: ', action, 'in vp');
+  if (typeof action.then !== 'function') {
+    return next(action)
+  }
+  return Promise.resolve(action).then(store.dispatch);
+}
+
 //Store
 const initialState = {};
-const middleware = [thunk];
+const middleware = [thunk, vanillaPromise];
 const store = createStore(
   rootReducer, 
   initialState, 
@@ -786,7 +796,7 @@ const Schedule = connect(mapStateToProps, {getJobs})(ScheduleComp);
 
 
 
-class JobDetails extends Component {
+class JobDetailsComp extends Component {
   constructor (props) {
     super(props);
     this.state = {
@@ -801,12 +811,16 @@ class JobDetails extends Component {
         address: props.job.address || '',
       },
       exit: props.exit,
-      allowDelete: props.allowDelete
+      allowDelete: props.allowDelete,
     }
   }
 
   onChange = (e) => {
     this.setState({ job: {...this.state.job,[e.target.name]: e.target.value }});
+  }
+
+  componentWillMount() {
+    this.props.getCustomers();
   }
 
   getLocation = (address) => {
@@ -827,7 +841,11 @@ class JobDetails extends Component {
 
 
   handleCustomer = (customer) => {
-    this.setState({job: {...this.state.job, customer }});
+    if (customer.address && customer.latLng) {
+      this.setState({job: {...this.state.job, customer, latLng: customer.latLng, address: customer.address  }});
+    }else {
+      this.setState({job: {...this.state.job, customer }});
+    }
   }
 
   handleChange = ({ start, end }) => {
@@ -851,11 +869,24 @@ class JobDetails extends Component {
     console.log(arguments, 'clicked')
   }
   render() {
+    const customers = this.props.customers.customers;
+    let customersList = []
     const { customer, employees, start, end } = this.state.job;
     const allowDelete = this.state.allowDelete;
     const duration =  moment.duration(end.diff(start)).format("d [days]  h [hours]  m [minutes]");
     if (this.props.exit === true) {
       return <Redirect to="/" />
+    }
+    if (customers.length !== 0) {
+     customers.forEach((customer) => {
+      customersList.push(
+        {
+          label: customer.name,
+          latLng: customer.latLng,
+          address: customer.address
+        }
+      );
+     }) 
     }
     return (
       <div className="new-job-view page-view">
@@ -948,10 +979,7 @@ class JobDetails extends Component {
                           value={customer}
                           onChange={this.handleCustomer}
                           searchable
-                          options={[
-                            { value: 'Billy Joel', label: 'Billy Joel' },
-                            { value: 'Sarah Ann', label: 'Sarah Ann' },
-                          ]}
+                          options={customersList}
                         />
                       </div>
                     </div>
@@ -994,6 +1022,7 @@ class JobDetails extends Component {
     )
   }
 }
+const JobDetails = connect(state => ({ customers: state.customers}), {getCustomers})(JobDetailsComp);
 
 class NewJob extends Component {
   state = {
