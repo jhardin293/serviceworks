@@ -176,7 +176,7 @@ class SideNav extends Component {
       <aside className="side-nav">
         <div className="logo">
           <img src={logoImg} alt="logo" width="25" height="28" />
-          <h2>Despacito</h2>
+          <h2>Serviceworks</h2>
         </div>
         <div className="nav-items">
           <ul>
