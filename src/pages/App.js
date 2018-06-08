@@ -52,336 +52,40 @@ import {ref, storageRef} from '../config/constants'
 
 import { Provider } from 'react-redux'
 import { connect } from 'react-redux'
-import { createStore, applyMiddleware, compose } from 'redux'
-import thunk from 'redux-thunk'
-import { combineReducers } from 'redux'
 import GoogleMapReact from 'google-map-react';
 import PlacesAutocomplete, { geocodeByAddress, getLatLng } from 'react-places-autocomplete'
+import { arrayToSentence } from '../libs/array-to-sentence'
+import {
+  getJobs, 
+  newJob,
+  editJob,
+  deleteJob,
+  getNotes,
+  newNote,
+  editNote,
+  deleteNote,
+  uploadImage,
+  getCustomers,
+  newCustomer,
+  editCustomer,
+  deleteCustomer
+} from '../actions'
+import { store } from '../store'
 
 momentDurationFormatSetup(moment);
 BigCalendar.setLocalizer(BigCalendar.momentLocalizer(moment));
 
-const notesImgRef = storageRef.child('notes/');
 
 
 
 
 
-/*!
- * array-to-sentence | ISC (c) Shinnosuke Watanabe
- * https://github.com/shinnn/array-to-sentence
-*/
-var OPTION_NAMES = ['separator', 'lastSeparator'];
-function arrayToSentence(arr, options) {
-	if (!Array.isArray(arr)) {
-		throw new TypeError('Expected an array, but got a non-array value ' + arr + '.');
-	}
-
-	options = Object.assign({
-		separator: ', ',
-		lastSeparator: ' and ',
-	}, options);
-
-	for (var i = 0; i < 2; i++) {
-		if (typeof options[OPTION_NAMES[i]] !== 'string') {
-			throw new TypeError(
-				'Expected `' +
-				OPTION_NAMES[i] +
-				'` option to be a string, but got a non-string value ' +
-				options[OPTION_NAMES[i]] +
-				'.'
-			);
-		}
-	}
-
-	if (arr.length === 0) {
-		return '';
-	}
-
-	if (arr.length === 1) {
-		return arr[0];
-	}
-
-	return arr.slice(0, -1).join(options.separator) + options.lastSeparator + arr[arr.length - 1];
-}
-
-//Actions 
-
-//Jobs
-const getJobs = () => {
-  return (dispatch) => {
-    let jobs = []
-    ref.collection('jobs').get().then((snap) => {
-      snap.forEach((doc) => {
-        jobs.push(doc.data());
-      })
-      dispatch({
-        type: 'GET_JOBS',
-        payload: jobs,
-        status: 'success'
-      })
-    })   
-  }
-}
-
-const newJob = (job) => {
-  const jobRef = ref.collection('jobs').doc();
-  job.id = jobRef.id;
-
-  jobRef.set(job)
-    .then((job) => {
-      store.dispatch({
-        type: 'GET_JOBS',
-        status: 'pending',
-        payload: store.getState().jobs.jobs
-      })
-     store.dispatch(getJobs());
-    })
-}
-
-const editJob = (job) => {
-  const jobRef = ref.collection('jobs').doc(job.id);
-
-  jobRef.update(job)
-    .then((job) => {
-      store.dispatch({
-        type: 'GET_JOBS',
-        status: 'pending',
-        payload: store.getState().jobs.jobs
-      })
-     store.dispatch(getJobs());
-    })
-}
-
-const deleteJob = (id) => {
-  const jobRef = ref.collection('jobs').doc(id);
-  jobRef.delete()
-    .then(() => {
-      store.dispatch({
-        type: 'GET_JOBS',
-        status: 'pending',
-        payload: store.getState().jobs.jobs
-      })
-     store.dispatch(getJobs());
-    })
-}
 
 
-//Notes
-const getNotes = () => {
-  return (dispatch) => {
-    let notes = []
-    ref.collection('notes').get().then((snap) => {
-      snap.forEach((doc) => {
-        notes.push(doc.data());
-      })
-      dispatch({
-        type: 'GET_NOTES',
-        payload: notes,
-        status: 'success'
-      })
-    })   
-  }
-}
-
-const newNote = (note) => {
-  const noteRef = ref.collection('notes').doc();
-  note.id = noteRef.id;
-
-  noteRef.set(note)
-    .then((note) => {
-      store.dispatch({
-        type: 'GET_NOTES',
-        status: 'pending',
-        payload: store.getState().notes.notes
-      })
-     store.dispatch(getNotes());
-    })
-}
-
-const editNote = (note) => {
-  const noteRef = ref.collection('notes').doc(note.id);
-
-  noteRef.update(note)
-    .then((note) => {
-      store.dispatch({
-        type: 'GET_NOTES',
-        status: 'pending',
-        payload: store.getState().notes.notes
-      })
-     store.dispatch(getNotes());
-    })
-}
-
-const deleteNote = (id) => {
-  const noteRef = ref.collection('notes').doc(id);
-  noteRef.delete()
-    .then(() => {
-      store.dispatch({
-        type: 'GET_NOTES',
-        status: 'pending',
-        payload: store.getState().notes.notes
-      })
-     store.dispatch(getNotes());
-    })
-}
-
-const uploadImage = (file, id) => {
-  return new Promise((resolve, reject)=>{
-    notesImgRef.child(file.name).put(file).then((snapshot) => {
-        if (snapshot) {
-          const url = snapshot.downloadURL;
-          resolve(url);
-        }
-    });
-  });
-}
-
-//Customers
-
-const getCustomers = () => {
-  console.log(Promise, 'pC');
-  return (dispatch) => {
-    let customers = []
-    ref.collection('customers').get().then((snap) => {
-      snap.forEach((doc) => {
-        customers.push(doc.data());
-      })
-      dispatch({
-        type: 'GET_CUSTOMERS',
-        payload: customers,
-        status: 'success'
-      })
-    })   
-  }
-}
-
-const newCustomer = (customer) => {
-  const customerRef = ref.collection('customers').doc();
-  customer.id = customerRef.id;
-
-  customerRef.set(customer)
-    .then((customer) => {
-      store.dispatch({
-        type: 'GET_CUSTOMER',
-        status: 'pending',
-        payload: store.getState().customers.customers
-      })
-     store.dispatch(getCustomers());
-    })
-}
-
-const editCustomer = (customer) => {
-  const customerRef = ref.collection('customers').doc(customer.id);
-
-  customerRef.update(customer)
-    .then((customer) => {
-      store.dispatch({
-        type: 'GET_CUSTOMER',
-        status: 'pending',
-        payload: store.getState().customers.customers
-      })
-     store.dispatch(getCustomers());
-    })
-}
-
-const deleteCustomer = (id) => {
-  const customerRef = ref.collection('customers').doc(id);
-  customerRef.delete()
-    .then(() => {
-      store.dispatch({
-        type: 'GET_CUSTOMER',
-        status: 'pending',
-        payload: store.getState().customers.customers
-      })
-     store.dispatch(getNotes());
-    })
-}
 
 
-//Reducers
-//I just want a reducer that controrls the jobs array
-const initState = {
-  jobsInt: {
-    jobs: [],
-    status: 'init'
-  },
-  notesInt: {
-    notes: [],
-    status: 'init'
-  },
-  customersInt: {
-    customers: [],
-    status: 'init'
-  }
-}
-//So can I genericly call a dispatfh funcition with a string and payload and it automagicaly gets handled by the correct reducer.
-//How big does an average reducer get?
-//If I cant change the route of the view in the reducer do I change in it in a action or do I have to update the strore so that it is reflected in a a HOC?
-const jobsReducer = (state = initState.jobsInt, action) => {
-  switch(action.type) {
-    case 'GET_JOBS':
-      return {
-        ...state,
-        status: action.status,
-        jobs: action.payload
-      }
-    default:
-      return state;
-  }
-}
 
-const notesReducer = (state = initState.notesInt, action) => {
-  switch(action.type) {
-    case 'GET_NOTES':
-      return {
-        ...state,
-        status: action.status,
-        notes: action.payload
-      }
-    default:
-      return state;
-  }
-}
 
-const customersReducer = (state = initState.customersInt, action) => {
-  switch(action.type) {
-    case 'GET_CUSTOMERS':
-      return {
-        ...state,
-        status: action.status,
-        customers: action.payload
-      }
-    default:
-      return state;
-  }
-}
-
-const rootReducer = combineReducers({
-  jobs: jobsReducer,
-  notes: notesReducer,
-  customers: customersReducer
-})
-
-const vanillaPromise = store => next => action => {
-  console.log('action: ', action, 'in vp');
-  if (typeof action.then !== 'function') {
-    return next(action)
-  }
-  return Promise.resolve(action).then(store.dispatch);
-}
-
-//Store
-const initialState = {};
-const middleware = [thunk, vanillaPromise];
-const store = createStore(
-  rootReducer, 
-  initialState, 
-  compose(
-    applyMiddleware(...middleware),
-    window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__()
-  )
-);
 
 class LocationSearchInput extends Component {
   state = {
