@@ -76,17 +76,6 @@ momentDurationFormatSetup(moment);
 BigCalendar.setLocalizer(BigCalendar.momentLocalizer(moment));
 
 
-
-
-
-
-
-
-
-
-
-
-
 class LocationSearchInput extends Component {
   state = {
     address: this.props.address
