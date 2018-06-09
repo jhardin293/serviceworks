@@ -42,7 +42,6 @@ import {
   newJob,
   editJob,
   deleteJob,
-  getNotes,
   newNote,
   editNote,
   deleteNote,
@@ -55,6 +54,7 @@ import {
 import { store } from '../store'
 
 import { Schedule } from './Schedule'
+import { Notes } from './Notes'
 
 momentDurationFormatSetup(moment);
 
@@ -474,82 +474,6 @@ class MapSearch extends Component {
  
 
 
-
-
-class NotesComp extends Component {
-
-  componentWillMount() {
-    this.props.getNotes();
-  }
-  render() {
-    const notes = this.props.notes.notes.sort((a,b)=> {
-      return b.last_edit - a.last_edit; 
-    });
-
-    const notesList = notes.map((note)=> {
-      return (
-        <Link 
-          key={note.id}
-          className="note"
-          to={{
-            pathname: "/notes/edit-note",
-            state: {note}
-        }} >
-            <div className="note-left">
-              <div className="note-text">
-                <div className="note-title">{note.title}</div>
-                <div className="note-body">
-                  <p>{note.body}</p>
-                </div>
-              </div>
-              <div className="note-img">
-                <img src={note.image} alt="note-img" />
-              </div>
-            </div>
-            <div className="note-right">
-              <div className="note-created ">
-                <span>{moment(note.last_edit).format('L')}</span>
-                <span>{moment(note.last_edit).format('LT')}</span>
-              </div>
-            </div>
-        </Link>
-      )
-    })
-    return (
-      <div className="notes-view page-view">
-        <div className="page-header">
-          <h1>Notes</h1>
-          <Link to="notes/new-note">
-            <button className="notes-btn btn"><img src={plus} alt="" /><span>New note</span></button>
-          </Link>
-        </div>
-        <div className="page-body">
-          <div className="notes-list-wrapper">
-            <div className="notes-list panel">
-              <div className="header">
-                <h2>Note text</h2>
-                <h2>Updated</h2>
-              </div>
-              <div className="panel-body">
-                <div className="sort-group">
-                  {/* <div className="month-group"><span>March 2018</span></div> */}
-                  <div className="group-body">
-                    {notesList}
-                  </div>
-                </div>
-              </div>
-
-            </div>
-          </div>
-        </div>
-      </div>
-    )
-  }
-}
-const mapNoteStateToProps = state => ({
-  notes: state.notes
-});
-const Notes = connect(mapNoteStateToProps, {getNotes})(NotesComp);
 
 
 class EditNote extends Component {
