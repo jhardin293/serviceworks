@@ -6,7 +6,7 @@ import { getNotes } from '../../actions'
 
 
 
-import plus from '../images/plus.svg'
+import plus from '../../images/plus.svg'
 
 class NotesComp extends Component {
 

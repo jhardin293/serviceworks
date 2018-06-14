@@ -13,17 +13,21 @@ import Map from '../../components/Map'
 
 import {getJobs} from '../../actions'
 
-import plus from '../images/plus.svg'
-import chevron from '../images/chevron.svg'
-import employee from '../images/employee.png'
-import date from '../images/date.png'
-import customer from '../images/customer.png'
-import location from '../images/location.png'
+import plus from '../../images/plus.svg'
+import chevron from '../../images/chevron.svg'
+import employee from '../../images/employee.png'
+import date from '../../images/date.png'
+import customer from '../../images/customer.png'
+import location from '../../images/location.png'
 
 
 BigCalendar.setLocalizer(BigCalendar.momentLocalizer(moment));
 
 class SideCalendar extends Component {
+  static propTypes = {
+    jobs: PropTypes.array.isRequired,
+    handleSelect: PropTypes.func.isRequired 
+  }
 
   render() {
     const highlightDates = this.props.jobs.map((job) => {

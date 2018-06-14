@@ -1,8 +1,8 @@
 import React, { Component } from 'react'
 import { Link } from 'react-router-dom'
 
-import threeDots from '../images/three-dots.png'
-import plus from '../images/plus.svg'
+import threeDots from '../../images/three-dots.png'
+import plus from '../../images/plus.svg'
 
 export class Invoices extends Component {
   render() {

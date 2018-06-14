@@ -2,8 +2,8 @@ import React, { Component } from 'react'
 import { Tab, Tabs, TabList, TabPanel } from 'react-tabs'
 import { Link } from 'react-router-dom'
 
-import plus from '../images/plus.svg'
-import threeDots from '../images/three-dots.png'
+import plus from '../../images/plus.svg'
+import threeDots from '../../images/three-dots.png'
 
 export class MyAccount extends Component {
   render() {

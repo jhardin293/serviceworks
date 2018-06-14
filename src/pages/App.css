@@ -320,7 +320,7 @@ a, .btn {
     box-shadow: none;
     border: none; }
   .react-datepicker .react-datepicker__navigation {
-    background-image: url("./images/grey-chevron.svg");
+    background-image: url("../images/grey-chevron.svg");
     background-size: 5.75px 10.75px;
     width: 5.75px;
     height: 10.75px;

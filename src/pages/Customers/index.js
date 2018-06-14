@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom'
 import { connect } from 'react-redux'
 import { getCustomers } from '../../actions'
 
-import plus from '../images/plus.svg'
+import plus from '../../images/plus.svg'
 
 class CustomersComp extends Component {
   componentWillMount() {
