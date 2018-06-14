@@ -1,4 +1,5 @@
 import React, { Component } from 'react'
+import PropTypes from 'prop-types'
 import { Tab, Tabs, TabList, TabPanel } from 'react-tabs'
 import { Link, Redirect } from 'react-router-dom'
 import { geocodeByAddress, getLatLng } from 'react-places-autocomplete'
@@ -23,6 +24,13 @@ export class CustomerDetails extends Component {
         id: props.customer.id || ''
       }
     }
+  }
+
+  static propTypes = {
+    customer: PropTypes.object.isRequired,
+    onDelete: PropTypes.func.isRequired,
+    exit: PropTypes.bool.isRequired,
+    onSave: PropTypes.func.isRequired
   }
 
   onChange = (e) => {

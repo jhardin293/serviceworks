@@ -39,7 +39,7 @@ export class EditJob extends Component {
         onSave={this.onSave} 
         onDelete={this.onDelete}
         exit={this.state.exit} 
-        allowDelete="true"
+        allowDelete={true}
       />
     )
   }  

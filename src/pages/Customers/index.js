@@ -1,4 +1,5 @@
 import React, { Component } from 'react'
+import PropTypes from 'prop-types'
 import { Link } from 'react-router-dom'
 import { connect } from 'react-redux'
 import { getCustomers } from '../../actions'
@@ -6,6 +7,10 @@ import { getCustomers } from '../../actions'
 import plus from '../../images/plus.svg'
 
 class CustomersComp extends Component {
+  static propTypes = {
+    customers: PropTypes.object.isRequired,
+    getCustomers: PropTypes.func.isRequired
+  }
   componentWillMount() {
     this.props.getCustomers();
   }

@@ -5,7 +5,6 @@ import { store } from '../store'
 
 //Jobs
 export const getJobs = () => {
-  console.log('new action');
   return (dispatch) => {
     let jobs = []
     ref.collection('jobs').get().then((snap) => {
@@ -138,7 +137,6 @@ export const uploadImage = (file, id) => {
 
 //Customers
 export const getCustomers = () => {
-  console.log(Promise, 'pC');
   return (dispatch) => {
     let customers = []
     ref.collection('customers').get().then((snap) => {

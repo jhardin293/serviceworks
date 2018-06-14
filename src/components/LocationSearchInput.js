@@ -1,7 +1,14 @@
 import React, { Component } from 'react'
+import PropTypes from 'prop-types'
 import PlacesAutocomplete from 'react-places-autocomplete'
 
 export class LocationSearchInput extends Component {
+  static propTypes = {
+    address: PropTypes.string,
+    getLocation: PropTypes.func,
+    onLocationChange: PropTypes.func,
+  }
+
   state = {
     address: this.props.address
   }

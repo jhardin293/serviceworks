@@ -1,4 +1,5 @@
 import React, { Component } from 'react'
+import PropTypes from 'prop-types'
 import { uploadImage } from '../actions'
 import { Link, Redirect } from 'react-router-dom'
 
@@ -15,6 +16,14 @@ export class NoteDetails extends Component {
       onSave: props.onSave,
       allowDelete: props.allowDelete
     }
+  }
+
+  static propTypes = {
+    note: PropTypes.object.isRequired,
+    exit: PropTypes.bool.isRequired,
+    onSave: PropTypes.func.isRequired,
+    onDelete: PropTypes.func,
+    allowDelete: PropTypes.bool,
   }
 
   onChange = (e) => {

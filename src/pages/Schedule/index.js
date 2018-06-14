@@ -11,7 +11,7 @@ import onClickOutside from "react-onclickoutside";
 import BigCalendar from 'react-big-calendar'
 import Map from '../../components/Map'
 
-import {getJobs} from '../../actions'
+import { getJobs } from '../../actions'
 
 import plus from '../../images/plus.svg'
 import chevron from '../../images/chevron.svg'
@@ -164,6 +164,10 @@ class Toolbar extends Component {
 }
 
 class CustomEvent extends Component {
+  static propTypes = {
+    event: PropTypes.object.isRequired,
+  }
+
   state = {
     isOpen: false,
   }

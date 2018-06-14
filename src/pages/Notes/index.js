@@ -1,4 +1,5 @@
 import React, { Component } from 'react'
+import PropTypes from 'prop-types'
 import moment from 'moment'
 import { Link } from 'react-router-dom'
 import { connect } from 'react-redux'
@@ -9,6 +10,10 @@ import { getNotes } from '../../actions'
 import plus from '../../images/plus.svg'
 
 class NotesComp extends Component {
+  static propTypes = {
+    getNotes: PropTypes.func.isRequired,
+    notes: PropTypes.object.isRequired
+  }
 
   componentWillMount() {
     this.props.getNotes();

@@ -1,9 +1,15 @@
 import React, { Component } from 'react'
+import PropTypes from 'prop-types'
 import GoogleMapReact from 'google-map-react';
 
 import mapMarker from './images/map-marker.svg'
 
 class MapMarker extends Component {
+  static propTypes = {
+    lat: PropTypes.number,
+    lng: PropTypes.number
+  }
+
   render() {
     return(
       <div>
@@ -14,6 +20,11 @@ class MapMarker extends Component {
 }
 
 export default class Map extends Component {
+  static propTypes = {
+    latLng: PropTypes.object.isRequired,
+    zoom: PropTypes.number
+  }
+
   static defaultProps = {
     zoom: 11,
   };

@@ -3,7 +3,6 @@ import thunk from 'redux-thunk'
 import { rootReducer } from '../reducers'
 
 const vanillaPromise = store => next => action => {
-  console.log('action: ', action, 'in vp');
   if (typeof action.then !== 'function') {
     return next(action)
   }

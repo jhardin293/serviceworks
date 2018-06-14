@@ -1,4 +1,5 @@
 import React, { Component } from 'react'
+import PropTypes from 'prop-types'
 import { geocodeByAddress, getLatLng } from 'react-places-autocomplete'
 import { Tab, Tabs, TabList, TabPanel } from 'react-tabs'
 import DatePicker from 'react-datepicker'
@@ -28,6 +29,16 @@ class JobDetailsComp extends Component {
     }
   }
 
+  static propTypes = {
+    job: PropTypes.object.isRequired,
+    customers: PropTypes.object.isRequired,
+    getCustomers: PropTypes.func.isRequired,
+    exit: PropTypes.bool.isRequired,
+    onSave: PropTypes.func.isRequired,
+    onDelete: PropTypes.func,
+    allowDelete: PropTypes.bool,
+  }
+
   onChange = (e) => {
     this.setState({ job: {...this.state.job,[e.target.name]: e.target.value }});
   }
@@ -42,13 +53,11 @@ class JobDetailsComp extends Component {
       .then(results => getLatLng(results[0]))
       .then((latLng) => {
         this.setState({job:{...this.state.job, latLng}})
-        console.log('Success', latLng);
       })
       .catch(error => console.error('Error', error))
   }
 
   onLocationChange = (address) => {
-    console.log(address, 'chang');
     this.setState({job:{...this.state.job, address}})
   }
 
