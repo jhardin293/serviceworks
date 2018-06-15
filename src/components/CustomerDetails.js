@@ -28,7 +28,7 @@ export class CustomerDetails extends Component {
 
   static propTypes = {
     customer: PropTypes.object.isRequired,
-    onDelete: PropTypes.func.isRequired,
+    onDelete: PropTypes.func,
     exit: PropTypes.bool.isRequired,
     onSave: PropTypes.func.isRequired
   }

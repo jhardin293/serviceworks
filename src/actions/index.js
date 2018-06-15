@@ -35,21 +35,37 @@ const post = (item, path, action, getData) => {
     })
 }
 
-//Ex
-// export const newJob = (job) => {
-//   const jobRef = ref.collection('jobs').doc();
-//   job.id = jobRef.id;
+const update = (item, path, action, getData) => {
+  const itemRef = ref.collection(path).doc(item.id);
 
-//   jobRef.set(job)
-//     .then((job) => {
-//       store.dispatch({
-//         type: 'GET_JOBS',
-//         status: 'pending',
-//         payload: store.getState().jobs.jobs
-//       })
-//      store.dispatch(getJobs());
-//     })
-// }
+  itemRef.set(item)
+    .then((item) => {
+      store.dispatch({
+        type: action,
+        status: 'pending',
+        payload: store.getState()[path][path]
+      })
+      if (getData) {
+        store.dispatch(getData());
+      }
+    })
+}
+
+const remove = (id, path, action, getData) => {
+  const itemRef = ref.collection(path).doc(id);
+
+  itemRef.delete()
+    .then(() => {
+      store.dispatch({
+        type: action,
+        status: 'pending',
+        payload: store.getState()[path][path]
+      })
+      if (getData) {
+        store.dispatch(getData());
+      }
+    })
+}
 
 
 //Jobs
@@ -62,30 +78,11 @@ export const newJob = (job) => {
 }
 
 export const editJob = (job) => {
-  const jobRef = ref.collection('jobs').doc(job.id);
-
-  jobRef.update(job)
-    .then((job) => {
-      store.dispatch({
-        type: 'GET_JOBS',
-        status: 'pending',
-        payload: store.getState().jobs.jobs
-      })
-     store.dispatch(getJobs());
-    })
+  update(job, 'jobs', 'GET_JOBS', getJobs);
 }
 
 export const deleteJob = (id) => {
-  const jobRef = ref.collection('jobs').doc(id);
-  jobRef.delete()
-    .then(() => {
-      store.dispatch({
-        type: 'GET_JOBS',
-        status: 'pending',
-        payload: store.getState().jobs.jobs
-      })
-     store.dispatch(getJobs());
-    })
+  remove(id, 'jobs', 'GET_JOBS', getJobs);
 }
 
 
@@ -96,45 +93,14 @@ export const getNotes = () => {
 
 export const newNote = (note) => {
   post(note, 'notes', 'GET_NOTES', getNotes);
-  // const noteRef = ref.collection('notes').doc();
-  // note.id = noteRef.id;
-
-  // noteRef.set(note)
-  //   .then((note) => {
-  //     store.dispatch({
-  //       type: 'GET_NOTES',
-  //       status: 'pending',
-  //       payload: store.getState().notes.notes
-  //     })
-  //    store.dispatch(getNotes());
-  //   })
 }
 
 export const editNote = (note) => {
-  const noteRef = ref.collection('notes').doc(note.id);
-
-  noteRef.update(note)
-    .then((note) => {
-      store.dispatch({
-        type: 'GET_NOTES',
-        status: 'pending',
-        payload: store.getState().notes.notes
-      })
-     store.dispatch(getNotes());
-    })
+  update(note, 'notes', 'GET_NOTES', getNotes);
 }
 
 export const deleteNote = (id) => {
-  const noteRef = ref.collection('notes').doc(id);
-  noteRef.delete()
-    .then(() => {
-      store.dispatch({
-        type: 'GET_NOTES',
-        status: 'pending',
-        payload: store.getState().notes.notes
-      })
-     store.dispatch(getNotes());
-    })
+  remove(id, 'notes', 'GET_NOTES', getNotes);
 }
 
 export const uploadImage = (file, id) => {
@@ -156,43 +122,13 @@ export const getCustomers = () => {
 }
 
 export const newCustomer = (customer) => {
-  const customerRef = ref.collection('customers').doc();
-  customer.id = customerRef.id;
-
-  customerRef.set(customer)
-    .then((customer) => {
-      store.dispatch({
-        type: 'GET_CUSTOMER',
-        status: 'pending',
-        payload: store.getState().customers.customers
-      })
-     store.dispatch(getCustomers());
-    })
+  post(customer, 'customers', 'GET_CUSTOMERS', getCustomers);
 }
 
 export const editCustomer = (customer) => {
-  const customerRef = ref.collection('customers').doc(customer.id);
-
-  customerRef.update(customer)
-    .then((customer) => {
-      store.dispatch({
-        type: 'GET_CUSTOMER',
-        status: 'pending',
-        payload: store.getState().customers.customers
-      })
-     store.dispatch(getCustomers());
-    })
+  update(customer, 'customers', 'GET_CUSTOMERS', getCustomers);
 }
 
 export const deleteCustomer = (id) => {
-  const customerRef = ref.collection('customers').doc(id);
-  customerRef.delete()
-    .then(() => {
-      store.dispatch({
-        type: 'GET_CUSTOMER',
-        status: 'pending',
-        payload: store.getState().customers.customers
-      })
-     store.dispatch(getNotes());
-    })
+  remove(id, 'customers', 'GET_CUSTOMERS', getCustomers);
 }
