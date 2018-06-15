@@ -14,7 +14,7 @@ class CustomerDropdown extends Component {
   }
 
   componentWillMount() {
-    getCustomers();
+    this.props.getCustomers();
   }
   
   render() {

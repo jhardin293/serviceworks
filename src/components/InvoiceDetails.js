@@ -42,8 +42,6 @@ export class InvoiceDetails extends Component {
   }
   render() {
     const { customer, selectedBilling } = this.state.invoice;
-    console.log(customer, 'customer');
-    console.log(this.state.invoice,'state');
     return (
       <div className="new-invoice-view page-view">
         <div className="page-header">

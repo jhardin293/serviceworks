@@ -6,12 +6,10 @@ import DatePicker from 'react-datepicker'
 import Select from 'react-select'
 import { MapSearch } from './MapSearch'
 import { Link, Redirect } from 'react-router-dom'
-import { connect } from 'react-redux'
 import moment from 'moment'
 import CustomerDropdown from '../components/CustomerDropdown'
-import { getCustomers } from '../actions'
 
-class JobDetailsComp extends Component {
+export class JobDetails extends Component {
   constructor (props) {
     super(props);
     this.state = {
@@ -32,8 +30,6 @@ class JobDetailsComp extends Component {
 
   static propTypes = {
     job: PropTypes.object.isRequired,
-    customers: PropTypes.object.isRequired,
-    getCustomers: PropTypes.func.isRequired,
     exit: PropTypes.bool.isRequired,
     onSave: PropTypes.func.isRequired,
     onDelete: PropTypes.func,
@@ -42,10 +38,6 @@ class JobDetailsComp extends Component {
 
   onChange = (e) => {
     this.setState({ job: {...this.state.job,[e.target.name]: e.target.value }});
-  }
-
-  componentWillMount() {
-    this.props.getCustomers();
   }
 
   getLocation = (address) => {
@@ -229,4 +221,3 @@ class JobDetailsComp extends Component {
     )
   }
 }
-export const JobDetails = connect(state => ({ customers: state.customers}), {getCustomers})(JobDetailsComp);
