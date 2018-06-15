@@ -1,23 +1,27 @@
 import {ref, storageRef} from '../config/constants'
 import { store } from '../store'
 
+//WIP
+const get = (path, action) => {
+  return (dispatch) => {
+    let data = []
+    ref.collection(path).get().then((snap) => {
+      snap.forEach((doc) => {
+        data.push(doc.data());
+      })
+      dispatch({
+        type: action,
+        payload: data,
+        status: 'success'
+      })
+    })
+  }
+}
 
 
 //Jobs
 export const getJobs = () => {
-  return (dispatch) => {
-    let jobs = []
-    ref.collection('jobs').get().then((snap) => {
-      snap.forEach((doc) => {
-        jobs.push(doc.data());
-      })
-      dispatch({
-        type: 'GET_JOBS',
-        payload: jobs,
-        status: 'success'
-      })
-    })   
-  }
+  return get('jobs', 'GET_JOBS');
 }
 
 export const newJob = (job) => {
@@ -65,19 +69,7 @@ export const deleteJob = (id) => {
 
 //Notes
 export const getNotes = () => {
-  return (dispatch) => {
-    let notes = []
-    ref.collection('notes').get().then((snap) => {
-      snap.forEach((doc) => {
-        notes.push(doc.data());
-      })
-      dispatch({
-        type: 'GET_NOTES',
-        payload: notes,
-        status: 'success'
-      })
-    })   
-  }
+  return get('notes', 'GET_NOTES');
 }
 
 export const newNote = (note) => {
@@ -137,19 +129,7 @@ export const uploadImage = (file, id) => {
 
 //Customers
 export const getCustomers = () => {
-  return (dispatch) => {
-    let customers = []
-    ref.collection('customers').get().then((snap) => {
-      snap.forEach((doc) => {
-        customers.push(doc.data());
-      })
-      dispatch({
-        type: 'GET_CUSTOMERS',
-        payload: customers,
-        status: 'success'
-      })
-    })   
-  }
+  return get('customers', 'GET_CUSTOMERS');
 }
 
 export const newCustomer = (customer) => {
