@@ -1,7 +1,7 @@
 import {ref, storageRef} from '../config/constants'
 import { store } from '../store'
 
-//WIP
+
 const get = (path, action) => {
   return (dispatch) => {
     let data = []
@@ -18,6 +18,39 @@ const get = (path, action) => {
   }
 }
 
+const post = (item, path, action, getData) => {
+  const itemRef = ref.collection(path).doc();
+  item.id = itemRef.id;
+
+  itemRef.set(item)
+    .then((item) => {
+      store.dispatch({
+        type: action,
+        status: 'pending',
+        payload: store.getState()[path][path]
+      })
+      if (getData) {
+        store.dispatch(getData());
+      }
+    })
+}
+
+//Ex
+// export const newJob = (job) => {
+//   const jobRef = ref.collection('jobs').doc();
+//   job.id = jobRef.id;
+
+//   jobRef.set(job)
+//     .then((job) => {
+//       store.dispatch({
+//         type: 'GET_JOBS',
+//         status: 'pending',
+//         payload: store.getState().jobs.jobs
+//       })
+//      store.dispatch(getJobs());
+//     })
+// }
+
 
 //Jobs
 export const getJobs = () => {
@@ -25,18 +58,7 @@ export const getJobs = () => {
 }
 
 export const newJob = (job) => {
-  const jobRef = ref.collection('jobs').doc();
-  job.id = jobRef.id;
-
-  jobRef.set(job)
-    .then((job) => {
-      store.dispatch({
-        type: 'GET_JOBS',
-        status: 'pending',
-        payload: store.getState().jobs.jobs
-      })
-     store.dispatch(getJobs());
-    })
+  post(job, 'jobs', 'GET_JOBS', getJobs);
 }
 
 export const editJob = (job) => {
@@ -73,18 +95,19 @@ export const getNotes = () => {
 }
 
 export const newNote = (note) => {
-  const noteRef = ref.collection('notes').doc();
-  note.id = noteRef.id;
+  post(note, 'notes', 'GET_NOTES', getNotes);
+  // const noteRef = ref.collection('notes').doc();
+  // note.id = noteRef.id;
 
-  noteRef.set(note)
-    .then((note) => {
-      store.dispatch({
-        type: 'GET_NOTES',
-        status: 'pending',
-        payload: store.getState().notes.notes
-      })
-     store.dispatch(getNotes());
-    })
+  // noteRef.set(note)
+  //   .then((note) => {
+  //     store.dispatch({
+  //       type: 'GET_NOTES',
+  //       status: 'pending',
+  //       payload: store.getState().notes.notes
+  //     })
+  //    store.dispatch(getNotes());
+  //   })
 }
 
 export const editNote = (note) => {
