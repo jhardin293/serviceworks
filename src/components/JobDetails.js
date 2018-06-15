@@ -8,6 +8,7 @@ import { MapSearch } from './MapSearch'
 import { Link, Redirect } from 'react-router-dom'
 import { connect } from 'react-redux'
 import moment from 'moment'
+import CustomerDropdown from '../components/CustomerDropdown'
 import { getCustomers } from '../actions'
 
 class JobDetailsComp extends Component {
@@ -91,24 +92,11 @@ class JobDetailsComp extends Component {
     console.log(arguments, 'clicked')
   }
   render() {
-    const customers = this.props.customers.customers;
-    let customersList = []
     const { customer, employees, start, end } = this.state.job;
     const allowDelete = this.state.allowDelete;
     const duration =  moment.duration(end.diff(start)).format("d [days]  h [hours]  m [minutes]");
     if (this.props.exit === true) {
       return <Redirect to="/" />
-    }
-    if (customers.length !== 0) {
-     customers.forEach((customer) => {
-      customersList.push(
-        {
-          label: customer.name,
-          latLng: customer.latLng,
-          address: customer.address
-        }
-      );
-     }) 
     }
     return (
       <div className="new-job-view page-view">
@@ -196,12 +184,9 @@ class JobDetailsComp extends Component {
                         <h2>Customer</h2>
                       </div>
                       <div className="panel-body">
-                        <Select
-                          name="form-field-name"
+                        <CustomerDropdown 
+                          onChange={this.handleCustomer} 
                           value={customer}
-                          onChange={this.handleCustomer}
-                          searchable
-                          options={customersList}
                         />
                       </div>
                     </div>
