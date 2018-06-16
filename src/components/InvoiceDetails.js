@@ -7,7 +7,6 @@ import { Tab, Tabs, TabList, TabPanel } from 'react-tabs'
 import threeDots from '../images/three-dots.png'
 import CustomerDropdown from '../components/CustomerDropdown'
 import moment from 'moment'
-import isEqual from 'lodash.isequal'
 
 export class InvoiceDetails extends Component {
   constructor(props) {
@@ -18,17 +17,18 @@ export class InvoiceDetails extends Component {
         title: invoice.title,
         customer: invoice.customer,
         dueDate: moment(invoice.dueDate),
+        total: '',
         labor: {
           0: {
             key: 0,
             item: '',
-            rate: 75,
+            rate: '',
             billing: {
               label: 'Hourly',
               value: 'hourly'
             },
-            hours: 2,
-            total: 150
+            hours: '',
+            total: ''
           }
         }
       },
@@ -45,20 +45,44 @@ export class InvoiceDetails extends Component {
   }
 
   onLineItemChange = (e) => {
-    const idx = e.target.dataset.idx;
+    const idx = e.target.dataset.idx,
+      name = e.target.name,
+      value = e.target.value
 
-    this.setState(
-      {
+    this.setState((prevState, props) => {
+      return {
         invoice: {
           ...this.state.invoice, labor: {
             ...this.state.invoice.labor, [idx]: {
-              ...this.state.invoice.labor[idx], [e.target.name]: e.target.value
+              ...this.state.invoice.labor[idx], [name]: value
             }
           }
         }
       }
-    )
-    // this.LineItemTotal();
+    }, () => {
+      const lineItem = this.state.invoice.labor[idx];
+      const rate = +lineItem.rate,
+        hours = +lineItem.hours,
+        billing = lineItem.billing.value;
+      let total = 0
+
+      const setTotal = () => {
+        this.setState({
+          invoice: {
+            ...this.state.invoice, labor: {
+              ...this.state.invoice.labor, [idx]: {
+                ...this.state.invoice.labor[idx], total
+              }
+            }
+          }
+        })
+      }
+
+      if (billing === 'hourly') {
+        total = rate * hours;
+        setTotal();
+      }
+    })
   }
 
 
@@ -80,47 +104,38 @@ export class InvoiceDetails extends Component {
         }
       }
     )
-    // this.LineItemTotal();
   }
 
-  LineItemTotal = () => {
-    const laborLineItems = Object.values(this.state.invoice.labor);
-    laborLineItems.forEach((lineItem, idx) => {
-      const rate = +lineItem.rate,
-        hours = +lineItem.hours,
-        billing = lineItem.billing.value;
-      let total = +lineItem.total;
-
-      if (billing === 'hourly') {
-        total = rate * hours;
-        this.setState(
-          {
-            invoice: {
-              ...this.state.invoice, labor: {
-                ...this.state.invoice.labor, [idx]: {
-                  ...this.state.invoice.labor[idx], total
-                }
-              }
+  newLineItem = (type) => {
+    if (type === 'labor') {
+      const laborList = Object.values(this.state.invoice.labor);
+      const newIdx = laborList.length;
+      const laborObj = {
+        key: +newIdx,
+        item: '',
+        rate: '',
+        billing: {
+          label: 'Hourly',
+          value: 'hourly'
+        },
+        hours: '',
+        total: ''
+      }
+      this.setState(
+        {
+          invoice: {
+            ...this.state.invoice, labor: {
+              ...this.state.invoice.labor, [newIdx]: laborObj
             }
           }
-        )
-      }
-      console.log('rate: ', rate, 'hours: ', hours, 'billing: ', billing, 'total: ');
-    })
-  }
-
-  componentDidMount() {
-    this.LineItemTotal();
-  }
-
-  componentDidUpdate(prevProps, prevState) {
-    if (isEqual(prevState, this.state) !== true) {
-      this.LineItemTotal();
+        }
+      )
     }
   }
 
+
+
   render() {
-    // this.LineItemTotal();
     const { customer } = this.state.invoice;
     const labor = Object.values(this.state.invoice.labor);
     let laborLineItems = [];
@@ -254,7 +269,7 @@ export class InvoiceDetails extends Component {
                   <tbody className="panel-body">
                     {laborLineItems}
                     <tr className="new-line-item">
-                      <td colSpan="8"><span>+ New line item</span></td>
+                      <td colSpan="5" onClick={() => this.newLineItem('labor')}><span>+ New line item</span></td>
                     </tr>
                   </tbody>
                 </table>
