@@ -32,16 +32,17 @@ export class InvoiceDetails extends Component {
   }
 
   handleCustomer = (customer) => {
-    this.setState({ customer });
+    this.setState({ invoice: {...this.state.invoice, customer}});    
   }
-  handleDate = (date) => {
-    this.setState({ start: date });
+  handleDate = (dueDate) => {
+    this.setState({ invoice: {...this.state.invoice, dueDate}});    
   }
   handleBilling = (option) => {
     this.setState({ selectedBilling: option });
   }
   render() {
     const { customer, selectedBilling } = this.state.invoice;
+    console.log(this.state.invoice, 'state');
     return (
       <div className="new-invoice-view page-view">
         <div className="page-header">
@@ -73,7 +74,7 @@ export class InvoiceDetails extends Component {
                   <div>
                     <label>Due date</label>
                     <DatePicker
-                      selected={this.state.start}
+                      selected={this.state.invoice.dueDate}
                       onChange={this.handleDate}
                       placeholderText="Due date"
                     />

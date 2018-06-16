@@ -32,7 +32,6 @@ class CustomerDropdown extends Component {
       );
      }) 
     }
-    console.log(customersList,'list');
     return (
       <Select
         name="form-field-name"
