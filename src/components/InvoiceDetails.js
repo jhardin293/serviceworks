@@ -9,7 +9,7 @@ import CustomerDropdown from '../components/CustomerDropdown'
 import moment from 'moment'
 
 export class InvoiceDetails extends Component {
-  constructor (props) {
+  constructor(props) {
     super(props);
     const invoice = props.invoice;
     this.state = {
@@ -17,7 +17,20 @@ export class InvoiceDetails extends Component {
         title: invoice.title,
         customer: invoice.customer,
         selectedBilling: invoice.selectedBilling,
-        dueDate: moment(invoice.dueDate)
+        dueDate: moment(invoice.dueDate),
+        labor: {
+          0: {
+            key: 0,
+            item: '',
+            rate: 0.00,
+            billing: {
+              label: ''
+            },
+            hours: 0,
+            discount: 0,
+            total: 0
+          }
+        }
       },
       exit: props.exit,
       allowDelete: props.allowDelete
@@ -28,21 +41,81 @@ export class InvoiceDetails extends Component {
   }
 
   onChange = (e) => {
-    this.setState({ invoice: {...this.state.invoice,[e.target.name]: e.target.value }});
+    this.setState({ invoice: { ...this.state.invoice, [e.target.name]: e.target.value } });
+  }
+
+  onLineItemChange = (e) => {
+    const idx = e.target.dataset.idx;
+
+    this.setState(
+      {
+        invoice: {
+          ...this.state.invoice, labor: {
+            ...this.state.invoice.labor, [idx]: {
+              ...this.state.invoice.labor[idx], [e.target.name]: e.target.value
+            }
+          }
+        }
+      }
+    )
+    console.log(e.target, 'line item');
   }
 
   handleCustomer = (customer) => {
-    this.setState({ invoice: {...this.state.invoice, customer}});    
+    this.setState({ invoice: { ...this.state.invoice, customer } });
   }
   handleDate = (dueDate) => {
-    this.setState({ invoice: {...this.state.invoice, dueDate}});    
+    this.setState({ invoice: { ...this.state.invoice, dueDate } });
   }
   handleBilling = (option) => {
     this.setState({ selectedBilling: option });
   }
   render() {
-    const { customer, selectedBilling } = this.state.invoice;
+    const { customer, selectedBilling} = this.state.invoice;
+    const labor = Object.values(this.state.invoice.labor);
     console.log(this.state.invoice, 'state');
+    let laborLineItems = [];
+    laborLineItems = labor.map((item, idx) => {
+      return (
+        <tr className="line-item" key={idx}>
+          <td className="description">
+            <input 
+              type="text" 
+              name="item"
+              data-idx={idx}
+              placeholder="Enter line item or description..." 
+              onChange={this.onLineItemChange}
+              value={this.state.invoice.labor[idx].item}
+            />
+          </td>
+          <td><input type="text" placeholder="$0.00" /></td>
+          <td>
+            <Select
+              name="form-field-name"
+              value={selectedBilling}
+              onChange={this.handleBilling}
+              searchable
+              placeholder="Hourly"
+              options={[
+                { value: 'hourly', label: 'Hourly' },
+                { value: 'fixed', label: 'Fixed' },
+                { value: 'quantity', label: 'Quantity' },
+              ]}
+            />
+          </td>
+          <td><input type="text" placeholder="0" /></td>
+          <td><input type="text" placeholder="0" /></td>
+          <td><input type="text" placeholder="0" /></td>
+          <td>
+            <div className="line-total">
+              <span className="line-value">$500,000</span>
+              <img src={threeDots} alt="item-menu" />
+            </div>
+          </td>
+        </tr>
+      )
+    })
+
     return (
       <div className="new-invoice-view page-view">
         <div className="page-header">
@@ -57,8 +130,8 @@ export class InvoiceDetails extends Component {
               <div className="col-2">
                 <div>
                   <label>Customer</label>
-                  <CustomerDropdown 
-                    onChange={this.handleCustomer} 
+                  <CustomerDropdown
+                    onChange={this.handleCustomer}
                     value={customer}
                   />
                 </div>
@@ -83,11 +156,11 @@ export class InvoiceDetails extends Component {
               </div>
               <div>
                 <label>Title</label>
-                <input 
-                  type="text" 
+                <input
+                  type="text"
                   name="title"
-                  placeholder="Untitled invoice" 
-                  value={this.state.invoice.title} 
+                  placeholder="Untitled invoice"
+                  value={this.state.invoice.title}
                   onChange={this.onChange}
                 />
               </div>
@@ -117,33 +190,7 @@ export class InvoiceDetails extends Component {
                     </tr>
                   </thead>
                   <tbody className="panel-body">
-                    <tr className="line-item">
-                      <td className="description"><input type="text" placeholder="Enter line item or description..." /></td>
-                      <td><input type="text" placeholder="$0.00" /></td>
-                      <td>
-                        <Select
-                          name="form-field-name"
-                          value={selectedBilling}
-                          onChange={this.handleBilling}
-                          searchable
-                          placeholder="Hourly"
-                          options={[
-                            { value: 'hourly', label: 'Hourly' },
-                            { value: 'fixed', label: 'Fixed' },
-                            { value: 'quantity', label: 'Quantity' },
-                          ]}
-                        />
-                      </td>
-                      <td><input type="text" placeholder="0" /></td>
-                      <td><input type="text" placeholder="0" /></td>
-                      <td><input type="text" placeholder="0" /></td>
-                      <td>
-                        <div className="line-total">
-                          <span className="line-value">$500,000</span>
-                          <img src={threeDots} alt="item-menu" />
-                        </div>
-                      </td>
-                    </tr>
+                    {laborLineItems}
                     <tr className="line-item">
                       <td className="description"><input type="text" placeholder="Enter line item or description..." /></td>
                       <td><input type="text" placeholder="$0.00" /></td>
