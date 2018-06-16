@@ -16,18 +16,17 @@ export class InvoiceDetails extends Component {
       invoice: {
         title: invoice.title,
         customer: invoice.customer,
-        selectedBilling: invoice.selectedBilling,
         dueDate: moment(invoice.dueDate),
         labor: {
           0: {
             key: 0,
             item: '',
-            rate: 0.00,
+            rate: '',
             billing: {
-              label: ''
+              label: 'Hourly',
+              value: 'hourly'
             },
-            hours: 0,
-            discount: 0,
+            hours: '',
             total: 0
           }
         }
@@ -67,45 +66,71 @@ export class InvoiceDetails extends Component {
   handleDate = (dueDate) => {
     this.setState({ invoice: { ...this.state.invoice, dueDate } });
   }
-  handleBilling = (option) => {
-    this.setState({ selectedBilling: option });
+  handleBilling = (option,idx) => {
+    this.setState(
+      {
+        invoice: {
+          ...this.state.invoice, labor: {
+            ...this.state.invoice.labor, [idx]: {
+              ...this.state.invoice.labor[idx], billing: option
+            }
+          }
+        }
+      }
+    )
+    // this.setState({ selectedBilling: option });
   }
   render() {
     const { customer, selectedBilling} = this.state.invoice;
     const labor = Object.values(this.state.invoice.labor);
     console.log(this.state.invoice, 'state');
     let laborLineItems = [];
-    laborLineItems = labor.map((item, idx) => {
+    laborLineItems = labor.map((lineItem, idx) => {
       return (
         <tr className="line-item" key={idx}>
           <td className="description">
             <input 
+              data-idx={idx}
               type="text" 
               name="item"
-              data-idx={idx}
               placeholder="Enter line item or description..." 
               onChange={this.onLineItemChange}
               value={this.state.invoice.labor[idx].item}
             />
           </td>
-          <td><input type="text" placeholder="$0.00" /></td>
+          <td>
+            <input 
+              data-idx={idx}
+              type="text" 
+              name="rate"
+              placeholder="0.00" 
+              onChange={this.onLineItemChange}
+              value={this.state.invoice.labor[idx].rate}
+            />
+            </td>
           <td>
             <Select
               name="form-field-name"
-              value={selectedBilling}
-              onChange={this.handleBilling}
+              value={this.state.invoice.labor[idx].billing}
+              onChange={(option) => this.handleBilling(option,idx)}
               searchable
               placeholder="Hourly"
               options={[
                 { value: 'hourly', label: 'Hourly' },
                 { value: 'fixed', label: 'Fixed' },
-                { value: 'quantity', label: 'Quantity' },
               ]}
             />
           </td>
-          <td><input type="text" placeholder="0" /></td>
-          <td><input type="text" placeholder="0" /></td>
-          <td><input type="text" placeholder="0" /></td>
+          <td>
+            <input 
+              data-idx={idx}
+              type="text" 
+              name="hours"
+              placeholder="0" 
+              onChange={this.onLineItemChange}
+              value={this.state.invoice.labor[idx].hours}
+            />
+          </td>
           <td>
             <div className="line-total">
               <span className="line-value">$500,000</span>
@@ -184,40 +209,11 @@ export class InvoiceDetails extends Component {
                       <th><h2>Rate</h2></th>
                       <th><h2>Billing</h2></th>
                       <th><h2>Hours</h2></th>
-                      <th><h2>Discount</h2></th>
-                      <th><h2>Tax</h2></th>
                       <th><h2>Total</h2></th>
                     </tr>
                   </thead>
                   <tbody className="panel-body">
                     {laborLineItems}
-                    <tr className="line-item">
-                      <td className="description"><input type="text" placeholder="Enter line item or description..." /></td>
-                      <td><input type="text" placeholder="$0.00" /></td>
-                      <td>
-                        <Select
-                          name="form-field-name"
-                          value={selectedBilling}
-                          onChange={this.handleBilling}
-                          searchable
-                          placeholder="Hourly"
-                          options={[
-                            { value: 'hourly', label: 'Hourly' },
-                            { value: 'fixed', label: 'Fixed' },
-                            { value: 'quantity', label: 'Quantity' },
-                          ]}
-                        />
-                      </td>
-                      <td><input type="text" placeholder="0" /></td>
-                      <td><input type="text" placeholder="0" /></td>
-                      <td><input type="text" placeholder="0" /></td>
-                      <td>
-                        <div className="line-total">
-                          <span className="line-value">$500,000</span>
-                          <img src={threeDots} alt="item-menu" />
-                        </div>
-                      </td>
-                    </tr>
                     <tr className="new-line-item">
                       <td colSpan="8"><span>+ New line item</span></td>
                     </tr>
@@ -229,7 +225,6 @@ export class InvoiceDetails extends Component {
                       <th><h2>Parts</h2></th>
                       <th><h2>Price</h2></th>
                       <th><h2>Quantity</h2></th>
-                      <th><h2>Discount</h2></th>
                       <th><h2>Tax</h2></th>
                       <th><h2>Total</h2></th>
                     </tr>
