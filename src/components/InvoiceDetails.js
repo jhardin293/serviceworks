@@ -7,6 +7,7 @@ import { Tab, Tabs, TabList, TabPanel } from 'react-tabs'
 import threeDots from '../images/three-dots.png'
 import CustomerDropdown from '../components/CustomerDropdown'
 import moment from 'moment'
+import isEqual from 'lodash.isequal'
 
 export class InvoiceDetails extends Component {
   constructor(props) {
@@ -21,13 +22,13 @@ export class InvoiceDetails extends Component {
           0: {
             key: 0,
             item: '',
-            rate: '',
+            rate: 75,
             billing: {
               label: 'Hourly',
               value: 'hourly'
             },
-            hours: '',
-            total: 0
+            hours: 2,
+            total: 150
           }
         }
       },
@@ -57,8 +58,9 @@ export class InvoiceDetails extends Component {
         }
       }
     )
-    console.log(e.target, 'line item');
+    // this.LineItemTotal();
   }
+
 
   handleCustomer = (customer) => {
     this.setState({ invoice: { ...this.state.invoice, customer } });
@@ -66,7 +68,7 @@ export class InvoiceDetails extends Component {
   handleDate = (dueDate) => {
     this.setState({ invoice: { ...this.state.invoice, dueDate } });
   }
-  handleBilling = (option,idx) => {
+  handleBilling = (option, idx) => {
     this.setState(
       {
         invoice: {
@@ -78,41 +80,78 @@ export class InvoiceDetails extends Component {
         }
       }
     )
-    // this.setState({ selectedBilling: option });
+    // this.LineItemTotal();
   }
+
+  LineItemTotal = () => {
+    const laborLineItems = Object.values(this.state.invoice.labor);
+    laborLineItems.forEach((lineItem, idx) => {
+      const rate = +lineItem.rate,
+        hours = +lineItem.hours,
+        billing = lineItem.billing.value;
+      let total = +lineItem.total;
+
+      if (billing === 'hourly') {
+        total = rate * hours;
+        this.setState(
+          {
+            invoice: {
+              ...this.state.invoice, labor: {
+                ...this.state.invoice.labor, [idx]: {
+                  ...this.state.invoice.labor[idx], total
+                }
+              }
+            }
+          }
+        )
+      }
+      console.log('rate: ', rate, 'hours: ', hours, 'billing: ', billing, 'total: ');
+    })
+  }
+
+  componentDidMount() {
+    this.LineItemTotal();
+  }
+
+  componentDidUpdate(prevProps, prevState) {
+    if (isEqual(prevState, this.state) !== true) {
+      this.LineItemTotal();
+    }
+  }
+
   render() {
-    const { customer, selectedBilling} = this.state.invoice;
+    // this.LineItemTotal();
+    const { customer } = this.state.invoice;
     const labor = Object.values(this.state.invoice.labor);
-    console.log(this.state.invoice, 'state');
     let laborLineItems = [];
     laborLineItems = labor.map((lineItem, idx) => {
       return (
         <tr className="line-item" key={idx}>
           <td className="description">
-            <input 
+            <input
               data-idx={idx}
-              type="text" 
+              type="text"
               name="item"
-              placeholder="Enter line item or description..." 
+              placeholder="Enter line item or description..."
               onChange={this.onLineItemChange}
               value={this.state.invoice.labor[idx].item}
             />
           </td>
           <td>
-            <input 
+            <input
               data-idx={idx}
-              type="text" 
+              type="text"
               name="rate"
-              placeholder="0.00" 
+              placeholder="0.00"
               onChange={this.onLineItemChange}
               value={this.state.invoice.labor[idx].rate}
             />
-            </td>
+          </td>
           <td>
             <Select
               name="form-field-name"
               value={this.state.invoice.labor[idx].billing}
-              onChange={(option) => this.handleBilling(option,idx)}
+              onChange={(option) => this.handleBilling(option, idx)}
               searchable
               placeholder="Hourly"
               options={[
@@ -122,18 +161,18 @@ export class InvoiceDetails extends Component {
             />
           </td>
           <td>
-            <input 
+            <input
               data-idx={idx}
-              type="text" 
+              type="text"
               name="hours"
-              placeholder="0" 
+              placeholder="0"
               onChange={this.onLineItemChange}
               value={this.state.invoice.labor[idx].hours}
             />
           </td>
           <td>
             <div className="line-total">
-              <span className="line-value">$500,000</span>
+              <span className="line-value">{"$" + this.state.invoice.labor[idx].total}</span>
               <img src={threeDots} alt="item-menu" />
             </div>
           </td>
