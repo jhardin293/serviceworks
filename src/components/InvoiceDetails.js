@@ -4,9 +4,10 @@ import { Link } from 'react-router-dom'
 import DatePicker from 'react-datepicker'
 import Select from 'react-select'
 import { Tab, Tabs, TabList, TabPanel } from 'react-tabs'
-import threeDots from '../images/three-dots.png'
+import deleteIcon from '../images/delete.svg'
 import CustomerDropdown from '../components/CustomerDropdown'
 import moment from 'moment'
+import { arrayToObject } from '../libs/array-to-object'
 
 export class InvoiceDetails extends Component {
   constructor(props) {
@@ -20,7 +21,6 @@ export class InvoiceDetails extends Component {
         total: 0,
         labor: {
           0: {
-            key: 0,
             item: '',
             rate: '',
             billing: {
@@ -33,7 +33,6 @@ export class InvoiceDetails extends Component {
         },
         parts: {
           0: {
-            key: 0,
             item: '',
             price: '',
             quantity: 1,
@@ -47,6 +46,22 @@ export class InvoiceDetails extends Component {
   }
   static propTypes = {
     invoice: PropTypes.object.isRequired,
+  }
+
+  setInvoiceTotal = () => {
+    const laborList = Object.values(this.state.invoice.labor),
+      partsList = Object.values(this.state.invoice.parts),
+      allItems = laborList.concat(partsList);
+
+    const invoiceTotal = allItems.reduce((prev, current) => {
+      return prev + current.total
+    }, 0);
+
+    this.setState({
+      invoice: {
+        ...this.state.invoice, total: invoiceTotal
+      }
+    })
   }
 
   onChange = (e) => {
@@ -70,9 +85,6 @@ export class InvoiceDetails extends Component {
     }, () => {
       const lineItem = this.state.invoice[type][idx];
 
-
-
-
       const setLineTotal = (total) => {
         this.setState(() => {
           return {
@@ -86,19 +98,7 @@ export class InvoiceDetails extends Component {
           }
         }, () => {
           // Set Invioce Total;
-          const laborList = Object.values(this.state.invoice.labor),
-            partsList = Object.values(this.state.invoice.parts),
-            allItems = laborList.concat(partsList);
-          
-          const invoiceTotal = allItems.reduce((prev, current) => {
-            return prev + current.total
-          },0);
-
-          this.setState({
-            invoice: {
-              ...this.state.invoice, total: invoiceTotal
-            }
-          })
+          this.setInvoiceTotal();
         })
       }
 
@@ -123,9 +123,6 @@ export class InvoiceDetails extends Component {
 
         setLineTotal(total);
       }
-
-
-
     })
   }
 
@@ -165,7 +162,6 @@ export class InvoiceDetails extends Component {
     let newLineItem;
     if (type === 'labor') {
       newLineItem = {
-        key: +newIdx,
         item: '',
         rate: '',
         billing: {
@@ -179,7 +175,6 @@ export class InvoiceDetails extends Component {
 
     if (type === 'parts') {
       newLineItem = {
-        key: +newIdx,
         item: '',
         price: '',
         quantity: 1,
@@ -198,8 +193,20 @@ export class InvoiceDetails extends Component {
     )
   }
 
-
-
+  removeLineItem = (type, idx) => {
+    const itemsList = Object.values(this.state.invoice[type]);
+    itemsList.splice(idx, 1);
+    const itemObject = arrayToObject(itemsList);
+    this.setState(()=> {
+      return {
+        invoice: {
+          ...this.state.invoice, [type]: itemObject
+        }
+      }
+    }, ()=> {
+      this.setInvoiceTotal();
+    })
+  }
   render() {
     const { customer } = this.state.invoice;
     const labor = Object.values(this.state.invoice.labor);
@@ -254,7 +261,12 @@ export class InvoiceDetails extends Component {
           <td>
             <div className="line-total">
               <span className="line-value">{"$" + this.state.invoice.labor[idx].total}</span>
-              <img src={threeDots} alt="item-menu" />
+              <img
+                src={deleteIcon}
+                className="delete-icon"
+                alt="item-menu"
+                onClick={() => this.removeLineItem('labor', idx)}
+              />
             </div>
           </td>
         </tr>
@@ -300,7 +312,12 @@ export class InvoiceDetails extends Component {
           <td>
             <div className="line-total">
               <span className="line-value">{"$" + this.state.invoice.parts[idx].total}</span>
-              <img src={threeDots} alt="item-menu" />
+              <img
+                src={deleteIcon}
+                className="delete-icon"
+                alt="item-menu"
+                onClick={() => this.removeLineItem('parts', idx)}
+              />
             </div>
           </td>
         </tr>
