@@ -657,6 +657,9 @@ form.person-form {
   height: 150px;
   width: 50%; }
 
+.parts-invoice .description {
+  width: 45% !important; }
+
 .map-view {
   position: relative; }
   .map-view .map {

@@ -894,6 +894,13 @@ form {
   }
 }
 
+//Invoice
+.parts-invoice {
+  .description {
+    width: 45% !important;
+  }
+}
+
 .map-view {
   position: relative;
   .map {

@@ -30,6 +30,15 @@ export class InvoiceDetails extends Component {
             hours: '',
             total: 0
           }
+        },
+        parts: {
+          0: {
+            key: 0,
+            item: '',
+            price: '',
+            quantity: 1,
+            total: 0
+          }
         }
       },
       exit: props.exit,
@@ -44,64 +53,79 @@ export class InvoiceDetails extends Component {
     this.setState({ invoice: { ...this.state.invoice, [e.target.name]: e.target.value } });
   }
 
-  onLineItemChange = (e) => {
+  onLineItemChange = (e, type) => {
     const idx = e.target.dataset.idx,
       name = e.target.name,
       value = e.target.value
-
     this.setState((prevState, props) => {
       return {
         invoice: {
-          ...this.state.invoice, labor: {
-            ...this.state.invoice.labor, [idx]: {
-              ...this.state.invoice.labor[idx], [name]: value
+          ...this.state.invoice, [type]: {
+            ...this.state.invoice[type], [idx]: {
+              ...this.state.invoice[type][idx], [name]: value
             }
           }
         }
       }
     }, () => {
-      const lineItem = this.state.invoice.labor[idx];
-      const rate = +lineItem.rate,
-        hours = +lineItem.hours,
-        billing = lineItem.billing.value;
+      const lineItem = this.state.invoice[type][idx];
 
-      const setTotal = () => {
-        const laborList = Object.values(this.state.invoice.labor);
-        let invoiceTotal = laborList[0].total;
-        invoiceTotal = laborList.reduce((prev, current) => {
-          return prev + current.total
-        },0);
-        // console.log(invoiceTotal, 'in setTotal');
-        this.setState({
-          invoice: {
-            ...this.state.invoice, total: invoiceTotal
-          }
-        })
-      }
+
+
 
       const setLineTotal = (total) => {
         this.setState(() => {
           return {
             invoice: {
-              ...this.state.invoice, labor: {
-                ...this.state.invoice.labor, [idx]: {
-                  ...this.state.invoice.labor[idx], total
+              ...this.state.invoice, [type]: {
+                ...this.state.invoice[type], [idx]: {
+                  ...this.state.invoice[type][idx], total
                 }
               }
             }
           }
         }, () => {
-          setTotal();
+          // Set Invioce Total;
+          const laborList = Object.values(this.state.invoice.labor),
+            partsList = Object.values(this.state.invoice.parts),
+            allItems = laborList.concat(partsList);
+          
+          const invoiceTotal = allItems.reduce((prev, current) => {
+            return prev + current.total
+          },0);
+
+          this.setState({
+            invoice: {
+              ...this.state.invoice, total: invoiceTotal
+            }
+          })
         })
       }
 
-      if (billing === 'hourly') {
-        const total = rate * hours;
-        setLineTotal(total);
-      }else {
-        const total = rate;
+      if (type === 'labor') {
+        const rate = +lineItem.rate,
+          hours = +lineItem.hours,
+          billing = lineItem.billing.value;
+
+        if (billing === 'hourly') {
+          const total = rate * hours;
+          setLineTotal(total);
+        } else {
+          const total = rate;
+          setLineTotal(total);
+        }
+      }
+
+      if (type === 'parts') {
+        const price = +lineItem.price,
+          quantity = +lineItem.quantity,
+          total = price * quantity;
+
         setLineTotal(total);
       }
+
+
+
     })
   }
 
@@ -128,18 +152,19 @@ export class InvoiceDetails extends Component {
       )
     }
 
-    if (option.value === 'hourly') {
+    if (option && option.value === 'hourly') {
       setBillingState(false);
-    }else {
+    } else {
       setBillingState(true);
     }
   }
 
   newLineItem = (type) => {
+    const itemsList = Object.values(this.state.invoice[type]);
+    const newIdx = itemsList.length;
+    let newLineItem;
     if (type === 'labor') {
-      const laborList = Object.values(this.state.invoice.labor);
-      const newIdx = laborList.length;
-      const laborObj = {
+      newLineItem = {
         key: +newIdx,
         item: '',
         rate: '',
@@ -150,16 +175,27 @@ export class InvoiceDetails extends Component {
         hours: '',
         total: 0
       }
-      this.setState(
-        {
-          invoice: {
-            ...this.state.invoice, labor: {
-              ...this.state.invoice.labor, [newIdx]: laborObj
-            }
+    }
+
+    if (type === 'parts') {
+      newLineItem = {
+        key: +newIdx,
+        item: '',
+        price: '',
+        quantity: 1,
+        total: 0
+      }
+    }
+
+    this.setState(
+      {
+        invoice: {
+          ...this.state.invoice, [type]: {
+            ...this.state.invoice[type], [newIdx]: newLineItem
           }
         }
-      )
-    }
+      }
+    )
   }
 
 
@@ -177,7 +213,7 @@ export class InvoiceDetails extends Component {
               type="text"
               name="item"
               placeholder="Enter line item or description..."
-              onChange={this.onLineItemChange}
+              onChange={(e) => this.onLineItemChange(e, 'labor')}
               value={this.state.invoice.labor[idx].item}
             />
           </td>
@@ -187,7 +223,7 @@ export class InvoiceDetails extends Component {
               type="text"
               name="rate"
               placeholder="0.00"
-              onChange={this.onLineItemChange}
+              onChange={(e) => this.onLineItemChange(e, 'labor')}
               value={this.state.invoice.labor[idx].rate}
             />
           </td>
@@ -210,7 +246,7 @@ export class InvoiceDetails extends Component {
               type="text"
               name="hours"
               placeholder="0"
-              onChange={this.onLineItemChange}
+              onChange={(e) => this.onLineItemChange(e, 'labor')}
               value={this.state.invoice.labor[idx].hours}
               disabled={this.state.invoice.labor[idx].hoursDisabled}
             />
@@ -225,6 +261,51 @@ export class InvoiceDetails extends Component {
       )
     })
 
+    const parts = Object.values(this.state.invoice.parts);
+    let partsLineItems = [];
+
+    partsLineItems = parts.map((lineItem, idx) => {
+      return (
+        <tr className="line-item" key={idx}>
+          <td className="description">
+            <input
+              data-idx={idx}
+              type="text"
+              name="item"
+              placeholder="Enter part item or description..."
+              onChange={(e) => this.onLineItemChange(e, 'parts')}
+              value={this.state.invoice.parts[idx].item}
+            />
+          </td>
+          <td>
+            <input
+              data-idx={idx}
+              type="text"
+              name="price"
+              placeholder="$0.00"
+              onChange={(e) => this.onLineItemChange(e, 'parts')}
+              value={this.state.invoice.parts[idx].price}
+            />
+          </td>
+          <td>
+            <input
+              data-idx={idx}
+              type="text"
+              name="quantity"
+              placeholder="0"
+              onChange={(e) => this.onLineItemChange(e, 'parts')}
+              value={this.state.invoice.parts[idx].quantity}
+            />
+          </td>
+          <td>
+            <div className="line-total">
+              <span className="line-value">{"$" + this.state.invoice.parts[idx].total}</span>
+              <img src={threeDots} alt="item-menu" />
+            </div>
+          </td>
+        </tr>
+      )
+    })
     return (
       <div className="new-invoice-view page-view">
         <div className="page-header">
@@ -276,7 +357,7 @@ export class InvoiceDetails extends Component {
             </form>
             <div className="invoice-total">
               <label>Total</label>
-              <h2>{"$"+this.state.invoice.total}</h2>
+              <h2>{"$" + this.state.invoice.total}</h2>
             </div>
           </div>
           <div className="invoice-body">
@@ -303,32 +384,19 @@ export class InvoiceDetails extends Component {
                     </tr>
                   </tbody>
                 </table>
-                <table className="panel">
+                <table className="panel parts-invoice">
                   <thead>
                     <tr className="header">
                       <th><h2>Parts</h2></th>
                       <th><h2>Price</h2></th>
                       <th><h2>Quantity</h2></th>
-                      <th><h2>Tax</h2></th>
                       <th><h2>Total</h2></th>
                     </tr>
                   </thead>
                   <tbody className="panel-body">
-                    <tr className="line-item">
-                      <td className="description"><input type="text" placeholder="Enter line item or description..." /></td>
-                      <td><input type="text" placeholder="$0.00" /></td>
-                      <td><input type="text" placeholder="0" /></td>
-                      <td><input type="text" placeholder="0" /></td>
-                      <td><input type="text" placeholder="0" /></td>
-                      <td>
-                        <div className="line-total">
-                          <span className="line-value">$500,000</span>
-                          <img src={threeDots} alt="item-menu" />
-                        </div>
-                      </td>
-                    </tr>
+                    {partsLineItems}
                     <tr className="new-line-item">
-                      <td colSpan="8"><span>+ New line item</span></td>
+                      <td colSpan="4" onClick={() => this.newLineItem('parts')}><span>+ New line item</span></td>
                     </tr>
                   </tbody>
                 </table>
