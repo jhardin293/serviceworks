@@ -610,6 +610,9 @@ form.person-form {
       width: 100%;
       box-sizing: border-box;
       padding-right: 9px; }
+      .new-invoice-view .panel .line-item input[disabled] {
+        background-color: #eee;
+        cursor: not-allowed; }
     .new-invoice-view .panel .line-item .Select {
       height: 34px; }
       .new-invoice-view .panel .line-item .Select .Select-control {

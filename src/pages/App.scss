@@ -825,6 +825,10 @@ form {
         width: 100%;
         box-sizing: border-box;
         padding-right: 9px;
+        &[disabled] {
+          background-color: #eee;
+          cursor: not-allowed;
+        }
       }
       .Select {
         height: 34px;

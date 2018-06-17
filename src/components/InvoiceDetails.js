@@ -17,7 +17,7 @@ export class InvoiceDetails extends Component {
         title: invoice.title,
         customer: invoice.customer,
         dueDate: moment(invoice.dueDate),
-        total: '',
+        total: 0,
         labor: {
           0: {
             key: 0,
@@ -28,7 +28,7 @@ export class InvoiceDetails extends Component {
               value: 'hourly'
             },
             hours: '',
-            total: ''
+            total: 0
           }
         }
       },
@@ -64,23 +64,43 @@ export class InvoiceDetails extends Component {
       const rate = +lineItem.rate,
         hours = +lineItem.hours,
         billing = lineItem.billing.value;
-      let total = 0
 
       const setTotal = () => {
+        const laborList = Object.values(this.state.invoice.labor);
+        let invoiceTotal = laborList[0].total;
+        invoiceTotal = laborList.reduce((prev, current) => {
+          return prev + current.total
+        },0);
+        // console.log(invoiceTotal, 'in setTotal');
         this.setState({
           invoice: {
-            ...this.state.invoice, labor: {
-              ...this.state.invoice.labor, [idx]: {
-                ...this.state.invoice.labor[idx], total
-              }
-            }
+            ...this.state.invoice, total: invoiceTotal
           }
         })
       }
 
+      const setLineTotal = (total) => {
+        this.setState(() => {
+          return {
+            invoice: {
+              ...this.state.invoice, labor: {
+                ...this.state.invoice.labor, [idx]: {
+                  ...this.state.invoice.labor[idx], total
+                }
+              }
+            }
+          }
+        }, () => {
+          setTotal();
+        })
+      }
+
       if (billing === 'hourly') {
-        total = rate * hours;
-        setTotal();
+        const total = rate * hours;
+        setLineTotal(total);
+      }else {
+        const total = rate;
+        setLineTotal(total);
       }
     })
   }
@@ -93,17 +113,26 @@ export class InvoiceDetails extends Component {
     this.setState({ invoice: { ...this.state.invoice, dueDate } });
   }
   handleBilling = (option, idx) => {
-    this.setState(
-      {
-        invoice: {
-          ...this.state.invoice, labor: {
-            ...this.state.invoice.labor, [idx]: {
-              ...this.state.invoice.labor[idx], billing: option
+    const setBillingState = (hoursDisabled) => {
+      this.setState(
+        {
+          invoice: {
+            ...this.state.invoice, labor: {
+              ...this.state.invoice.labor, [idx]: {
+                ...this.state.invoice.labor[idx], billing: option,
+                hoursDisabled
+              }
             }
           }
         }
-      }
-    )
+      )
+    }
+
+    if (option.value === 'hourly') {
+      setBillingState(false);
+    }else {
+      setBillingState(true);
+    }
   }
 
   newLineItem = (type) => {
@@ -119,7 +148,7 @@ export class InvoiceDetails extends Component {
           value: 'hourly'
         },
         hours: '',
-        total: ''
+        total: 0
       }
       this.setState(
         {
@@ -167,7 +196,7 @@ export class InvoiceDetails extends Component {
               name="form-field-name"
               value={this.state.invoice.labor[idx].billing}
               onChange={(option) => this.handleBilling(option, idx)}
-              searchable
+              searchable={false}
               placeholder="Hourly"
               options={[
                 { value: 'hourly', label: 'Hourly' },
@@ -183,6 +212,7 @@ export class InvoiceDetails extends Component {
               placeholder="0"
               onChange={this.onLineItemChange}
               value={this.state.invoice.labor[idx].hours}
+              disabled={this.state.invoice.labor[idx].hoursDisabled}
             />
           </td>
           <td>
@@ -246,7 +276,7 @@ export class InvoiceDetails extends Component {
             </form>
             <div className="invoice-total">
               <label>Total</label>
-              <h2>$1,000,000</h2>
+              <h2>{"$"+this.state.invoice.total}</h2>
             </div>
           </div>
           <div className="invoice-body">
