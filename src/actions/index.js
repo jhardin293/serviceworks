@@ -132,3 +132,20 @@ export const editCustomer = (customer) => {
 export const deleteCustomer = (id) => {
   remove(id, 'customers', 'GET_CUSTOMERS', getCustomers);
 }
+
+//Invoices
+export const getInvoices = () => {
+  return get('invoices', 'GET_INVOICES');
+}
+
+export const newInvoice = (invoice) => {
+  post(invoice, 'invoices', 'GET_INVOICES', getInvoices);
+}
+
+export const editInvoice = (invoice) => {
+  update(invoice, 'invoices', 'GET_INVOICES', getInvoices);
+}
+
+export const deleteInvoice = (id) => {
+  remove(id, 'invoices', 'GET_INVOICES', getInvoices);
+}

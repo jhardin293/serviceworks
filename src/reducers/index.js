@@ -14,6 +14,10 @@ const initState = {
   customersInt: {
     customers: [],
     status: 'init'
+  },
+  invoicesInt: {
+    invoices: [],
+    status: 'init'
   }
 }
 //So can I genericly call a dispatfh funcition with a string and payload and it automagicaly gets handled by the correct reducer.
@@ -58,8 +62,22 @@ const customersReducer = (state = initState.customersInt, action) => {
   }
 }
 
+const invoicesReducer = (state = initState.invoicesInt, action) => {
+  switch(action.type) {
+    case 'GET_INVOICES':
+      return {
+        ...state,
+        status: action.status,
+        invoices: action.payload
+      }
+    default:
+      return state;
+  }
+}
+
 export const rootReducer = combineReducers({
   jobs: jobsReducer,
   notes: notesReducer,
-  customers: customersReducer
+  customers: customersReducer,
+  invoices: invoicesReducer
 })

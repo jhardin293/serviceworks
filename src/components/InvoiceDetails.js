@@ -1,8 +1,8 @@
 import React, { Component } from 'react'
 import PropTypes from 'prop-types'
-import { Link } from 'react-router-dom'
 import DatePicker from 'react-datepicker'
 import Select from 'react-select'
+import { Redirect, Link } from 'react-router-dom'
 import { Tab, Tabs, TabList, TabPanel } from 'react-tabs'
 import deleteIcon from '../images/delete.svg'
 import CustomerDropdown from '../components/CustomerDropdown'
@@ -18,27 +18,12 @@ export class InvoiceDetails extends Component {
         title: invoice.title,
         customer: invoice.customer,
         dueDate: moment(invoice.dueDate),
-        total: 0,
-        labor: {
-          0: {
-            item: '',
-            rate: '',
-            billing: {
-              label: 'Hourly',
-              value: 'hourly'
-            },
-            hours: '',
-            total: 0
-          }
-        },
-        parts: {
-          0: {
-            item: '',
-            price: '',
-            quantity: 1,
-            total: 0
-          }
-        }
+        invoiceNumber: invoice.invoiceNumber,
+        total: invoice.total,
+        id: invoice.id || '',
+        footer: invoice.footer,
+        labor: invoice.labor,
+        parts: invoice.parts
       },
       exit: props.exit,
       allowDelete: props.allowDelete
@@ -46,6 +31,10 @@ export class InvoiceDetails extends Component {
   }
   static propTypes = {
     invoice: PropTypes.object.isRequired,
+    onSave: PropTypes.func.isRequired
+  }
+  onSave = () => {
+    this.props.onSave(this.state);
   }
 
   setInvoiceTotal = () => {
@@ -197,13 +186,13 @@ export class InvoiceDetails extends Component {
     const itemsList = Object.values(this.state.invoice[type]);
     itemsList.splice(idx, 1);
     const itemObject = arrayToObject(itemsList);
-    this.setState(()=> {
+    this.setState(() => {
       return {
         invoice: {
           ...this.state.invoice, [type]: itemObject
         }
       }
-    }, ()=> {
+    }, () => {
       this.setInvoiceTotal();
     })
   }
@@ -323,13 +312,32 @@ export class InvoiceDetails extends Component {
         </tr>
       )
     })
+
+    if (this.props.exit === true) {
+      return <Redirect to="/invoices" />
+    }
     return (
       <div className="new-invoice-view page-view">
         <div className="page-header">
           <h1>{this.state.invoice.title || 'New Invoice'}</h1>
-          <Link to="/invoices">
-            <button className="btn second-btn btn-success">Save invoice</button>
-          </Link>
+          <div className="tab-btn-group">
+            <Link to="/invoices">
+              <button className="btn second-btn btn-cancel ">Cancel</button>
+            </Link>
+            {this.state.allowDelete &&
+              <button
+                className="btn second-btn btn-delete"
+                onClick={(e) => this.props.onDelete(this.state.invoice.id, e)}>
+                Delete
+              </button>
+            }
+            <button
+              className="btn second-btn btn-success"
+              onClick={this.onSave}
+            >
+              Save invoice
+            </button>
+          </div>
         </div>
         <div className="page-body">
           <div className="invoice-header">
@@ -345,7 +353,12 @@ export class InvoiceDetails extends Component {
                 <div className="invoice-meta">
                   <div>
                     <label>Invoice #</label>
-                    <input type="text" placeholder="Pending" disabled="true" />
+                    <input
+                      type="text"
+                      onChange={this.onChange}
+                      name="invoiceNumber"
+                      value={this.state.invoice.invoiceNumber}
+                    />
                   </div>
                   <div>
                     <label>Sent Date</label>
@@ -421,7 +434,13 @@ export class InvoiceDetails extends Component {
               <TabPanel>
                 <div className="invoice-footer">
                   <h5>Additional notes to show at bottom of invoice</h5>
-                  <textarea></textarea>
+                  <textarea
+                    type="text"
+                    name="footer"
+                    value={this.state.invoice.footer}
+                    onChange={this.onChange}
+                  >
+                  </textarea>
                 </div>
               </TabPanel>
             </Tabs>

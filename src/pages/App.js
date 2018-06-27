@@ -28,6 +28,7 @@ import { EditJob } from '../structures/EditJob'
 import { NewNote } from '../structures/NewNote'
 import { EditNote } from '../structures/EditNote'
 import { EditCustomer } from '../structures/EditCustomer'
+import { EditInvoice } from '../structures/EditInvoice'
 import { NewCustomer } from '../structures/NewCustomer'
 import { NewInvoice } from '../structures/NewInvoice'
 import { NewEmployee } from '../structures/NewEmployee'
@@ -57,6 +58,7 @@ class App extends Component {
             <Route exact path="/customers/new-customer" component={NewCustomer} />
             <Route exact path="/customers/edit-customer" component={EditCustomer} />
             <Route exact path="/invoices/new-invoice" component={NewInvoice} />
+            <Route exact path="/invoices/edit-invoice" component={EditInvoice} />
             <Route exact path="/my-account/new-employee" component={NewEmployee} />
           </div>
         </Router>
