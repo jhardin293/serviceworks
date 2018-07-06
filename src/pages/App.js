@@ -32,6 +32,7 @@ import { EditInvoice } from '../structures/EditInvoice'
 import { NewCustomer } from '../structures/NewCustomer'
 import { NewInvoice } from '../structures/NewInvoice'
 import { NewEmployee } from '../structures/NewEmployee'
+import { SignIn } from './SignIn';
 
 momentDurationFormatSetup(moment);
 
@@ -60,6 +61,7 @@ class App extends Component {
             <Route exact path="/invoices/new-invoice" component={NewInvoice} />
             <Route exact path="/invoices/edit-invoice" component={EditInvoice} />
             <Route exact path="/my-account/new-employee" component={NewEmployee} />
+            <Route exact path="/sign-in" component={SignIn} />
           </div>
         </Router>
       </Provider>

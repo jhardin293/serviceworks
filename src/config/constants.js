@@ -1,5 +1,7 @@
-import * as firebase from 'firebase';
-import '@firebase/firestore'
+// import * as firebase from 'firebase';
+import firebase from 'firebase/app';
+import 'firebase/firestore'
+import 'firebase/storage'
 
 const config = {
   apiKey: "AIzaSyCd3KzpKOlhsGaPvwJO2BhbQ3dQXy8HyLE",
@@ -13,6 +15,9 @@ const config = {
 firebase.initializeApp(config);
 const firestore = firebase.firestore();
 const storage = firebase.storage().ref();
+//Need to update date objects in firestore
+// const settings = {timestampsInSnapshots: true};
+// firestore.settings(settings);
 
 export const ref = firestore;
 export const storageRef = storage; 
