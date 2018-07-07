@@ -1,6 +1,23 @@
-import {ref, storageRef} from '../config/constants'
+import { ref, storageRef } from '../config/constants'
 import { store } from '../store'
 
+
+//User
+export const setUser = (user) => {
+  store.dispatch({
+    type: 'SET_USER',
+    payload: user,
+    status: 'pending'
+  })
+}
+
+export const getUser = (user) => {
+  store.dispatch({
+    type: 'GET_USER',
+    payload: store.getState().user.data,
+    status: 'success'
+  })
+}
 
 const get = (path, action) => {
   return (dispatch) => {
@@ -105,12 +122,12 @@ export const deleteNote = (id) => {
 
 export const uploadImage = (file, id) => {
   const notesImgRef = storageRef.child('notes/');
-  return new Promise((resolve, reject)=>{
+  return new Promise((resolve, reject) => {
     notesImgRef.child(file.name).put(file).then((snapshot) => {
-        if (snapshot) {
-          const url = snapshot.downloadURL;
-          resolve(url);
-        }
+      if (snapshot) {
+        const url = snapshot.downloadURL;
+        resolve(url);
+      }
     });
   });
 }

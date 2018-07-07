@@ -4,7 +4,8 @@ import momentDurationFormatSetup from 'moment-duration-format'
 import {
   BrowserRouter as Router,
   Route,
-  Redirect
+  Redirect,
+  withRouter
 } from 'react-router-dom'
 import { Provider } from 'react-redux'
 import { store } from '../store'
@@ -33,36 +34,80 @@ import { NewCustomer } from '../structures/NewCustomer'
 import { NewInvoice } from '../structures/NewInvoice'
 import { NewEmployee } from '../structures/NewEmployee'
 import { SignIn } from './SignIn';
+import { TopNav } from '../structures/TopNav';
 
 momentDurationFormatSetup(moment);
+
+class AppContainerComp extends Component {
+  state = {
+    onSignIn: false
+  }
+
+  signInCheck = (path) => {
+    if (path === '/sign-in') {
+      this.setState({ onSignIn: true });
+    } else {
+      this.setState({ onSignIn: false });
+    }
+  }
+
+  componentWillMount() {
+    this.signInCheck(this.props.location.pathname);
+    this.unlisten = this.props.history.listen((location, action) => {
+      this.signInCheck(location.pathname);
+      console.log(location,"on route change");
+    });
+
+    console.log(this.props.location.pathname, 'props cont');
+  }
+  componentWillUnmount() {
+    this.unlisten();
+  }
+  render() {
+  console.log(this.state.onSignIn, 'on sign');
+    return (
+      <div>
+        <div>
+          <Route exact path="/sign-in" component={SignIn} />
+        </div>
+        {!this.state.onSignIn &&
+          <div>
+            <TopNav />
+            <div className="main-content">
+              <SideNav />
+              <Route exact path="/" render={() => (
+                <Redirect to="/schedule" />
+              )} />
+              <Route path="/schedule" exact component={Schedule} />
+              <Route path="/notes" exact component={Notes} />
+              <Route path="/customers" exact component={Customers} />
+              <Route path="/invoices" exact component={Invoices} />
+              <Route path="/team-map" component={TeamMap} />
+              <Route path="/my-account" exact component={MyAccount} />
+              <Route exact path="/schedule/new-job" component={NewJob} />
+              <Route exact path="/schedule/edit-job" component={EditJob} />
+              <Route exact path="/notes/new-note" component={NewNote} />
+              <Route exact path="/notes/edit-note" component={EditNote} />
+              <Route exact path="/customers/new-customer" component={NewCustomer} />
+              <Route exact path="/customers/edit-customer" component={EditCustomer} />
+              <Route exact path="/invoices/new-invoice" component={NewInvoice} />
+              <Route exact path="/invoices/edit-invoice" component={EditInvoice} />
+              <Route exact path="/my-account/new-employee" component={NewEmployee} />
+            </div>
+          </div>
+        }
+      </div>
+    )
+  }
+}
+const AppContainer = withRouter(AppContainerComp)
 
 class App extends Component {
   render() {
     return (
       <Provider store={store}>
         <Router>
-          <div className="main-content">
-            <SideNav />
-            <Route exact path="/" render={() => (
-              <Redirect to="/schedule" />
-            )} />
-            <Route path="/schedule" exact component={Schedule} />
-            <Route path="/notes" exact component={Notes} />
-            <Route path="/customers" exact component={Customers} />
-            <Route path="/invoices" exact component={Invoices} />
-            <Route path="/team-map" component={TeamMap} />
-            <Route path="/my-account" exact component={MyAccount} />
-            <Route exact path="/schedule/new-job" component={NewJob} />
-            <Route exact path="/schedule/edit-job" component={EditJob} />
-            <Route exact path="/notes/new-note" component={NewNote} />
-            <Route exact path="/notes/edit-note" component={EditNote} />
-            <Route exact path="/customers/new-customer" component={NewCustomer} />
-            <Route exact path="/customers/edit-customer" component={EditCustomer} />
-            <Route exact path="/invoices/new-invoice" component={NewInvoice} />
-            <Route exact path="/invoices/edit-invoice" component={EditInvoice} />
-            <Route exact path="/my-account/new-employee" component={NewEmployee} />
-            <Route exact path="/sign-in" component={SignIn} />
-          </div>
+          <AppContainer />
         </Router>
       </Provider>
     );

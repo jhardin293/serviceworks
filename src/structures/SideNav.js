@@ -2,7 +2,6 @@ import React, { Component } from 'react'
 import { NavLink } from 'react-router-dom'
 
 
-import logoImg from '../images/AtomFlower.svg'
 import schedule from '../images/schedule.svg'
 import notes from '../images/notes.svg'
 import customers from '../images/customers.svg'
@@ -14,10 +13,6 @@ export class SideNav extends Component {
   render() {
     return (
       <aside className="side-nav">
-        <div className="logo">
-          <img src={logoImg} alt="logo" width="25" height="28" />
-          <h2>Serviceworks</h2>
-        </div>
         <div className="nav-items">
           <ul>
             <li>

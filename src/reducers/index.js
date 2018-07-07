@@ -18,11 +18,28 @@ const initState = {
   invoicesInt: {
     invoices: [],
     status: 'init'
+  },
+  userInt: {
+    data: {},
+    status: 'init'
   }
 }
 //So can I genericly call a dispatfh funcition with a string and payload and it automagicaly gets handled by the correct reducer.
 //How big does an average reducer get?
 //If I cant change the route of the view in the reducer do I change in it in a action or do I have to update the strore so that it is reflected in a a HOC?
+const userReducer = (state= initState.userInt, action) => {
+  switch(action.type) {
+    case 'SET_USER':
+      return {
+        ...state,
+        status: action.status,
+        data: action.payload
+      }
+    default:
+      return state;
+  }
+}
+
 const jobsReducer = (state = initState.jobsInt, action) => {
   switch(action.type) {
     case 'GET_JOBS':
@@ -79,5 +96,6 @@ export const rootReducer = combineReducers({
   jobs: jobsReducer,
   notes: notesReducer,
   customers: customersReducer,
-  invoices: invoicesReducer
+  invoices: invoicesReducer,
+  user: userReducer
 })
