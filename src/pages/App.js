@@ -1,6 +1,7 @@
 import React, { Component } from 'react'
 import moment from 'moment'
 import momentDurationFormatSetup from 'moment-duration-format'
+import firebase from 'firebase/app'
 import {
   BrowserRouter as Router,
   Route,
@@ -35,42 +36,57 @@ import { NewInvoice } from '../structures/NewInvoice'
 import { NewEmployee } from '../structures/NewEmployee'
 import { SignIn } from './SignIn';
 import { TopNav } from '../structures/TopNav';
+import { connect } from 'react-redux'
+import { setUser, getUser } from '../actions';
 
 momentDurationFormatSetup(moment);
 
 class AppContainerComp extends Component {
   state = {
-    onSignIn: false
+    OnSignInPage: false,
+    isLoggedin: false,
+    user: false
+  }
+
+
+  componentWillMount() {
+    this.props.getUser();
+    this.signInCheck(this.props.location.pathname);
+    this.unlisten = this.props.history.listen((location, action) => {
+      this.signInCheck(location.pathname);
+    });
+
+  }
+
+  componentDidMount() {
+    firebase.auth().onAuthStateChanged((user) => {
+      if (firebase.auth().currentUser === null) {
+        this.setState({ isLoggedin: false });
+      } else {
+        setUser(user);
+        this.setState({ isLoggedin: true });
+      }
+    })
   }
 
   signInCheck = (path) => {
     if (path === '/sign-in') {
-      this.setState({ onSignIn: true });
+      this.setState({ OnSignInPage: true });
     } else {
-      this.setState({ onSignIn: false });
+      this.setState({ OnSignInPage: false });
     }
   }
 
-  componentWillMount() {
-    this.signInCheck(this.props.location.pathname);
-    this.unlisten = this.props.history.listen((location, action) => {
-      this.signInCheck(location.pathname);
-      console.log(location,"on route change");
-    });
-
-    console.log(this.props.location.pathname, 'props cont');
-  }
-  componentWillUnmount() {
-    this.unlisten();
-  }
   render() {
-  console.log(this.state.onSignIn, 'on sign');
+    if (this.state.isLoggedin === false && !this.state.OnSignInPage) {
+      return <Redirect to="/sign-in" />
+    }
     return (
       <div>
         <div>
           <Route exact path="/sign-in" component={SignIn} />
         </div>
-        {!this.state.onSignIn &&
+        {!this.state.OnSignInPage && this.props.user.uid &&
           <div>
             <TopNav />
             <div className="main-content">
@@ -100,7 +116,11 @@ class AppContainerComp extends Component {
     )
   }
 }
-const AppContainer = withRouter(AppContainerComp)
+
+const mapNoteStateToProps = state => ({
+  user: state.user.data
+});
+const AppContainer = withRouter(connect(mapNoteStateToProps, { getUser })(AppContainerComp),AppContainerComp)
 
 class App extends Component {
   render() {

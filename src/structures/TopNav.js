@@ -6,22 +6,20 @@ import { connect } from 'react-redux'
 import { getUser } from '../actions'
 
 export class TopNavComp extends Component {
-  state =  {
+  state = {
     isLoggedin: true
   }
-  componentDidMount() {
-    console.log(this.props, 'props');
-    firebase.auth().onAuthStateChanged((user)=> {
-      console.log(firebase.auth().currentUser, 'user current');
-    })
+  componentWillMount() {
+    this.props.getUser();
   }
   onSignOut = () => {
-    firebase.auth().signOut().then(()=> {
+    firebase.auth().signOut().then(() => {
+      console.log('loged out');
       this.setState({isLoggedin: false});
-      console.log('signd out');
     })
   }
   render() {
+    const { user } = this.props;
     if (this.state.isLoggedin === false) {
       return <Redirect to="/sign-in" />
     }
@@ -34,7 +32,10 @@ export class TopNavComp extends Component {
           </div>
         </div>
         <div className="user-info">
-          <span>Justin Hardin</span>
+          {user.photoURL &&
+            <img className="profile-img" src={user.photoURL} alt="profile avatar"/>
+          }
+          <span>{user.displayName}</span>
           <span onClick={this.onSignOut}>sign out</span>
         </div>
       </div>
@@ -43,6 +44,6 @@ export class TopNavComp extends Component {
 }
 
 const mapNoteStateToProps = state => ({
-  user: state.data
+  user: state.user.data
 });
-export const TopNav = connect(mapNoteStateToProps, {getUser})(TopNavComp);
+export const TopNav = connect(mapNoteStateToProps, { getUser })(TopNavComp);

@@ -1,28 +1,40 @@
 import { ref, storageRef } from '../config/constants'
 import { store } from '../store'
 
-
 //User
 export const setUser = (user) => {
+  const userObj = {
+    displayName: user.displayName,
+    email: user.email,
+    emailVerified: user.emailVerified,
+    isAnonymous: user.isAnonymous,
+    phoneNumber: user.phoneNumber,
+    photoURL: user.photoURL,
+    providerData: user.providerData,
+    uid: user.uid
+  }
   store.dispatch({
     type: 'SET_USER',
-    payload: user,
+    payload: userObj,
     status: 'pending'
   })
 }
 
-export const getUser = (user) => {
-  store.dispatch({
-    type: 'GET_USER',
-    payload: store.getState().user.data,
-    status: 'success'
-  })
+export const getUser = () => {
+  return (dispatch) => {
+    dispatch({
+      type: 'GET_USER',
+      payload: store.getState().user.data,
+      status: 'success'
+    })
+  }
 }
 
 const get = (path, action) => {
+  const user = store.getState().user.data;
   return (dispatch) => {
     let data = []
-    ref.collection(path).get().then((snap) => {
+    ref.collection(path).where("author", "==", user.uid).get().then((snap) => {
       snap.forEach((doc) => {
         data.push(doc.data());
       })
@@ -37,7 +49,9 @@ const get = (path, action) => {
 
 const post = (item, path, action, getData) => {
   const itemRef = ref.collection(path).doc();
+  const user = store.getState().user.data;
   item.id = itemRef.id;
+  item.author = user.uid;
 
   itemRef.set(item)
     .then((item) => {
