@@ -1,29 +1,20 @@
 import React, { Component } from 'react'
 import logoImg from '../images/AtomFlower.svg'
 import firebase from 'firebase/app'
-import { Redirect } from 'react-router-dom'
 import { connect } from 'react-redux'
 import { getUser, clearStore } from '../actions'
 
 export class TopNavComp extends Component {
-  state = {
-    isLoggedin: true
-  }
   componentWillMount() {
     this.props.getUser();
   }
   onSignOut = () => {
     firebase.auth().signOut().then(() => {
       clearStore();
-      this.setState({ isLoggedin: false });
-      console.log('loged out');
     })
   }
   render() {
     const { user } = this.props;
-    if (this.state.isLoggedin === false) {
-      return <Redirect to="/sign-in" />
-    }
     return (
       <div className="top-nav">
         <div>

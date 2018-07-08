@@ -3,6 +3,14 @@ import { store } from '../store'
 
 //User
 export const setUser = (user) => {
+  const convertListofCustomObjects = (list) => {
+    return list.map((custObj)=> {
+      return {...custObj};
+    })
+  }
+
+  const userRef = ref.collection('/users').doc(user.uid)
+
   const userObj = {
     displayName: user.displayName,
     email: user.email,
@@ -10,14 +18,24 @@ export const setUser = (user) => {
     isAnonymous: user.isAnonymous,
     phoneNumber: user.phoneNumber,
     photoURL: user.photoURL,
-    providerData: user.providerData,
+    providerData: convertListofCustomObjects(user.providerData),
     uid: user.uid
   }
-  store.dispatch({
-    type: 'SET_USER',
-    payload: userObj,
-    status: 'pending'
-  })
+
+  ref.runTransaction((transaction)=> {
+    return transaction.get(userRef).then((userDoc) => {
+      if (!userDoc.exists) {
+        userRef.set(userObj);
+      }else {
+        transaction.update(userRef,userObj);
+        store.dispatch({
+          type: 'SET_USER',
+          payload: userObj,
+        })
+      }
+
+    })
+  }) 
 }
 
 export const getUser = () => {
@@ -25,7 +43,6 @@ export const getUser = () => {
     dispatch({
       type: 'GET_USER',
       payload: store.getState().user.data,
-      status: 'success'
     })
   }
 }
