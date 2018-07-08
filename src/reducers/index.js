@@ -92,10 +92,17 @@ const invoicesReducer = (state = initState.invoicesInt, action) => {
   }
 }
 
-export const rootReducer = combineReducers({
+const appReducer = combineReducers({
   jobs: jobsReducer,
   notes: notesReducer,
   customers: customersReducer,
   invoices: invoicesReducer,
   user: userReducer
 })
+
+export const rootReducer = (state, action) => {
+  if (action.type === 'CLEAR_STORE') {
+    state = undefined
+  }
+  return appReducer(state, action);
+}

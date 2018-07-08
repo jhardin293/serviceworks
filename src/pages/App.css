@@ -7,7 +7,7 @@ html {
 p, h1, h2, h3, h4, h5, h6 {
   margin: 0px; }
 
-html, body, #root, .main-content {
+html, body, #root {
   height: 100%; }
 
 body {
@@ -133,7 +133,8 @@ a, .btn {
 
 .main-content {
   display: flex;
-  overflow: hidden; }
+  overflow: hidden;
+  height: calc(100% - 50px); }
 
 .page-view {
   position: relative;
@@ -228,7 +229,6 @@ a, .btn {
   width: 100%;
   padding: 0px 15px 0px 15px; }
   .calendar-wrapper .calendar {
-    height: 100vh;
     width: 100%; }
     .calendar-wrapper .calendar .calendar-toolbar {
       display: flex;
@@ -314,7 +314,6 @@ a, .btn {
 .side-area {
   width: 310px;
   background-color: #F5F6FA;
-  height: 100vh;
   padding-left: 20px;
   padding-right: 20px;
   box-shadow: 0px 0px 5px 1px rgba(0, 0, 0, 0.17); }

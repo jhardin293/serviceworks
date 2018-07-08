@@ -68,6 +68,8 @@ const post = (item, path, action, getData) => {
 
 const update = (item, path, action, getData) => {
   const itemRef = ref.collection(path).doc(item.id);
+  const user = store.getState().user.data;
+  item.author = user.uid;
 
   itemRef.set(item)
     .then((item) => {
@@ -96,6 +98,14 @@ const remove = (id, path, action, getData) => {
         store.dispatch(getData());
       }
     })
+}
+
+
+//Clear Redux store(used in logout)
+export const clearStore = () => {
+  store.dispatch({
+    type: 'CLEAR_STORE'
+  })
 }
 
 

@@ -3,7 +3,7 @@ import logoImg from '../images/AtomFlower.svg'
 import firebase from 'firebase/app'
 import { Redirect } from 'react-router-dom'
 import { connect } from 'react-redux'
-import { getUser } from '../actions'
+import { getUser, clearStore } from '../actions'
 
 export class TopNavComp extends Component {
   state = {
@@ -14,8 +14,9 @@ export class TopNavComp extends Component {
   }
   onSignOut = () => {
     firebase.auth().signOut().then(() => {
+      clearStore();
+      this.setState({ isLoggedin: false });
       console.log('loged out');
-      this.setState({isLoggedin: false});
     })
   }
   render() {
@@ -33,7 +34,7 @@ export class TopNavComp extends Component {
         </div>
         <div className="user-info">
           {user.photoURL &&
-            <img className="profile-img" src={user.photoURL} alt="profile avatar"/>
+            <img className="profile-img" src={user.photoURL} alt="profile avatar" />
           }
           <span>{user.displayName}</span>
           <span onClick={this.onSignOut}>sign out</span>

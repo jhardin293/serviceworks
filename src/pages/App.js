@@ -44,7 +44,8 @@ momentDurationFormatSetup(moment);
 class AppContainerComp extends Component {
   state = {
     OnSignInPage: false,
-    isLoggedin: false,
+    isLoggedin: true,
+    lodingUser: true,
     user: false
   }
 
@@ -59,12 +60,13 @@ class AppContainerComp extends Component {
   }
 
   componentDidMount() {
+
     firebase.auth().onAuthStateChanged((user) => {
       if (firebase.auth().currentUser === null) {
-        this.setState({ isLoggedin: false });
+        this.setState({ isLoggedin: false, lodingUser: false});
       } else {
         setUser(user);
-        this.setState({ isLoggedin: true });
+        this.setState({ isLoggedin: true , lodingUser: false});
       }
     })
   }
@@ -78,16 +80,14 @@ class AppContainerComp extends Component {
   }
 
   render() {
-    if (this.state.isLoggedin === false && !this.state.OnSignInPage) {
+    if (this.state.isLoggedin === false && !this.state.OnSignInPage ) {
       return <Redirect to="/sign-in" />
     }
     return (
-      <div>
-        <div>
-          <Route exact path="/sign-in" component={SignIn} />
-        </div>
+      <div style={{ height: '100%' }}>
+        <Route exact path="/sign-in" component={SignIn} />
         {!this.state.OnSignInPage && this.props.user.uid &&
-          <div>
+          <div style={{ height: '100%' }}>
             <TopNav />
             <div className="main-content">
               <SideNav />
@@ -120,7 +120,7 @@ class AppContainerComp extends Component {
 const mapNoteStateToProps = state => ({
   user: state.user.data
 });
-const AppContainer = withRouter(connect(mapNoteStateToProps, { getUser })(AppContainerComp),AppContainerComp)
+const AppContainer = withRouter(connect(mapNoteStateToProps, { getUser })(AppContainerComp), AppContainerComp)
 
 class App extends Component {
   render() {
