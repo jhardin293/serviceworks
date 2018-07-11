@@ -41,7 +41,6 @@ export class NoteDetails extends Component {
     if (file) {
       uploadImage(file).then((url) => {
         this.setState({ note: { ...this.state.note, image: url } });
-        console.log(url, 'url');
       })
     }
   }

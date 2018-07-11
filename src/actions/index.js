@@ -190,8 +190,9 @@ export const uploadImage = (file, id) => {
   return new Promise((resolve, reject) => {
     notesImgRef.child(file.name).put(file).then((snapshot) => {
       if (snapshot) {
-        const url = snapshot.downloadURL;
-        resolve(url);
+        snapshot.ref.getDownloadURL().then((url)=> {
+          resolve(url);
+        })
       }
     });
   });
