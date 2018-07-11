@@ -39,7 +39,7 @@ export class NoteDetails extends Component {
     //Make sure photo is uploaded before your alowed to save note;
     const file = e.target.files[0];
     if (file) {
-      uploadImage(file).then((url) => {
+      uploadImage('/notes',file).then((url) => {
         this.setState({ note: { ...this.state.note, image: url } });
       })
     }

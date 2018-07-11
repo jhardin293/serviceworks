@@ -185,10 +185,10 @@ export const deleteNote = (id) => {
   remove(id, 'notes', 'GET_NOTES', getNotes);
 }
 
-export const uploadImage = (file, id) => {
-  const notesImgRef = storageRef.child('notes/');
+export const uploadImage = (path,file) => {
+  const imgRef = storageRef.child(path);
   return new Promise((resolve, reject) => {
-    notesImgRef.child(file.name).put(file).then((snapshot) => {
+    imgRef.child(file.name).put(file).then((snapshot) => {
       if (snapshot) {
         snapshot.ref.getDownloadURL().then((url)=> {
           resolve(url);

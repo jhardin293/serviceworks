@@ -4,6 +4,7 @@ import { Tab, Tabs, TabList, TabPanel } from 'react-tabs'
 import { Link } from 'react-router-dom'
 import { geocodeByAddress, getLatLng } from 'react-places-autocomplete'
 import { LocationSearchInput } from '../components/LocationSearchInput'
+import { uploadImage } from '../actions'
 import Map from '../components/Map'
 
 import threeDots from '../images/three-dots.png'
@@ -15,6 +16,7 @@ export class AccountDetails extends Component {
     this.state = {
       account: {
         displayName: props.account.displayName || '',
+        photoURL: props.account.photoURL || '',
         company: props.account.company || '',
         email: props.account.email || '',
         phoneNumber: props.account.phoneNumber || '',
@@ -66,6 +68,15 @@ export class AccountDetails extends Component {
     }
   }
 
+  handleUpload = (e) => {
+    const file = e.target.files[0];
+    if (file) {
+      uploadImage('/users',file).then((url) => {
+        this.setState({ account: { ...this.state.account, photoURL: url } });
+      })
+    }
+  }
+
   render() {
     const account = this.state.account,
       allowDelete = this.props.allowDelete;
@@ -83,7 +94,7 @@ export class AccountDetails extends Component {
                 Delete
                 </button>
             }
-              <button className="btn second-btn btn-success" onClick={this.onSave}>Save account</button>
+            <button className="btn second-btn btn-success" onClick={this.onSave}>Save account</button>
           </div>
           <Tabs>
             <TabList>
@@ -129,6 +140,17 @@ export class AccountDetails extends Component {
                           onLocationChange={this.onLocationChange}
                           address={this.state.account.address}
                         />
+                      </div>
+                      <div className="control-area">
+                        <label>
+                          Profile img 
+                        </label>
+                        <input type="file" name="Add Photo" onChange={this.handleUpload} />
+                      </div>
+                      <div>
+                        {this.state.account.photoURL.length > 0 &&
+                          <img src={this.state.account.photoURL} alt="" />
+                        }
                       </div>
                     </div>
                     <div>
