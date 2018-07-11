@@ -62,10 +62,11 @@ class Toolbar extends Component {
     onNavigate: PropTypes.func.isRequired,
     onViewChange: PropTypes.func.isRequired,
   }
-  navigate = action => {
+  navigate = (action) => {
     this.props.onNavigate(action);
   }
   view = view => {
+    console.log(view,'view'); 
     this.props.onViewChange(view);
   }
   render() {
@@ -112,14 +113,14 @@ class Toolbar extends Component {
         <div className="month-area">
           <button
             type="button"
-            onClick={this.navigate.bind(null, 'PREV')}
+            onClick={() => this.navigate('PREV')}
           >
             <img src={chevron} alt="prev" />
           </button>
           <span className="month-label"><strong>{pre}</strong> {body}</span>
           <button
             type="button"
-            onClick={this.navigate.bind(null, 'NEXT')}
+            onClick={() => this.navigate('NEXT')}
           >
             <img src={chevron} alt="next" />
           </button>
@@ -255,12 +256,11 @@ class ScheduleComp extends Component {
   }
 
   onView = (view) => {
-    console.log(view);
     this.setState({ view })
   }
 
-  onNavigate = (nav) => {
-    console.log(nav);
+  onNavigate = (selectedDay) => {
+    this.setState({ selectedDay })
   }
 
   render() {
