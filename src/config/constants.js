@@ -15,9 +15,8 @@ const config = {
 firebase.initializeApp(config);
 const firestore = firebase.firestore();
 const storage = firebase.storage().ref();
-//Need to update date objects in firestore
-// const settings = {timestampsInSnapshots: true};
-// firestore.settings(settings);
+const settings = {timestampsInSnapshots: true};
+firestore.settings(settings);
 
 export const ref = firestore;
 export const storageRef = storage; 

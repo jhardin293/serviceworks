@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
-import {connect} from 'react-redux'
+import { connect } from 'react-redux'
 import moment from 'moment'
-import { Link, Redirect} from 'react-router-dom'
+import { Link, Redirect } from 'react-router-dom'
 import PropTypes from 'prop-types'
 import DatePicker from 'react-datepicker'
 import cn from 'classnames'
@@ -26,7 +26,7 @@ BigCalendar.setLocalizer(BigCalendar.momentLocalizer(moment));
 class SideCalendar extends Component {
   static propTypes = {
     jobs: PropTypes.array.isRequired,
-    handleSelect: PropTypes.func.isRequired 
+    handleSelect: PropTypes.func.isRequired
   }
 
   render() {
@@ -41,9 +41,9 @@ class SideCalendar extends Component {
             <button className="job-btn btn"><img src={plus} alt="" /><span>New job</span></button>
           </Link>
         </div>
-        <DatePicker 
-          calendarClassName="in-line" 
-          inline 
+        <DatePicker
+          calendarClassName="in-line"
+          inline
           highlightDates={highlightDates}
           onSelect={this.props.handleSelect}
         />
@@ -172,66 +172,66 @@ class CustomEvent extends Component {
     isOpen: false,
   }
   handleSelect = (e) => {
-    this.setState({isOpen: true});
+    this.setState({ isOpen: true });
   }
   handleClickOutside = (e) => {
-    this.setState({isOpen: false});
+    this.setState({ isOpen: false });
   }
   render() {
     const job = this.props.event,
-          start = moment(job.start),
-          end = moment(job.end);
-    const duration =  moment.duration(end.diff(start)).format("d [days]  h [hours]  m [minutes]");
+      start = moment(job.start),
+      end = moment(job.end);
+    const duration = moment.duration(end.diff(start)).format("d [days]  h [hours]  m [minutes]");
     const employees = arrayToSentence(job.employees.map((employee, idx) => employee.label));
-    const content = 
-    <div className="details-popover ignore-react-onclickoutside"> 
-      <div className="popover-header">
-        <span>{job.title}</span>
-        {/* <img src={closeDetails} alt="" onClick={this.handleClickOutside}/> */}
-      </div>
-      <ul>
-        <li><img src={employee} alt=""/>{employees}</li>
-        <li><img src={customer} alt=""/><span>{job.customer.label}</span></li>
-        <li>
-          <img src={date} alt=""/>
-          <div className="stack">
-            <span>{start.format('lll')}</span>
-            <span>{end.format('lll')}</span>
-            <span>{duration}</span>
-          </div>
-        </li>
-        <li>
-          <img src={location} alt=""/>
-          <div className="stack"><span>{job.address}</span></div>
-        </li>
-      </ul>
-      <div className="map">
-        <Map latLng={job.latLng} />
-      </div>
-      <div className="details">
-        <span>
-          <Link 
-            to={{
-              pathname: "/schedule/edit-job",
-              state: {job}
+    const content =
+      <div className="details-popover ignore-react-onclickoutside">
+        <div className="popover-header">
+          <span>{job.title}</span>
+          {/* <img src={closeDetails} alt="" onClick={this.handleClickOutside}/> */}
+        </div>
+        <ul>
+          <li><img src={employee} alt="" />{employees}</li>
+          <li><img src={customer} alt="" /><span>{job.customer.label}</span></li>
+          <li>
+            <img src={date} alt="" />
+            <div className="stack">
+              <span>{start.format('lll')}</span>
+              <span>{end.format('lll')}</span>
+              <span>{duration}</span>
+            </div>
+          </li>
+          <li>
+            <img src={location} alt="" />
+            <div className="stack"><span>{job.address}</span></div>
+          </li>
+        </ul>
+        <div className="map">
+          <Map latLng={job.latLng} />
+        </div>
+        <div className="details">
+          <span>
+            <Link
+              to={{
+                pathname: "/schedule/edit-job",
+                state: { job }
               }} >
-            show job details
+              show job details
           </Link>
-        </span>
-      </div>
-          
-    </div>;
+          </span>
+        </div>
+
+      </div>;
 
     return (
       <div className="PopOver" onClick={this.handleSelect}>
-          <Popover  isOpen={this.state.isOpen} body={content} preferPlace='below'>
-            <div>{this.props.event.title}</div>
-          </Popover>
+        <Popover isOpen={this.state.isOpen} body={content} preferPlace='below'>
+          <div>{this.props.event.title}</div>
+        </Popover>
       </div>
     );
   }
 }
-const DetailsPopover = onClickOutside(CustomEvent);  
+const DetailsPopover = onClickOutside(CustomEvent);
 //Refactor to remove plugin popover has an event for outside events
 
 
@@ -251,12 +251,12 @@ class ScheduleComp extends Component {
   }
 
   handleSelect = (date) => {
-    this.setState({view: 'day', selectedDay: date.toDate()});
+    this.setState({ view: 'day', selectedDay: date.toDate() });
   }
 
   onView = (view) => {
     console.log(view);
-    this.setState({view})
+    this.setState({ view })
   }
 
   onNavigate = (nav) => {
@@ -265,7 +265,14 @@ class ScheduleComp extends Component {
 
   render() {
     //Is the double nested structure correct?
-    let jobs = this.props.jobs.jobs;
+    let jobs = this.props.jobs.jobs.map((job) => {
+      //Check if timestamp convert to date
+      if (job.start.toDate) {
+        job.start = job.start.toDate();
+        job.end = job.end.toDate();
+      }
+      return job;
+    });
     if (this.state.openNewJob) {
       return <Redirect push to="/schedule/new-job" />
     }
@@ -284,7 +291,7 @@ class ScheduleComp extends Component {
             onView={this.onView}
           />
         </div>
-        <SideCalendar jobs={jobs} handleSelect={this.handleSelect}/>
+        <SideCalendar jobs={jobs} handleSelect={this.handleSelect} />
       </div>
     );
   }
@@ -292,5 +299,5 @@ class ScheduleComp extends Component {
 const mapStateToProps = state => ({
   jobs: state.jobs
 });
-export const Schedule = connect(mapStateToProps, {getJobs})(ScheduleComp);
+export const Schedule = connect(mapStateToProps, { getJobs })(ScheduleComp);
 
