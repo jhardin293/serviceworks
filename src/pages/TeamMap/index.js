@@ -1,12 +1,18 @@
 import React, { Component } from 'react'
-import Map  from '../../components/Map'
+import MultiMarkerMap  from '../../components/MultiMarkerMap'
+import { getCustomers } from '../../actions'
+import { connect } from 'react-redux';
 
-export class TeamMap extends Component {
+class TeamMapComp extends Component {
+  componentWillMount() {
+    this.props.getCustomers();
+  }
   render() {
+    const customers = this.props.customers;
     return (
       <div className="map-view page-view">
         <div className="map">
-          <Map latLng={{ lat: 37, lng: -122 }} />
+          <MultiMarkerMap latLng={{ lat: 37.8145218, lng: -122.2544248 }} items={customers} />
         </div>
         <aside className="side-area">
           <div className="side-header">
@@ -33,3 +39,10 @@ export class TeamMap extends Component {
     )
   }
 }
+
+
+const mapNoteStateToProps = state => ({
+  customers: state.customers.customers
+});
+export const TeamMap = connect(mapNoteStateToProps, {getCustomers})(TeamMapComp);
+
