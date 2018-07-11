@@ -41,12 +41,6 @@ export const setUser = (user) => {
   })
 }
 
-export const updateUser = (user) => {
-  const userRef = ref.collection('/users').doc(user.uid)
-  userRef.update(user).then(() => {
-    store.dispatch(getUser());
-  });
-}
 
 export const getUser = () => {
   const user = store.getState().user.data;
@@ -70,25 +64,27 @@ export const getUser = () => {
   }
 }
 
+export const updateUser = (user) => {
+  const userRef = ref.collection('/users').doc(user.uid)
+  userRef.update(user).then(() => {
+    store.dispatch(getUser());
+  });
+}
+
 const get = (path, action) => {
-  console.log(typeof store.getState(), 'it is the type');
-  if (typeof store.getState === "function") {
-    console.log(store.getstate().user.data, 'store');
-    // const user = store.getstate().user.data;
-    const tempId = 'PNmTQbkaTwOURnEGwJRVvGHpatV2';
-    return (dispatch) => {
-      let data = []
-      ref.collection(path).where("author", "==", tempId).get().then((snap) => {
-        snap.forEach((doc) => {
-          data.push(doc.data());
-        })
-        dispatch({
-          type: action,
-          payload: data,
-          status: 'success'
-        })
+  const user = store.getState().user.data;
+  return (dispatch) => {
+    let data = []
+    ref.collection(path).where("author", "==", user.uid).get().then((snap) => {
+      snap.forEach((doc) => {
+        data.push(doc.data());
       })
-    }
+      dispatch({
+        type: action,
+        payload: data,
+        status: 'success'
+      })
+    })
   }
 }
 

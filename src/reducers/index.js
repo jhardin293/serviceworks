@@ -36,7 +36,6 @@ const userReducer = (state= initState.userInt, action) => {
         data: action.payload
       }
     case 'GET_USER':
-    
       return {
         ...state,
         status: action.status,

@@ -14,7 +14,6 @@ class MyAccountComp extends Component {
     updateUser(mergedUser)
   }
   render() {
-    console.log(this.props.user, 'in account');
     return (
       <AccountDetails account={this.props.user} onSave={this.onAccountSave}/>
     )
