@@ -50,7 +50,7 @@ export class AccountDetails extends Component {
     this.setState({ account: { ...this.state.account, address } })
   }
 
-  onSave = () => {
+  onSave = (e) => {
     this.props.onSave(this.state.account);
   }
   headerDisplay = () => {
@@ -83,9 +83,7 @@ export class AccountDetails extends Component {
                 Delete
                 </button>
             }
-            <Link to="/accounts">
               <button className="btn second-btn btn-success" onClick={this.onSave}>Save account</button>
-            </Link>
           </div>
           <Tabs>
             <TabList>
@@ -120,7 +118,7 @@ export class AccountDetails extends Component {
                         <label>
                           Phone
                         </label>
-                        <input type="text" value={account.phoneNumber} name="phone" onChange={this.onChange} />
+                        <input type="text" value={account.phoneNumber} name="phoneNumber" onChange={this.onChange} />
                       </div>
                       <div>
                         <label>

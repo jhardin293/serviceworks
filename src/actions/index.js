@@ -4,8 +4,8 @@ import { store } from '../store'
 //User
 export const setUser = (user) => {
   const convertListofCustomObjects = (list) => {
-    return list.map((custObj)=> {
-      return {...custObj};
+    return list.map((custObj) => {
+      return { ...custObj };
     })
   }
 
@@ -14,6 +14,8 @@ export const setUser = (user) => {
   const userObj = {
     displayName: user.displayName,
     email: user.email,
+    company: user.company || '',
+    address: user.address || '',
     emailVerified: user.emailVerified,
     isAnonymous: user.isAnonymous,
     phoneNumber: user.phoneNumber,
@@ -22,45 +24,71 @@ export const setUser = (user) => {
     uid: user.uid
   }
 
-  ref.runTransaction((transaction)=> {
+  ref.runTransaction((transaction) => {
     return transaction.get(userRef).then((userDoc) => {
+      const existingUser = userDoc.data();
       if (!userDoc.exists) {
         userRef.set(userObj);
-      }else {
-        transaction.update(userRef,userObj);
+      } else {
+        transaction.update(userRef, existingUser);
         store.dispatch({
           type: 'SET_USER',
-          payload: userObj,
+          payload: existingUser,
         })
       }
 
     })
-  }) 
+  })
+}
+
+export const updateUser = (user) => {
+  const userRef = ref.collection('/users').doc(user.uid)
+  userRef.update(user).then(() => {
+    store.dispatch(getUser());
+  });
 }
 
 export const getUser = () => {
-  return (dispatch) => {
-    dispatch({
-      type: 'GET_USER',
-      payload: store.getState().user.data,
-    })
+  const user = store.getState().user.data;
+  if (user.uid) {
+    const userRef = ref.collection('/users').doc(user.uid)
+    return (dispatch) => {
+      userRef.get().then((snap) => {
+        dispatch({
+          type: 'GET_USER',
+          payload: snap.data(),
+        })
+      });
+    }
+  } else {
+    return (dispatch) => {
+      dispatch({
+        type: 'GET_USER',
+        payload: user,
+      })
+    }
   }
 }
 
 const get = (path, action) => {
-  const user = store.getState().user.data;
-  return (dispatch) => {
-    let data = []
-    ref.collection(path).where("author", "==", user.uid).get().then((snap) => {
-      snap.forEach((doc) => {
-        data.push(doc.data());
+  console.log(typeof store.getState(), 'it is the type');
+  if (typeof store.getState === "function") {
+    console.log(store.getstate().user.data, 'store');
+    // const user = store.getstate().user.data;
+    const tempId = 'PNmTQbkaTwOURnEGwJRVvGHpatV2';
+    return (dispatch) => {
+      let data = []
+      ref.collection(path).where("author", "==", tempId).get().then((snap) => {
+        snap.forEach((doc) => {
+          data.push(doc.data());
+        })
+        dispatch({
+          type: action,
+          payload: data,
+          status: 'success'
+        })
       })
-      dispatch({
-        type: action,
-        payload: data,
-        status: 'success'
-      })
-    })
+    }
   }
 }
 

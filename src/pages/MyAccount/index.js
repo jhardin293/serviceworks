@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import {connect} from 'react-redux'
-import {getUser, setUser} from '../../actions'
+import {getUser, updateUser} from '../../actions'
 
 
 import { AccountDetails } from '../../components/AccountDetails';
@@ -11,11 +11,10 @@ class MyAccountComp extends Component {
   }
   onAccountSave = (user) => {
     const mergedUser = {...this.props.user, ...user}
-    setUser(mergedUser)
-    console.log(mergedUser, 'fake save');
+    updateUser(mergedUser)
   }
   render() {
-    console.log(this.props.user);
+    console.log(this.props.user, 'in account');
     return (
       <AccountDetails account={this.props.user} onSave={this.onAccountSave}/>
     )
