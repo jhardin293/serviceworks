@@ -686,21 +686,20 @@ form.person-form {
 .map-view {
   position: relative; }
   .map-view .map {
-    height: 100vh;
+    height: 100%;
     width: 100%; }
   .map-view .side-area {
     position: absolute;
     right: 0;
     top: 0;
-    width: 280px; }
-    .map-view .side-area .side-header {
-      margin-top: 40px; }
-      .map-view .side-area .side-header h2 {
-        color: #828E9E;
-        font-weight: 400;
-        font-size: 18px; }
-      .map-view .side-area .side-header hr {
-        border: 1px solid #CAD2DD; }
+    width: 280px;
+    padding: 20px; }
+    .map-view .side-area .side-header h2 {
+      color: #828E9E;
+      font-weight: 400;
+      font-size: 18px; }
+    .map-view .side-area .side-header hr {
+      border: 1px solid #CAD2DD; }
     .map-view .side-area .customer label {
       display: flex;
       align-items: center;

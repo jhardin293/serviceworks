@@ -936,7 +936,7 @@ form {
 .map-view {
   position: relative;
   .map {
-    height: 100vh;
+    height: 100%;
     width: 100%;
   }
   .side-area {
@@ -944,8 +944,8 @@ form {
     right: 0;
     top: 0;
     width: 280px;
+    padding: 20px;
     .side-header {
-      margin-top: 40px;
       h2 {
         color: #828E9E;
         font-weight: 400;
