@@ -1,7 +1,9 @@
 import React, { Component } from 'react'
+import { Link } from 'react-router-dom'
 import PropTypes from 'prop-types'
 import GoogleMapReact from 'google-map-react';
 
+import Popover from 'react-popover'
 import mapMarker from './images/map-marker.svg'
 
 class MapMarker extends Component {
@@ -10,10 +12,37 @@ class MapMarker extends Component {
     lng: PropTypes.number
   }
 
+
   render() {
+    const item = this.props.item;
+    const customer = item; //Temp
+    const content =
+      <div className="details-popover ">
+        <div className="popover-header">
+          <span>{'Customer'}</span>
+        </div>
+        <ul>
+          <li>{item.name + ' : ' + item.company}</li>
+          <li>{item.email}</li>
+          <li>{item.phone}</li>
+          <li>
+            <Link 
+              to={{
+                pathname: "customers/edit-customer",
+                state: {customer}
+              }} >
+              Show details
+            </Link>
+          </li>
+        </ul>
+      </div>
     return (
-      <div>
-        <img src={mapMarker} alt="" />
+      <div >
+        {item.displayOnMap &&
+          <Popover isOpen={item.showPopover} body={content} preferPlace='below' onClick={this.handleClick}>
+            <img src={mapMarker} alt="" />
+          </Popover>
+        }
       </div>
     )
   }
@@ -29,14 +58,15 @@ export default class MultMarkerMap extends Component {
     zoom: 11,
   };
 
+
   render() {
-    // console.log(this.props.items,'items');
-    const Markers = this.props.items.map((item,i) => {
+    const Markers = this.props.items.map((item, i) => {
       return (
         <MapMarker
           key={i}
           lat={item.latLng.lat}
           lng={item.latLng.lng}
+          item={item}
         />
       )
 
@@ -48,8 +78,10 @@ export default class MultMarkerMap extends Component {
           bootstrapURLKeys={{ key: 'AIzaSyDA4lSVtu-jB1h7VbTCTpSGf_Qv5UEuS6A' }}
           defaultZoom={this.props.zoom}
           center={[this.props.latLng.lat, this.props.latLng.lng]}
+          onChildClick={this.props.onMarkerClick}
+          onClick={this.props.onOutsideClick}
         >
-        {Markers}
+          {Markers}
         </GoogleMapReact>
       </div>
     );

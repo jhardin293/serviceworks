@@ -37,8 +37,11 @@ class TeamMapComp extends Component {
     //adding customers to state
     if (this.props.customers !== prevProps.customers) {
       //Is this a anti pattern?
-      const customers = this.props.customers.map((customer) => {
+      const customersClone = [...this.props.customers]
+      // console.log(customersClone, 'clone', this.props.customers);
+      const customers = customersClone.map((customer) => {
         customer.displayOnMap = true;
+        customer.showPopover = false;
         return customer;
       })
       this.setState({customers: customers});
@@ -57,16 +60,45 @@ class TeamMapComp extends Component {
     this.setState({customers});
 
   }
+
+  resetPopoverState = () => {
+    const customers = this.state.customers.map((customer) => {
+      customer.showPopover = false;
+      return customer;
+    });
+
+    this.setState({customers});
+  }
+
+  handleMarkerClick = (idx) => {
+    const customers = this.state.customers;
+    this.resetPopoverState();
+
+    if (customers[idx].showPopover === false) {
+      customers[idx].showPopover = true;
+    }else {
+      customers[idx].showPopover = false;
+    }
+    this.setState({customers});
+  }
+
+  handleOutsideClick = () => {
+    this.resetPopoverState();
+  }
+
   render() {
     const customers = this.state.customers;
-    const filterdCustomers = customers.filter((customer)=> {
-        return customer.displayOnMap === true 
-    });
 
     return (
       <div className="map-view page-view">
         <div className="map">
-          <MultiMarkerMap latLng={{ lat: 37.8145218, lng: -122.2544248 }} items={filterdCustomers} />
+          <MultiMarkerMap 
+            latLng={{ lat: 37.8145218, lng: -122.2544248 }} 
+            items={customers} 
+            onMarkerClick={this.handleMarkerClick}
+            onOutsideClick={this.handleOutsideClick}
+
+          />
         </div>
         <aside className="side-area">
           <div className="side-header">
