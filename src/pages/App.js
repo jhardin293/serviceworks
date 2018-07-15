@@ -30,6 +30,7 @@ import { EditJob } from '../structures/EditJob'
 import { NewNote } from '../structures/NewNote'
 import { EditNote } from '../structures/EditNote'
 import { EditCustomer } from '../structures/EditCustomer'
+import { EditEmployee } from '../structures/EditEmployee'
 import { EditInvoice } from '../structures/EditInvoice'
 import { NewCustomer } from '../structures/NewCustomer'
 import { NewInvoice } from '../structures/NewInvoice'
@@ -109,6 +110,7 @@ class AppContainerComp extends Component {
               <Route exact path="/invoices/new-invoice" component={NewInvoice} />
               <Route exact path="/invoices/edit-invoice" component={EditInvoice} />
               <Route exact path="/my-account/new-employee" component={NewEmployee} />
+              <Route exact path="/my-account/edit-employee" component={EditEmployee} />
             </div>
           </div>
         }

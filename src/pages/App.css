@@ -1,13 +1,23 @@
 html {
   box-sizing: border-box; }
 
-*, *:before, *:after {
+*,
+*:before,
+*:after {
   box-sizing: inherit; }
 
-p, h1, h2, h3, h4, h5, h6 {
+p,
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
   margin: 0px; }
 
-html, body, #root {
+html,
+body,
+#root {
   height: 100%; }
 
 body {
@@ -17,7 +27,8 @@ body {
 button {
   cursor: pointer; }
 
-a, .btn {
+a,
+.btn {
   text-decoration: none; }
 
 .btn {
@@ -486,11 +497,20 @@ a, .btn {
   .person-view .panel.invoices .panel-body tr td a {
     color: black; }
 
+.person-view .employee-list-wrapper {
+  margin-top: 20px; }
+  .person-view .employee-list-wrapper .panel .panel-body tr td a {
+    color: #5CB6B5; }
+
 .person-view .action-header {
   display: flex;
   justify-content: space-between; }
   .person-view .action-header .tab-btn-group {
-    position: relative; }
+    position: relative;
+    right: 0px; }
+
+.account-btn {
+  background-image: linear-gradient(90deg, #6BE1A7 0%, #5CB6B5 100%); }
 
 .customer-view .customer-btn {
   background-image: linear-gradient(90deg, #FE6AAC 0%, #FE8812 100%); }
@@ -517,7 +537,10 @@ label {
   font-size: 14px;
   font-weight: bold; }
 
-form input, form select, form .Select-control, form textarea {
+form input,
+form select,
+form .Select-control,
+form textarea {
   height: 34px;
   padding: 10px 16px;
   box-sizing: border-box;
@@ -526,7 +549,10 @@ form input, form select, form .Select-control, form textarea {
   font-size: 14px;
   width: 100%;
   margin-bottom: 15px; }
-  form input[disabled], form select[disabled], form .Select-control[disabled], form textarea[disabled] {
+  form input[disabled],
+  form select[disabled],
+  form .Select-control[disabled],
+  form textarea[disabled] {
     background-color: #eee;
     cursor: not-allowed; }
 
@@ -578,7 +604,9 @@ form.person-form {
   font-size: 14px;
   color: #333; }
 
-.new-invoice-view input, .new-invoice-view select, .new-invoice-view .Select-control {
+.new-invoice-view input,
+.new-invoice-view select,
+.new-invoice-view .Select-control {
   height: 34px;
   font-size: 14px;
   padding-top: 9px;
@@ -656,9 +684,9 @@ form.person-form {
       width: 30%; }
       .new-invoice-view .panel .line-item td:first-child input {
         border-radius: 0px; }
-    .new-invoice-view .panel .line-item td:nth-child(n + 2) {
+    .new-invoice-view .panel .line-item td:nth-child(n+2) {
       width: 10%; }
-      .new-invoice-view .panel .line-item td:nth-child(n + 2) input {
+      .new-invoice-view .panel .line-item td:nth-child(n+2) input {
         text-align: right; }
     .new-invoice-view .panel .line-item .line-total {
       display: flex;
@@ -781,7 +809,8 @@ form.person-form {
   padding: 20px; }
   .new-job-view .panel .panel-body .Select-control {
     margin-bottom: 0px; }
-    .new-job-view .panel .panel-body .Select-control .Select-value, .new-job-view .panel .panel-body .Select-control .Select-placeholder {
+    .new-job-view .panel .panel-body .Select-control .Select-value,
+    .new-job-view .panel .panel-body .Select-control .Select-placeholder {
       display: flex;
       align-items: center; }
     .new-job-view .panel .panel-body .Select-control .Select-multi-value-wrapper {

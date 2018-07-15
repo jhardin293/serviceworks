@@ -15,6 +15,10 @@ const initState = {
     customers: [],
     status: 'init'
   },
+  employeesInt: {
+    data: [],
+    status: 'init'
+  },
   invoicesInt: {
     invoices: [],
     status: 'init'
@@ -85,6 +89,19 @@ const customersReducer = (state = initState.customersInt, action) => {
   }
 }
 
+const employeeReducer = (state = initState.employeesInt, action) => {
+  switch(action.type) {
+    case 'GET_EMPLOYEES':
+      return {
+        ...state,
+        status: action.status,
+        data: action.payload
+      }
+    default:
+      return state;
+  }
+}
+
 const invoicesReducer = (state = initState.invoicesInt, action) => {
   switch(action.type) {
     case 'GET_INVOICES':
@@ -103,7 +120,8 @@ const appReducer = combineReducers({
   notes: notesReducer,
   customers: customersReducer,
   invoices: invoicesReducer,
-  user: userReducer
+  user: userReducer,
+  employees: employeeReducer
 })
 
 export const rootReducer = (state, action) => {

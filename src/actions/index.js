@@ -216,6 +216,23 @@ export const deleteCustomer = (id) => {
   remove(id, 'customers', 'GET_CUSTOMERS', getCustomers);
 }
 
+//Employee
+export const getEmployees = () => {
+  return get('employees', 'GET_EMPLOYEES');
+}
+
+export const newEmployee  = (employee) => {
+  post(employee, 'employees', 'GET_EMPLOYEES', getEmployees);
+}
+
+export const editEmployee  = (employee) => {
+  update(employee, 'employees', 'GET_EMPLOYEES', getEmployees);
+}
+
+export const deleteEmployee  = (id) => {
+  remove(id, 'employees', 'GET_EMPLOYEES', getEmployees);
+}
+
 //Invoices
 export const getInvoices = () => {
   return get('invoices', 'GET_INVOICES');
