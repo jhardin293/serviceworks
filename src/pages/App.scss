@@ -666,6 +666,13 @@ a, .btn {
       }
     }
   }
+  .action-header {
+    display: flex;
+    justify-content: space-between;
+    .tab-btn-group {
+      position: relative;
+    }
+  }
 }
 
 .customer-view {
@@ -989,6 +996,7 @@ form {
       background-image: linear-gradient(90deg, #6BE1A7 0%, #5CB6B5 100%);
     }
   }
+
   .panel {
     width: 100%;
     .panel-body {
@@ -1007,6 +1015,7 @@ form {
       }
     }
   }
+
 }
 
 .new-employee-view {

@@ -1,14 +1,10 @@
 import React, { Component } from 'react'
 import PropTypes from 'prop-types'
-import { Tab, Tabs, TabList, TabPanel } from 'react-tabs'
-import { Link } from 'react-router-dom'
 import { geocodeByAddress, getLatLng } from 'react-places-autocomplete'
 import { LocationSearchInput } from '../components/LocationSearchInput'
 import { uploadImage } from '../actions'
 import Map from '../components/Map'
 
-import threeDots from '../images/three-dots.png'
-import plus from '../images/plus.svg'
 
 export class AccountDetails extends Component {
   constructor(props) {
@@ -55,23 +51,11 @@ export class AccountDetails extends Component {
   onSave = (e) => {
     this.props.onSave(this.state.account);
   }
-  headerDisplay = () => {
-    const account = this.state.account,
-      company = account.company,
-      name = account.displayName;
-    if (name && company) {
-      return name + " : " + company;
-    } else if (company) {
-      return company;
-    } else {
-      return name;
-    }
-  }
 
   handleUpload = (e) => {
     const file = e.target.files[0];
     if (file) {
-      uploadImage('/users',file).then((url) => {
+      uploadImage('/users', file).then((url) => {
         this.setState({ account: { ...this.state.account, photoURL: url } });
       })
     }
@@ -81,120 +65,78 @@ export class AccountDetails extends Component {
     const account = this.state.account,
       allowDelete = this.props.allowDelete;
     return (
-      <div className="new-account-view person-view page-view">
-        <div className="page-header">
-          <h1>{this.headerDisplay() || 'New account'}</h1>
-        </div>
-        <div className="page-body">
+      <div>
+        <div className="action-header">
+          <div></div>
           <div className="tab-btn-group">
             {allowDelete &&
               <button
                 className="btn second-btn btn-delete"
                 onClick={(e) => this.props.onDelete(account.uid, e)}>
                 Delete
-                </button>
+                    </button>
             }
             <button className="btn second-btn btn-success" onClick={this.onSave}>Save account</button>
           </div>
-          <Tabs>
-            <TabList>
-              <Tab>Details</Tab>
-              <Tab>Team</Tab>
-            </TabList>
-
-            <TabPanel>
-              <form className="person-form">
-                <div className="input-group">
-                  <div className="col-2">
-                    <div>
-                      <div>
-                        <label>
-                          Name
-                        </label>
-                        <input type="text" value={account.displayName} name="displayName" onChange={this.onChange} />
-                      </div>
-                      <div>
-                        <label>
-                          Company
-                        </label>
-                        <input type="text" value={account.company} name="company" onChange={this.onChange} />
-                      </div>
-                      <div>
-                        <label>
-                          Email
-                        </label>
-                        <input type="text" value={account.email} name="email" onChange={this.onChange} />
-                      </div>
-                      <div>
-                        <label>
-                          Phone
-                        </label>
-                        <input type="text" value={account.phoneNumber} name="phoneNumber" onChange={this.onChange} />
-                      </div>
-                      <div>
-                        <label>
-                          Address
-                        </label>
-                        <LocationSearchInput
-                          getLocation={this.getLocation}
-                          onLocationChange={this.onLocationChange}
-                          address={this.state.account.address}
-                        />
-                      </div>
-                      <div className="control-area">
-                        <label>
-                          Profile img 
-                        </label>
-                        <input type="file" name="Add Photo" onChange={this.handleUpload} />
-                      </div>
-                      <div>
-                        {this.state.account.photoURL.length > 0 &&
-                          <img src={this.state.account.photoURL} alt="" />
-                        }
-                      </div>
-                    </div>
-                    <div>
-                      <div className="map">
-                        <Map latLng={this.state.account.latLng} />
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </form>
-            </TabPanel>
-
-            <TabPanel>
-              <div className="tab-header">
-                <h2>BensWorth Cleaning Company</h2>
-                <Link to="/my-account/new-employee">
-                  <button className="invoice-btn btn"><img src={plus} alt="" /><span>New employee</span></button>
-                </Link>
-              </div>
-              <div className="employee-list-wrapper">
-                <table className="panel">
-                  <thead>
-                    <tr className="header">
-                      <th><h2>Name</h2></th>
-                      <th><h2>Email</h2></th>
-                      <th><h2>Phone</h2></th>
-                      <th><h2>Role</h2></th>
-                      <th></th>
-                    </tr>
-                  </thead>
-                  <tbody className="panel-body">
-                    <tr>
-                      <td><Link to="/my-account/new-employee">Benny Himsworth</Link></td>
-                      <td>bhimsworth@gmail.com</td>
-                      <td>343-234-9292</td>
-                      <td>Owner</td>
-                      <td><img src={threeDots} alt="item-menu" /></td>
-                    </tr>
-                  </tbody>
-                </table>
-              </div>
-            </TabPanel>
-          </Tabs>
         </div>
+        <form className="person-form">
+          <div className="input-group">
+            <div className="col-2">
+              <div>
+                <div>
+                  <label>
+                    Name
+                        </label>
+                  <input type="text" value={account.displayName} name="displayName" onChange={this.onChange} />
+                </div>
+                <div>
+                  <label>
+                    Company
+                        </label>
+                  <input type="text" value={account.company} name="company" onChange={this.onChange} />
+                </div>
+                <div>
+                  <label>
+                    Email
+                        </label>
+                  <input type="text" value={account.email} name="email" onChange={this.onChange} />
+                </div>
+                <div>
+                  <label>
+                    Phone
+                        </label>
+                  <input type="text" value={account.phoneNumber} name="phoneNumber" onChange={this.onChange} />
+                </div>
+                <div>
+                  <label>
+                    Address
+                        </label>
+                  <LocationSearchInput
+                    getLocation={this.getLocation}
+                    onLocationChange={this.onLocationChange}
+                    address={this.state.account.address}
+                  />
+                </div>
+                <div className="control-area">
+                  <label>
+                    Profile img
+                        </label>
+                  <input type="file" name="Add Photo" onChange={this.handleUpload} />
+                </div>
+                <div>
+                  {this.state.account.photoURL.length > 0 &&
+                    <img src={this.state.account.photoURL} alt="" />
+                  }
+                </div>
+              </div>
+              <div>
+                <div className="map">
+                  <Map latLng={this.state.account.latLng} />
+                </div>
+              </div>
+            </div>
+          </div>
+        </form>
       </div>
     )
   }

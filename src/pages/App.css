@@ -486,6 +486,12 @@ a, .btn {
   .person-view .panel.invoices .panel-body tr td a {
     color: black; }
 
+.person-view .action-header {
+  display: flex;
+  justify-content: space-between; }
+  .person-view .action-header .tab-btn-group {
+    position: relative; }
+
 .customer-view .customer-btn {
   background-image: linear-gradient(90deg, #FE6AAC 0%, #FE8812 100%); }
 
