@@ -3,11 +3,11 @@ import PropTypes from 'prop-types'
 import { geocodeByAddress, getLatLng } from 'react-places-autocomplete'
 import { Tab, Tabs, TabList, TabPanel } from 'react-tabs'
 import DatePicker from 'react-datepicker'
-import Select from 'react-select'
 import { MapSearch } from './MapSearch'
 import { Link, Redirect } from 'react-router-dom'
 import moment from 'moment'
 import CustomerDropdown from '../components/CustomerDropdown'
+import EmployeeMultiSelect from './EmployeeMultiSelect';
 
 export class JobDetails extends Component {
   constructor (props) {
@@ -63,6 +63,10 @@ export class JobDetails extends Component {
     }
   }
 
+  handleEmployee = (value) => {
+    this.setState({job: {...this.state.job, employees: value }});
+  }
+
   handleChange = ({ start, end }) => {
     start = start || this.state.job.start
     end = end || this.state.job.end
@@ -76,9 +80,6 @@ export class JobDetails extends Component {
 
   handleChangeEnd = (end) => this.handleChange({ end })
 
-  handleSelectChange = (value) => {
-    this.setState({job: {...this.state.job, employees: value }});
-  }
 
   handleMarkerClick = () => {
     console.log(arguments, 'clicked')
@@ -187,17 +188,9 @@ export class JobDetails extends Component {
                         <h2>Employees</h2>
                       </div>
                       <div className="panel-body">
-                        <Select
-                          name="form-field-name"
-                          multi
+                        <EmployeeMultiSelect
+                          onChange={this.handleEmployee}
                           value={employees}
-                          onChange={this.handleSelectChange}
-                          searchable
-                          className="tags"
-                          options={[
-                            { value: 'Billy Joel', label: 'Billy Joel' },
-                            { value: 'Sarah Ann', label: 'Sarah Ann' },
-                          ]}
                         />
                       </div>
                     </div>
