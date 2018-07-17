@@ -19,36 +19,42 @@ class NotesComp extends Component {
     this.props.getNotes();
   }
   render() {
-    const notes = this.props.notes.notes.sort((a,b)=> {
-      return b.last_edit - a.last_edit; 
+    const notes = this.props.notes.notes.map((note) => {
+      if (note.last_edit.toDate) {
+        note.last_edit = note.last_edit.toDate();
+      }
+      return note;
+    }).sort((a, b) => {
+      return b.last_edit - a.last_edit;
     });
+    console.log(this.props.notes.notes, 'notes');
 
-    const notesList = notes.map((note)=> {
+    const notesList = notes.map((note) => {
       return (
-        <Link 
+        <Link
           key={note.id}
           className="note"
           to={{
             pathname: "/notes/edit-note",
-            state: {note}
-        }} >
-            <div className="note-left">
-              <div className="note-text">
-                <div className="note-title">{note.title}</div>
-                <div className="note-body">
-                  <p>{note.body}</p>
-                </div>
-              </div>
-              <div className="note-img">
-                <img src={note.image} alt="note-img" />
+            state: { note }
+          }} >
+          <div className="note-left">
+            <div className="note-text">
+              <div className="note-title">{note.title}</div>
+              <div className="note-body">
+                <p>{note.body}</p>
               </div>
             </div>
-            <div className="note-right">
-              <div className="note-created ">
-                <span>{moment(note.last_edit).format('L')}</span>
-                <span>{moment(note.last_edit).format('LT')}</span>
-              </div>
+            <div className="note-img">
+              <img src={note.image} alt="note-img" />
             </div>
+          </div>
+          <div className="note-right">
+            <div className="note-created ">
+              <span>{moment(note.last_edit).format('L')}</span>
+              <span>{moment(note.last_edit).format('LT')}</span>
+            </div>
+          </div>
         </Link>
       )
     })
@@ -86,5 +92,5 @@ class NotesComp extends Component {
 const mapNoteStateToProps = state => ({
   notes: state.notes
 });
-export const Notes = connect(mapNoteStateToProps, {getNotes})(NotesComp);
+export const Notes = connect(mapNoteStateToProps, { getNotes })(NotesComp);
 
