@@ -8,6 +8,7 @@ export class NewEmployee extends Component {
       email: '',
       phone: '',
       address: '',
+      role: '',
       latLng: {lat:37,lng:-122}
     },
     exit: false
@@ -19,7 +20,6 @@ export class NewEmployee extends Component {
     newEmployee(employeeClone);
 
     this.setState({exit: true});
-    console.log(employee, 'to save');
   }
   render() {
     return (

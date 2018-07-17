@@ -1287,3 +1287,13 @@ form {
     padding: 10px 20px;
   }
 }
+
+
+.my-account-view {
+  .react-tabs .react-tabs__tab-list .react-tabs__tab {
+    color: black;
+  }
+  .react-tabs .react-tabs__tab-list .react-tabs__tab.react-tabs__tab--selected {
+    color: #5CB6B5;
+  }
+}

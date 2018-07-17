@@ -26,7 +26,6 @@ export class EditEmployee extends Component {
     editEmployee(employeeClone);
 
     this.setState({exit: true});
-    console.log(employee, 'to save');
   }
   render() {
     return (

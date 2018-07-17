@@ -7,15 +7,14 @@ import PropTypes from 'prop-types'
 
 export class TeamComp extends Component {
   static propTypes = {
-    employees: PropTypes.array.isRequired,
+    employees: PropTypes.object.isRequired,
     getEmployees: PropTypes.func.isRequired
   }
   componentWillMount() {
     this.props.getEmployees();
   }
   render() {
-    console.log(this.props);
-    const employees = this.props.employees;
+    const employees = this.props.employees.employees;
     const employeesList = employees.map((employee) => {
       return (
         <tr key={employee.id}>
@@ -65,4 +64,4 @@ export class TeamComp extends Component {
   }
 }
 
-export const Team = connect(state => ({ employees: state.employees.data}), {getEmployees})(TeamComp);
+export const Team = connect(state => ({ employees: state.employees}), {getEmployees})(TeamComp);

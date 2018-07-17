@@ -951,3 +951,9 @@ form.person-form {
   .map-search .suggestion-item {
     display: block;
     padding: 10px 20px; }
+
+.my-account-view .react-tabs .react-tabs__tab-list .react-tabs__tab {
+  color: black; }
+
+.my-account-view .react-tabs .react-tabs__tab-list .react-tabs__tab.react-tabs__tab--selected {
+  color: #5CB6B5; }

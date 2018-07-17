@@ -15,6 +15,7 @@ import 'react-big-calendar/lib/css/react-big-calendar.css'
 import 'react-datepicker/dist/react-datepicker-cssmodules.css'
 import 'react-tabs/style/react-tabs.css'
 import 'react-select/dist/react-select.css'
+import 'react-router-tabs/styles/react-router-tabs.css';
 import './App.css'
 
 import { Schedule } from './Schedule'
@@ -64,10 +65,10 @@ class AppContainerComp extends Component {
 
     firebase.auth().onAuthStateChanged((user) => {
       if (firebase.auth().currentUser === null) {
-        this.setState({ isLoggedin: false, lodingUser: false});
+        this.setState({ isLoggedin: false, lodingUser: false });
       } else {
         setUser(user);
-        this.setState({ isLoggedin: true , lodingUser: false});
+        this.setState({ isLoggedin: true, lodingUser: false });
       }
     })
   }
@@ -81,7 +82,7 @@ class AppContainerComp extends Component {
   }
 
   render() {
-    if (this.state.isLoggedin === false && !this.state.OnSignInPage ) {
+    if (this.state.isLoggedin === false && !this.state.OnSignInPage) {
       return <Redirect to="/sign-in" />
     }
     return (
@@ -92,25 +93,26 @@ class AppContainerComp extends Component {
             <TopNav />
             <div className="main-content">
               <SideNav />
-              <Route exact path="/" render={() => (
-                <Redirect to="/schedule" />
-              )} />
-              <Route path="/schedule" exact component={Schedule} />
-              <Route path="/notes" exact component={Notes} />
-              <Route path="/customers" exact component={Customers} />
-              <Route path="/invoices" exact component={Invoices} />
-              <Route path="/team-map" component={TeamMap} />
-              <Route path="/my-account" exact component={MyAccount} />
-              <Route exact path="/schedule/new-job" component={NewJob} />
-              <Route exact path="/schedule/edit-job" component={EditJob} />
-              <Route exact path="/notes/new-note" component={NewNote} />
-              <Route exact path="/notes/edit-note" component={EditNote} />
-              <Route exact path="/customers/new-customer" component={NewCustomer} />
-              <Route exact path="/customers/edit-customer" component={EditCustomer} />
-              <Route exact path="/invoices/new-invoice" component={NewInvoice} />
-              <Route exact path="/invoices/edit-invoice" component={EditInvoice} />
-              <Route exact path="/my-account/new-employee" component={NewEmployee} />
-              <Route exact path="/my-account/edit-employee" component={EditEmployee} />
+                <Route exact path="/" render={() => (
+                  <Redirect to="/schedule" />
+                )} />
+                <Route path="/schedule" exact component={Schedule} />
+                <Route path="/notes" exact component={Notes} />
+                <Route path="/customers" exact component={Customers} />
+                <Route path="/invoices" exact component={Invoices} />
+                <Route path="/team-map" component={TeamMap} />
+                <Route path="/my-account" component={MyAccount} />
+                <Route exact path="/schedule/new-job" component={NewJob} />
+                <Route exact path="/schedule/edit-job" component={EditJob} />
+                <Route exact path="/notes/new-note" component={NewNote} />
+                <Route exact path="/notes/edit-note" component={EditNote} />
+                <Route exact path="/customers/new-customer" component={NewCustomer} />
+                <Route exact path="/customers/edit-customer" component={EditCustomer} />
+                <Route exact path="/invoices/new-invoice" component={NewInvoice} />
+                <Route exact path="/invoices/edit-invoice" component={EditInvoice} />
+                <Route exact path="/my-account/new-employee" component={NewEmployee} />
+                <Route exact path="/my-account/edit-employee" component={EditEmployee} />
+
             </div>
           </div>
         }

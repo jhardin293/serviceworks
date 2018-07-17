@@ -59,7 +59,7 @@ export class EmployeeDetails extends Component {
       allowDelete = this.props.allowDelete;
 
     if (this.props.exit === true) {
-      return <Redirect to="/my-account" />
+      return <Redirect to="/my-account/team" />
     }
     return (
       <div className="new-employee-view person-view page-view">
@@ -68,7 +68,7 @@ export class EmployeeDetails extends Component {
         </div>
         <div className="page-body">
           <div className="tab-btn-group">
-            <Link to="/customers">
+            <Link to="/my-account/team">
               <button className="btn second-btn btn-cancel ">Cancel</button>
             </Link>
             {allowDelete &&

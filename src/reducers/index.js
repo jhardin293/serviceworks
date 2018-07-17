@@ -16,7 +16,7 @@ const initState = {
     status: 'init'
   },
   employeesInt: {
-    data: [],
+    employees: [],
     status: 'init'
   },
   invoicesInt: {
@@ -95,7 +95,7 @@ const employeeReducer = (state = initState.employeesInt, action) => {
       return {
         ...state,
         status: action.status,
-        data: action.payload
+        employees: action.payload
       }
     default:
       return state;
