@@ -1,10 +1,12 @@
 import React, { Component } from 'react'
 import { Link } from 'react-router-dom'
 import PropTypes from 'prop-types'
-import GoogleMapReact from 'google-map-react';
+import GoogleMapReact from 'google-map-react'
+import capitalize from 'capitalize'
 
 import Popover from 'react-popover'
-import mapMarker from './images/map-marker.svg'
+import employeeMarker from './images/employee-map-marker.svg'
+import customerMarker from './images/customer-map-marker.svg'
 
 class MapMarker extends Component {
   static propTypes = {
@@ -12,35 +14,66 @@ class MapMarker extends Component {
     lng: PropTypes.number
   }
 
+  nameCompanyRender(item) {
+    if (item.company) {
+      return item.name + ' : ' + item.company;
+    } else {
+      return item.name
+    }
+
+  }
+
+  markerRender(item) {
+    let marker
+    if (item.type === 'customer') {
+      marker = customerMarker;
+    }
+    if (item.type === 'employee') {
+      marker = employeeMarker;
+    }
+
+    return marker;
+  }
+
+  editLink(item) {
+    let path
+    if (item.type === 'customer') {
+      path = 'customers/edit-customer';
+    }
+    if (item.type === 'employee') {
+      path = '/my-account/edit-employee';
+    }
+
+    return (
+      <Link
+        to={{
+          pathname: path,
+          state: { [item.type]: item }
+        }} >
+        Show details
+        </Link>
+    )
+  }
 
   render() {
     const item = this.props.item;
-    const customer = item; //Temp
     const content =
       <div className="details-popover ">
         <div className="popover-header">
-          <span>{'Customer'}</span>
+          <span>{capitalize(item.type)}</span>
         </div>
         <ul>
-          <li>{item.name + ' : ' + item.company}</li>
+          <li>{this.nameCompanyRender(item)}</li>
           <li>{item.email}</li>
           <li>{item.phone}</li>
-          <li>
-            <Link 
-              to={{
-                pathname: "customers/edit-customer",
-                state: {customer}
-              }} >
-              Show details
-            </Link>
-          </li>
+          <li>{this.editLink(item)}</li>
         </ul>
       </div>
     return (
       <div >
         {item.displayOnMap &&
           <Popover isOpen={item.showPopover} body={content} preferPlace='below' onClick={this.handleClick}>
-            <img src={mapMarker} alt="" />
+            <img src={this.markerRender(item)} alt="" />
           </Popover>
         }
       </div>
@@ -78,7 +111,7 @@ export default class MultMarkerMap extends Component {
           bootstrapURLKeys={{ key: 'AIzaSyDA4lSVtu-jB1h7VbTCTpSGf_Qv5UEuS6A' }}
           defaultZoom={this.props.zoom}
           center={[this.props.latLng.lat, this.props.latLng.lng]}
-          onChildClick={this.props.onMarkerClick}
+          onChildClick={(idx, person) => this.props.onMarkerClick(person.item)}
           onClick={this.props.onOutsideClick}
         >
           {Markers}

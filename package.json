@@ -5,6 +5,7 @@
   "dependencies": {
     "amazon-wish-list": "^0.5.2",
     "array-to-sentence": "^2.0.0",
+    "capitalize": "^1.0.0",
     "classnames": "^2.2.5",
     "firebase": "^5.2.0",
     "google-map-react": "^1.0.3",

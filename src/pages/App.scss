@@ -981,9 +981,26 @@ form {
         color: #828E9E;
         font-weight: 400;
         font-size: 18px;
+        margin-right: 20px;
       }
       hr {
         border: 1px solid #CAD2DD;
+      }
+      .header-wrap {
+        display: flex;
+        align-items: center; 
+        .key {
+          height: 13px;
+          width: 30px; 
+          &.customer {
+            background: #FA7497;
+            border: 1px solid #FFD845; 
+          }
+          &.employee {
+            background: #FFD845;
+            border: 1px solid #FA7497; 
+          }
+        }
       }
     }
     .customer {
@@ -999,6 +1016,7 @@ form {
     }
     .btn {
       margin-top: 20px;
+      margin-bottom: 30px;
     }
   }
 }
