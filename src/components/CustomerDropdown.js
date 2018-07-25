@@ -27,6 +27,7 @@ class CustomerDropdown extends Component {
         {
           label: customer.name,
           latLng: customer.latLng,
+          id: customer.id,
           address: customer.address
         }
       );

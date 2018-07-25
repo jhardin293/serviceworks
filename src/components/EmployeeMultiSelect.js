@@ -26,6 +26,7 @@ class EmployeeMultiSelect extends Component {
         employeesList.push(
           {
             label: employee.name,
+            id: employee.id,
             value: employee.name,
             latLng: employee.latLng,
             address: employee.address

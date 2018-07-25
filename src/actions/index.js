@@ -88,6 +88,24 @@ const get = (path, action) => {
   }
 }
 
+export const getJobByCustomer = (customer) => {
+  const user = store.getState().user.data;
+  console.log(customer,'customer');
+  let data = []
+  ref.collection('/jobs').where("author", "==", user.uid).where("customer.id", "==", customer.id).get().then((snap) => {
+    snap.forEach((doc) => {
+      data.push(doc.data());
+    })
+    console.log(data,'data');
+
+    store.dispatch({
+      type: 'JOB_BY_CUSTOMER',
+      payload: data,
+      status: 'success'
+    })
+  })
+}
+
 const post = (item, path, action, getData) => {
   const itemRef = ref.collection(path).doc();
   const user = store.getState().user.data;
