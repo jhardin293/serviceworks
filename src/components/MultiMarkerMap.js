@@ -35,6 +35,15 @@ class MapMarker extends Component {
     return marker;
   }
 
+  capitalizeText (text) {
+    if(text) {
+      return capitalize(text);
+    }else {
+      return '';
+    }
+
+  }
+
   editLink(item) {
     let path
     if (item.type === 'customer') {
@@ -60,7 +69,7 @@ class MapMarker extends Component {
     const content =
       <div className="details-popover ">
         <div className="popover-header">
-          <span>{capitalize(item.type)}</span>
+          <span>{this.capitalizeText(item.type)}</span>
         </div>
         <ul>
           <li>{this.nameCompanyRender(item)}</li>

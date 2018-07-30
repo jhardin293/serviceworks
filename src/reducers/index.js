@@ -11,6 +11,10 @@ const initState = {
     jobsByCustomer: [],
     status: 'init'
   },
+  jobsByEmployeeInt: {
+    jobsByEmployee: [],
+    status: 'init'
+  },
   notesInt: {
     notes: [],
     status: 'init'
@@ -80,6 +84,19 @@ const jobsByCustomerReducer = (state = initState.jobsByCustomerInt, action) => {
   }
 }
 
+const jobsByEmployeeReducer = (state = initState.jobsByEmployeeInt, action) => {
+  switch(action.type) {
+    case 'JOB_BY_EMPLOYEE':
+      return {
+        ...state,
+        status: action.status,
+        jobsByEmployee: action.payload
+      }
+    default:
+      return state;
+  }
+}
+
 const notesReducer = (state = initState.notesInt, action) => {
   switch(action.type) {
     case 'GET_NOTES':
@@ -139,7 +156,8 @@ const appReducer = combineReducers({
   invoices: invoicesReducer,
   user: userReducer,
   employees: employeeReducer,
-  jobsByCustomer: jobsByCustomerReducer
+  jobsByCustomer: jobsByCustomerReducer,
+  jobsByEmployee: jobsByEmployeeReducer
 })
 
 export const rootReducer = (state, action) => {

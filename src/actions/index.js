@@ -88,6 +88,23 @@ const get = (path, action) => {
   }
 }
 
+
+// const getItemsById = (path, item, action) => {
+//   const user = store.getState().user.data;
+//   let data = []
+//   ref.collection(path).where("author", "==", user.uid).where(item.id, "==", customer.id).get().then((snap) => {
+//     snap.forEach((doc) => {
+//       data.push(doc.data());
+//     })
+//     console.log(data,'data');
+
+//     store.dispatch({
+//       type: 'JOB_BY_CUSTOMER',
+//       payload: data,
+//       status: 'success'
+//     })
+//   })
+// }
 export const getJobByCustomer = (customer) => {
   const user = store.getState().user.data;
   console.log(customer,'customer');
@@ -105,6 +122,36 @@ export const getJobByCustomer = (customer) => {
     })
   })
 }
+
+export const getJobByEmployee = (employee) => {
+  const user = store.getState().user.data;
+  let data = []
+  ref.collection('/jobs').where("author", "==", user.uid).get().then((snap) => {
+    snap.forEach((doc) => {
+      data.push(doc.data());
+    })
+
+    let res = data.filter((job, idx) => {
+      const jobEmployees = job.employees;
+      const employeeIds = jobEmployees.map((employee) => {
+        return employee.id;
+      })
+      if (employeeIds.indexOf(employee.id) >= 0) {
+        return job ;
+      }else {
+        return 0;
+      }
+    });
+
+    store.dispatch({
+      type: 'JOB_BY_EMPLOYEE',
+      payload: res,
+      status: 'success'
+    })
+  })
+}
+
+
 
 const post = (item, path, action, getData) => {
   const itemRef = ref.collection(path).doc();

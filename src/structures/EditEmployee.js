@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import { EmployeeDetails } from '../components/EmployeeDetails'
-import { editEmployee, deleteEmployee } from '../actions';
+import { editEmployee, deleteEmployee, getJobByEmployee} from '../actions';
 export class EditEmployee extends Component {
   employee = this.props.location.state.employee
   state = {
@@ -28,6 +28,7 @@ export class EditEmployee extends Component {
     this.setState({exit: true});
   }
   render() {
+    getJobByEmployee(this.state.employee);
     return (
       <EmployeeDetails
         employee={this.state.employee}
