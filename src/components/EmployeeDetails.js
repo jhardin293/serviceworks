@@ -1,16 +1,18 @@
+import moment from 'moment'
 import React, { Component } from 'react'
 import PropTypes from 'prop-types'
 import { Tab, Tabs, TabList, TabPanel } from 'react-tabs'
 import { Link, Redirect } from 'react-router-dom'
 import { geocodeByAddress, getLatLng } from 'react-places-autocomplete'
 import { LocationSearchInput } from '../components/LocationSearchInput'
+import {getJobByEmployee} from '../actions';
+import { connect } from 'react-redux'
 import Map from '../components/Map'
 
 
-import noteImg1 from '../images/note-img-1.jpg'
 import threeDots from '../images/three-dots.png'
 
-export class EmployeeDetails extends Component {
+export class EmployeeDetailsComp extends Component {
   constructor (props) {
     super(props);
     this.state = {
@@ -33,6 +35,9 @@ export class EmployeeDetails extends Component {
     onSave: PropTypes.func.isRequired
   }
 
+  componentWillMount() {
+    this.props.getJobByEmployee(this.state.employee);
+  }
   onChange = (e) => {
     this.setState({ employee: {...this.state.employee,[e.target.name]: e.target.value }});
   }
@@ -56,7 +61,42 @@ export class EmployeeDetails extends Component {
   }
   render() {
     const employee = this.state.employee,
-      allowDelete = this.props.allowDelete;
+      allowDelete = this.props.allowDelete,
+      jobs = this.props.jobs.jobsByEmployee;
+
+    
+    const jobsList = jobs.map((job,i) => {
+      if (job.start.toDate) {
+        job.start = job.start.toDate();
+        job.end = job.end.toDate();
+      }
+      const start = moment(job.start),
+      end = moment(job.end);
+
+
+      const duration = moment.duration(end.diff(start)).format("d [days]  h [hours]  m [minutes]");
+      return (
+        <tr key={i}>
+          <td>
+            <Link to={{
+                pathname: "/schedule/edit-job",
+                state: { 
+                  redirect: {
+                    path: window.location.pathname,
+                    employee: this.state.employee,
+                    tabIdx: 1
+                  },
+                  job 
+                }
+              }} >{job.title}
+            </Link>
+          </td>
+          <td>{start.format('l')} {moment(start).format('LT') } to {moment(end).format('l')} {moment(end).format('LT') } </td>
+          <td><b>{duration}</b></td>
+          <td>{job.address}</td>
+        </tr>
+      )
+    }) 
 
     if (this.props.exit === true) {
       return <Redirect to="/my-account/team" />
@@ -80,11 +120,10 @@ export class EmployeeDetails extends Component {
             }
             <button className="btn second-btn btn-success" onClick={this.onSave}>Save employee</button>
           </div>
-          <Tabs>
+          <Tabs defaultIndex={this.props.tabIdx}>
             <TabList>
               <Tab>Details</Tab>
               <Tab>Jobs</Tab>
-              <Tab>Notes</Tab>
               <Tab>Invoices</Tab>
             </TabList>
 
@@ -139,7 +178,16 @@ export class EmployeeDetails extends Component {
             </TabPanel>
             <TabPanel>
               <div className="tab-header"> 
-                <Link to="/schedule/new-job">
+                <Link to={{
+                  pathname: "/schedule/new-job",
+                  state: { 
+                    redirect: {
+                      path: window.location.pathname,
+                      employee: this.state.employee,
+                      tabIdx: 1
+                    },
+                  }
+                }} >
                   <span>+</span><h2>New Job</h2>
                 </Link>
               </div>
@@ -148,139 +196,15 @@ export class EmployeeDetails extends Component {
                   <thead>
                     <tr className="header">
                       <th><h2>Job name</h2></th>
-                      <th><h2>Date</h2></th>
-                      <th><h2>Time</h2></th>
+                      <th><h2>Date & time</h2></th>
+                      <th><h2>Duratiion</h2></th>
                       <th><h2>Location</h2></th>
                     </tr>
                   </thead>
                   <tbody className="panel-body">
-                    <tr>
-                      <td><Link to="/schedule/new-job">Window cleaning</Link></td>
-                      <td>April 21, 2018</td>
-                      <td>1:00am - 2:00 am</td>
-                      <td>42 W 89th St, New York</td>
-                    </tr>
-                    <tr>
-                      <td><Link to="/schedule/new-job">Window cleaning</Link></td>
-                      <td>April 21, 2018</td>
-                      <td>1:00am - 2:00 am</td>
-                      <td>42 W 89th St, New York</td>
-                    </tr>
-                    <tr>
-                      <td><Link to="/schedule/new-job">Window cleaning</Link></td>
-                      <td>April 21, 2018</td>
-                      <td>1:00am - 2:00 am</td>
-                      <td>42 W 89th St, New York</td>
-                    </tr>
+                    {jobsList}
                   </tbody>
                 </table>
-              </div>
-            </TabPanel>
-            <TabPanel>
-              <div className="tab-header notes"> 
-                <Link to="/notes/new-note">
-                  <span>+</span><h2>New Note</h2>
-                </Link>
-              </div>
-              <div className="page-body">
-                <div className="notes-list panel">
-                  <div className="header">
-                    <h2>Note text</h2>
-                    <h2>Created</h2>
-                  </div>
-                  <div className="panel-body">
-                    <div className="sort-group">
-                      <div className="month-group"><span>March 2018</span></div>
-                      <div className="group-body">
-                        <div className="note">
-                          <div className="note-left">
-                            <div className="note-text">
-                              <div className="note-title">This is the first note</div>
-                              <div className="note-body">
-                                <p>This is the body text of the note. Im sure a lot better content will be written here</p>
-                              </div>
-                            </div>
-                            <div className="note-img">
-                              <img src={noteImg1} alt="note-img" />
-                            </div>
-                          </div>
-                          <div className="note-right">
-                            <div className="note-created">3/07/18</div>
-                          </div>
-                        </div>
-                        <div className="note">
-                          <div className="note-left">
-                            <div className="note-text">
-                              <div className="note-title">This is the first note</div>
-                              <div className="note-body">
-                                <p>This is the body text of the note. Im sure a lot better content will be written here</p>
-                              </div>
-                            </div>
-                            <div className="note-img">
-                              <img src={noteImg1} alt="note-img" />
-                            </div>
-                          </div>
-                          <div className="note-right">
-                            <div className="note-created">3/07/18</div>
-                          </div>
-                        </div>
-                        <div className="note">
-                          <div className="note-left">
-                            <div className="note-text">
-                              <div className="note-title">This is the first note</div>
-                              <div className="note-body">
-                                <p>This is the body text of the note. Im sure a lot better content will be written here</p>
-                              </div>
-                            </div>
-                            <div className="note-img">
-                              <img src={noteImg1} alt="note-img" />
-                            </div>
-                          </div>
-                          <div className="note-right">
-                            <div className="note-created">3/07/18</div>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                    <div className="sort-group">
-                      <div className="month-group"><span>March 2018</span></div>
-                      <div className="group-body">
-                        <div className="note">
-                          <div className="note-left">
-                            <div className="note-text">
-                              <div className="note-title">This is the first note</div>
-                              <div className="note-body">
-                                <p>This is the body text of the note. Im sure a lot better content will be written here</p>
-                              </div>
-                            </div>
-                            <div className="note-img">
-                              <img src={noteImg1} alt="note-img" />
-                            </div>
-                          </div>
-                          <div className="note-right">
-                            <div className="note-created">3/07/18</div>
-                          </div>
-                        </div>
-                        <div className="note">
-                          <div className="note-left">
-                            <div className="note-text">
-                              <div className="note-title">This is the first note</div>
-                              <div className="note-body">
-                                <p>This is the body text of the note. Im sure a lot better content will be written here</p>
-                              </div>
-                            </div>
-                            <div className="note-img">
-                              <img src={noteImg1} alt="note-img" />
-                            </div>
-                          </div>
-                          <div className="note-right">
-                            <div className="note-created">3/07/18</div>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
               </div>
             </TabPanel>
             <TabPanel>
@@ -350,3 +274,6 @@ export class EmployeeDetails extends Component {
     )
   }
 }
+
+
+export const EmployeeDetails = connect(state => ({ jobs: state.jobsByEmployee}), {getJobByEmployee})(EmployeeDetailsComp);

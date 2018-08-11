@@ -4,67 +4,97 @@ import { geocodeByAddress, getLatLng } from 'react-places-autocomplete'
 import { Tab, Tabs, TabList, TabPanel } from 'react-tabs'
 import DatePicker from 'react-datepicker'
 import { MapSearch } from './MapSearch'
-import { Link, Redirect } from 'react-router-dom'
+import { Redirect } from 'react-router-dom'
 import moment from 'moment'
 import CustomerDropdown from '../components/CustomerDropdown'
-import EmployeeMultiSelect from './EmployeeMultiSelect';
+import EmployeeMultiSelect from './EmployeeMultiSelect'
 
+const addEmployees = (props) => {
+  if (props.redirect.employee) {
+    const employeeFromRedirct = {
+      address: props.redirect.employee.address,
+      id: props.redirect.employee.id,
+      label: props.redirect.employee.name,
+      latLng: props.redirect.employee.latLng,
+      value: props.redirect.employee.name,
+    }
+
+    function removeDuplicates(myArr, prop) {
+      return myArr.filter((obj, pos, arr) => {
+        return arr.map(mapObj => mapObj[prop]).indexOf(obj[prop]) === pos;
+      });
+    }
+    const employees = removeDuplicates(
+      [...props.job.employees, employeeFromRedirct].filter(Boolean),
+      'id'
+    );
+
+    console.log(employees, 'empppppppp');
+    return employees;
+  } else {
+    return props.job.employees
+  }
+}
 export class JobDetails extends Component {
-  constructor (props) {
+  constructor(props) {
     super(props);
     this.state = {
       job: {
         start: moment(props.job.start),
         end: moment(props.job.end),
-        employees:  props.job.employees,
+        employees: addEmployees(props),
         customer: props.job.customer,
         title: props.job.title,
         id: props.job.id || '',
-        latLng: props.job.latLng, 
+        latLng: props.job.latLng,
         address: props.job.address || '',
       },
       exit: props.exit,
       allowDelete: props.allowDelete,
+      redirect: props.redirect
     }
   }
 
   static propTypes = {
     job: PropTypes.object.isRequired,
+    redirect: PropTypes.object.isRequired,
     exit: PropTypes.bool.isRequired,
     onSave: PropTypes.func.isRequired,
     onDelete: PropTypes.func,
+    onCancel: PropTypes.func,
     allowDelete: PropTypes.bool,
   }
 
   onChange = (e) => {
-    this.setState({ job: {...this.state.job,[e.target.name]: e.target.value }});
+    this.setState({ job: { ...this.state.job, [e.target.name]: e.target.value } });
   }
 
   getLocation = (address) => {
-    this.setState({job:{...this.state.job, address}})
+    this.setState({ job: { ...this.state.job, address } })
     geocodeByAddress(address)
       .then(results => getLatLng(results[0]))
       .then((latLng) => {
-        this.setState({job:{...this.state.job, latLng}})
+        this.setState({ job: { ...this.state.job, latLng } })
       })
       .catch(error => console.error('Error', error))
   }
 
   onLocationChange = (address) => {
-    this.setState({job:{...this.state.job, address}})
+    this.setState({ job: { ...this.state.job, address } })
   }
 
 
   handleCustomer = (customer) => {
     if (customer.address && customer.latLng) {
-      this.setState({job: {...this.state.job, customer, latLng: customer.latLng, address: customer.address  }});
-    }else {
-      this.setState({job: {...this.state.job, customer }});
+      this.setState({ job: { ...this.state.job, customer, latLng: customer.latLng, address: customer.address } });
+    } else {
+      this.setState({ job: { ...this.state.job, customer } });
     }
   }
 
   handleEmployee = (value) => {
-    this.setState({job: {...this.state.job, employees: value }});
+    console.log(value, 'valueee');
+    this.setState({ job: { ...this.state.job, employees: value } });
   }
 
   handleChange = ({ start, end }) => {
@@ -74,7 +104,7 @@ export class JobDetails extends Component {
     if (start.isAfter(end)) {
       end = start
     }
-    this.setState({job: {...this.state.job, start, end }});
+    this.setState({ job: { ...this.state.job, start, end } });
   }
   handleChangeStart = (start) => this.handleChange({ start })
 
@@ -87,9 +117,19 @@ export class JobDetails extends Component {
   render() {
     const { customer, employees, start, end } = this.state.job;
     const allowDelete = this.state.allowDelete;
-    const duration =  moment.duration(end.diff(start)).format("d [days]  h [hours]  m [minutes]");
+    const duration = moment.duration(end.diff(start)).format("d [days]  h [hours]  m [minutes]");
+    console.log(this.props.redirect, 'redirct in job details');
+    console.log(this.state.job, 'ijob state');
     if (this.props.exit === true) {
-      return <Redirect to="/" />
+      return <Redirect
+        to={{
+          pathname: this.props.redirect.path,
+          state: {
+            employee: this.props.redirect.employee,
+            tabIdx: this.props.redirect.tabIdx
+          }
+        }}
+      />
     }
     return (
       <div className="new-job-view page-view">
@@ -98,19 +138,21 @@ export class JobDetails extends Component {
         </div>
         <div className="page-body">
           <div className="tab-btn-group">
-            <Link to="/">
-              <button className="btn second-btn btn-cancel ">Cancel</button>
-            </Link>
+            <button
+              className="btn second-btn btn-cancel "
+              onClick={this.props.onCancel}>
+              Cancel
+            </button>
             {allowDelete &&
-              <button 
-                className="btn second-btn btn-delete" 
-                onClick={(e)=> this.props.onDelete(this.state.job.id, e)}>
+              <button
+                className="btn second-btn btn-delete"
+                onClick={(e) => this.props.onDelete(this.state.job.id, e)}>
                 Delete
               </button>
             }
-            <button 
-              className="btn second-btn btn-success" 
-              onClick={(e)=> this.props.onSave(this.state.job, e)}>
+            <button
+              className="btn second-btn btn-success"
+              onClick={(e) => this.props.onSave(this.state.job, e)}>
               Save
             </button>
           </div>
@@ -122,11 +164,11 @@ export class JobDetails extends Component {
             <TabPanel>
               <form className="person-form">
                 <div className="input-group">
-                  <input 
-                    type="text" 
+                  <input
+                    type="text"
                     name="title"
-                    placeholder="Job title" 
-                    onChange={this.onChange} 
+                    placeholder="Job title"
+                    onChange={this.onChange}
                     value={this.state.job.title}
                   />
                 </div>
@@ -177,8 +219,8 @@ export class JobDetails extends Component {
                         <h2>Customer</h2>
                       </div>
                       <div className="panel-body">
-                        <CustomerDropdown 
-                          onChange={this.handleCustomer} 
+                        <CustomerDropdown
+                          onChange={this.handleCustomer}
                           value={customer}
                         />
                       </div>
@@ -199,9 +241,9 @@ export class JobDetails extends Component {
                   </div>
                 </div>
                 <div className="map">
-                  <MapSearch 
-                    getLocation={this.getLocation} 
-                    address={this.state.job.address} 
+                  <MapSearch
+                    getLocation={this.getLocation}
+                    address={this.state.job.address}
                     latLng={this.state.job.latLng}
                     onLocationChange={this.onLocationChange}
                   />

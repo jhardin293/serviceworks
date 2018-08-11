@@ -179,6 +179,7 @@ class CustomEvent extends Component {
     this.setState({ isOpen: false });
   }
   render() {
+    console.log(window.location.pathname, 'location');
     const job = this.props.event,
       start = moment(job.start),
       end = moment(job.end);
@@ -214,7 +215,12 @@ class CustomEvent extends Component {
             <Link
               to={{
                 pathname: "/schedule/edit-job",
-                state: { job }
+                state: { 
+                  redirect: {
+                    path: window.location.pathname
+                  },
+                  job 
+                }
               }} >
               show job details
           </Link>

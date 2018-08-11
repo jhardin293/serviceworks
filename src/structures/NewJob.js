@@ -18,6 +18,15 @@ export class NewJob extends Component {
     },
     exit: false,
   }
+  componentWillMount() {
+    if (this.props.location.state) {
+      this.setState({redirect: this.props.location.state.redirect})
+    }
+  }
+
+  onCancel = () => {
+    this.setState({exit: true});
+  }
 
   onSave = (job) => {
     const jobClone = {...job};
@@ -27,9 +36,16 @@ export class NewJob extends Component {
 
     this.setState({exit: true});
   }
+  
   render() {
     return (
-      <JobDetails job={this.state.job} onSave={this.onSave}  exit={this.state.exit}/>
+      <JobDetails 
+        job={this.state.job} 
+        onSave={this.onSave}  
+        onCancel={this.onCancel}
+        exit={this.state.exit}
+        redirect={this.state.redirect}
+      />
     )
   }  
 }

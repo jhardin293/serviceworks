@@ -17,6 +17,10 @@ export class EditJob extends Component {
       address: this.job.address
     },
     exit: false,
+    redirect: this.props.location.state.redirect
+  }
+  onCancel = () => {
+    this.setState({exit: true});
   }
   onSave = (job) => {
     const jobClone = {...job};
@@ -33,12 +37,15 @@ export class EditJob extends Component {
   }
 
   render() {
+    console.log(this.props.location.state,'state in edit job');
     return (
       <JobDetails 
         job={this.state.job} 
+        onCancel={this.onCancel}
         onSave={this.onSave} 
         onDelete={this.onDelete}
         exit={this.state.exit} 
+        redirect={this.state.redirect}
         allowDelete={true}
       />
     )

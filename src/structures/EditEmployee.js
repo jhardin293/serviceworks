@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import { EmployeeDetails } from '../components/EmployeeDetails'
-import { editEmployee, deleteEmployee, getJobByEmployee} from '../actions';
+import { editEmployee, deleteEmployee } from '../actions';
 export class EditEmployee extends Component {
   employee = this.props.location.state.employee
   state = {
@@ -13,7 +13,8 @@ export class EditEmployee extends Component {
       latLng: this.employee.latLng ||  {lat:37,lng:-122},
       id: this.employee.id
     },
-    exit: false
+    exit: false,
+    tabIdx: this.props.location.state.tabIdx || 0
   }
   onDelete = (id) => {
     deleteEmployee(id);
@@ -28,10 +29,10 @@ export class EditEmployee extends Component {
     this.setState({exit: true});
   }
   render() {
-    getJobByEmployee(this.state.employee);
     return (
       <EmployeeDetails
         employee={this.state.employee}
+        tabIdx={this.state.tabIdx}
         onSave={this.onSave}
         exit={this.state.exit}
         allowDelete

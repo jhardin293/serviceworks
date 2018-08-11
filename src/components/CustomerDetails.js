@@ -67,6 +67,7 @@ export class CustomerDetails extends Component {
     }
   }
   render() {
+    console.log(this.props,'props');
     const customer = this.state.customer,
       allowDelete = this.props.allowDelete;
 
@@ -94,7 +95,7 @@ export class CustomerDetails extends Component {
               <button className="btn second-btn btn-success" onClick={this.onSave}>Save customer</button>
             </Link>
           </div>
-          <Tabs>
+          <Tabs defaultIndex={2}>
             <TabList>
               <Tab>Details</Tab>
               <Tab>Jobs</Tab>

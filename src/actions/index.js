@@ -107,13 +107,13 @@ const get = (path, action) => {
 // }
 export const getJobByCustomer = (customer) => {
   const user = store.getState().user.data;
-  console.log(customer,'customer');
+  console.log(customer, 'customer');
   let data = []
   ref.collection('/jobs').where("author", "==", user.uid).where("customer.id", "==", customer.id).get().then((snap) => {
     snap.forEach((doc) => {
       data.push(doc.data());
     })
-    console.log(data,'data');
+    console.log(data, 'data');
 
     store.dispatch({
       type: 'JOB_BY_CUSTOMER',
@@ -125,30 +125,33 @@ export const getJobByCustomer = (customer) => {
 
 export const getJobByEmployee = (employee) => {
   const user = store.getState().user.data;
-  let data = []
-  ref.collection('/jobs').where("author", "==", user.uid).get().then((snap) => {
-    snap.forEach((doc) => {
-      data.push(doc.data());
-    })
-
-    let res = data.filter((job, idx) => {
-      const jobEmployees = job.employees;
-      const employeeIds = jobEmployees.map((employee) => {
-        return employee.id;
+  return (dispatch) => {
+    let data = []
+    ref.collection('/jobs').where("author", "==", user.uid).get().then((snap) => {
+      snap.forEach((doc) => {
+        data.push(doc.data());
       })
-      if (employeeIds.indexOf(employee.id) >= 0) {
-        return job ;
-      }else {
-        return 0;
-      }
-    });
 
-    store.dispatch({
-      type: 'JOB_BY_EMPLOYEE',
-      payload: res,
-      status: 'success'
+      let res = data.filter((job, idx) => {
+        const jobEmployees = job.employees;
+        const employeeIds = jobEmployees.map((employee) => {
+          return employee.id;
+        })
+        if (employeeIds.indexOf(employee.id) >= 0) {
+          return job;
+        } else {
+          return 0;
+        }
+      });
+
+      dispatch({
+        type: 'JOB_BY_EMPLOYEE',
+        payload: res,
+        status: 'success'
+      })
     })
-  })
+
+  }
 }
 
 
@@ -250,12 +253,12 @@ export const deleteNote = (id) => {
   remove(id, 'notes', 'GET_NOTES', getNotes);
 }
 
-export const uploadImage = (path,file) => {
+export const uploadImage = (path, file) => {
   const imgRef = storageRef.child(path);
   return new Promise((resolve, reject) => {
     imgRef.child(file.name).put(file).then((snapshot) => {
       if (snapshot) {
-        snapshot.ref.getDownloadURL().then((url)=> {
+        snapshot.ref.getDownloadURL().then((url) => {
           resolve(url);
         })
       }
@@ -286,15 +289,15 @@ export const getEmployees = () => {
   return get('employees', 'GET_EMPLOYEES');
 }
 
-export const newEmployee  = (employee) => {
+export const newEmployee = (employee) => {
   post(employee, 'employees', 'GET_EMPLOYEES', getEmployees);
 }
 
-export const editEmployee  = (employee) => {
+export const editEmployee = (employee) => {
   update(employee, 'employees', 'GET_EMPLOYEES', getEmployees);
 }
 
-export const deleteEmployee  = (id) => {
+export const deleteEmployee = (id) => {
   remove(id, 'employees', 'GET_EMPLOYEES', getEmployees);
 }
 
