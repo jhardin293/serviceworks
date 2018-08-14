@@ -37,7 +37,6 @@ export class EditJob extends Component {
   }
 
   render() {
-    console.log(this.props.location.state,'state in edit job');
     return (
       <JobDetails 
         job={this.state.job} 

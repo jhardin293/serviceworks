@@ -37,6 +37,7 @@ export class EditEmployee extends Component {
         exit={this.state.exit}
         allowDelete
         onDelete={this.onDelete}
+        newEmployee={false}
        />
     )
   }

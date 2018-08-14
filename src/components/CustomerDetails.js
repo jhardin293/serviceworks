@@ -95,7 +95,7 @@ export class CustomerDetails extends Component {
               <button className="btn second-btn btn-success" onClick={this.onSave}>Save customer</button>
             </Link>
           </div>
-          <Tabs defaultIndex={2}>
+          <Tabs>
             <TabList>
               <Tab>Details</Tab>
               <Tab>Jobs</Tab>

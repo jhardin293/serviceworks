@@ -21,6 +21,8 @@ export class NewJob extends Component {
   componentWillMount() {
     if (this.props.location.state) {
       this.setState({redirect: this.props.location.state.redirect})
+    }else {
+      this.setState({redirect: {path: '/schedule'}})
     }
   }
 

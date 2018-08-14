@@ -37,7 +37,7 @@ export class TeamComp extends Component {
       <div>
         <div className="action-header">
           <div>
-            <h2>BensWorth Cleaning Company</h2>
+            <h2>Employees</h2>
           </div>
           <Link to="/my-account/new-employee">
             <button className="account-btn btn"><img src={plus} alt="" /><span>Add employee</span></button>
@@ -51,7 +51,6 @@ export class TeamComp extends Component {
                 <th><h2>Email</h2></th>
                 <th><h2>Phone</h2></th>
                 <th><h2>Role</h2></th>
-                <th></th>
               </tr>
             </thead>
             <tbody className="panel-body">

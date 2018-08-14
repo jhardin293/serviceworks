@@ -39,7 +39,7 @@ class MyAccountComp extends Component {
               tabClassName="react-tabs__tab"
             >
               <NavTab to="/details">Details</NavTab>
-              <NavTab to="/team">Team</NavTab>
+              <NavTab to="/employees">Employees</NavTab>
             </RoutedTabs>
             <div className="react-tabs__tab-panel react-tabs__tab-panel--selected">
               <Route exact path={`${match.path}`} render={() => <Redirect replace to={`${match.path}/details`} />} />
@@ -54,7 +54,7 @@ class MyAccountComp extends Component {
                   />
                 )
               }} />
-              <Route path={`${match.path}/team`} component={Team} />
+              <Route path={`${match.path}/employees`} component={Team} />
             </div>
           </div>
         </div>

@@ -29,7 +29,6 @@ const addEmployees = (props) => {
       'id'
     );
 
-    console.log(employees, 'empppppppp');
     return employees;
   } else {
     return props.job.employees
@@ -118,8 +117,6 @@ export class JobDetails extends Component {
     const { customer, employees, start, end } = this.state.job;
     const allowDelete = this.state.allowDelete;
     const duration = moment.duration(end.diff(start)).format("d [days]  h [hours]  m [minutes]");
-    console.log(this.props.redirect, 'redirct in job details');
-    console.log(this.state.job, 'ijob state');
     if (this.props.exit === true) {
       return <Redirect
         to={{

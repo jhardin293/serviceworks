@@ -27,6 +27,7 @@ export class NewEmployee extends Component {
         employee={this.state.employee}
         onSave={this.onSave}
         exit={this.state.exit}
+        newEmployee={true}
        />
     )
   }
