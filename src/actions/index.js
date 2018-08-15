@@ -107,20 +107,20 @@ const get = (path, action) => {
 // }
 export const getJobByCustomer = (customer) => {
   const user = store.getState().user.data;
-  console.log(customer, 'customer');
-  let data = []
-  ref.collection('/jobs').where("author", "==", user.uid).where("customer.id", "==", customer.id).get().then((snap) => {
-    snap.forEach((doc) => {
-      data.push(doc.data());
-    })
-    console.log(data, 'data');
+  return (dispatch) => {
+    let data = []
+    ref.collection('/jobs').where("author", "==", user.uid).where("customer.id", "==", customer.id).get().then((snap) => {
+      snap.forEach((doc) => {
+        data.push(doc.data());
+      })
 
-    store.dispatch({
-      type: 'JOB_BY_CUSTOMER',
-      payload: data,
-      status: 'success'
+      dispatch({
+        type: 'JOB_BY_CUSTOMER',
+        payload: data,
+        status: 'success'
+      })
     })
-  })
+  }
 }
 
 export const getJobByEmployee = (employee) => {

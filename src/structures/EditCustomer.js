@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import { CustomerDetails } from '../components/CustomerDetails'
-import { editCustomer, deleteCustomer, getJobByCustomer } from '../actions'
+import { editCustomer, deleteCustomer} from '../actions'
 
 export class EditCustomer extends Component {
   customer =   this.props.location.state.customer
@@ -14,7 +14,8 @@ export class EditCustomer extends Component {
       latLng: this.customer.latLng || {lat:37,lng:-122},
       id: this.customer.id
     },
-    exit: false
+    exit: false,
+    tabIdx: this.props.location.state.tabIdx || 0
   }
 
   onDelete = (id) => {
@@ -25,21 +26,21 @@ export class EditCustomer extends Component {
   onSave = (customer) => {
     const customerClone = {...customer};
     customerClone.last_edit = new Date();
-    console.log(customerClone,'edit on save');
     editCustomer(customerClone);
 
     this.setState({exit: true});
   }
 
   render() {
-    getJobByCustomer(this.state.customer);
     return (
       <CustomerDetails 
         customer={this.state.customer} 
+        tabIdx={this.state.tabIdx}
         onSave={this.onSave} 
         exit={this.state.exit} 
         allowDelete
         onDelete={this.onDelete}
+        newCustomer={false}
       />
     )
   }

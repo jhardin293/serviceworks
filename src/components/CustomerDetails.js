@@ -1,16 +1,19 @@
 import React, { Component } from 'react'
 import PropTypes from 'prop-types'
+import moment from 'moment'
 import { Tab, Tabs, TabList, TabPanel } from 'react-tabs'
 import { Link, Redirect } from 'react-router-dom'
 import { geocodeByAddress, getLatLng } from 'react-places-autocomplete'
 import { LocationSearchInput } from '../components/LocationSearchInput'
+import { connect } from 'react-redux'
+import { getJobByCustomer } from '../actions'
 import Map from '../components/Map'
 
 
 import noteImg1 from '../images/note-img-1.jpg'
 import threeDots from '../images/three-dots.png'
 
-export class CustomerDetails extends Component {
+export class CustomerDetailsComp extends Component {
   constructor (props) {
     super(props);
     this.state = {
@@ -35,6 +38,10 @@ export class CustomerDetails extends Component {
 
   onChange = (e) => {
     this.setState({ customer: {...this.state.customer,[e.target.name]: e.target.value }});
+  }
+
+  componentWillMount() {
+    this.props.getJobByCustomer(this.state.customer);
   }
 
   getLocation = (address) => {
@@ -67,9 +74,42 @@ export class CustomerDetails extends Component {
     }
   }
   render() {
-    console.log(this.props,'props');
     const customer = this.state.customer,
-      allowDelete = this.props.allowDelete;
+      allowDelete = this.props.allowDelete,
+      jobs = this.props.jobs.jobsByCustomer;
+    
+    const jobsList = jobs.map((job, i) => {
+      if (job.start.toDate) {
+        job.start = job.start.toDate();
+        job.end = job.end.toDate();
+      }
+      const start = moment(job.start),
+        end = moment(job.end);
+
+
+      const duration = moment.duration(end.diff(start)).format("d [days]  h [hours]  m [minutes]");
+      return (
+        <tr key={i}>
+          <td>
+            <Link to={{
+              pathname: "/schedule/edit-job",
+              state: {
+                redirect: {
+                  path: window.location.pathname,
+                  customer: this.state.customer,
+                  tabIdx: 1
+                },
+                job
+              }
+            }} >{job.title}
+            </Link>
+          </td>
+          <td>{start.format('l')} {moment(start).format('LT')} to {moment(end).format('l')} {moment(end).format('LT')} </td>
+          <td><b>{duration}</b></td>
+          <td>{job.address}</td>
+        </tr>
+      )
+    })
 
     if (this.props.exit === true) {
       return <Redirect to="/customers" />
@@ -95,7 +135,7 @@ export class CustomerDetails extends Component {
               <button className="btn second-btn btn-success" onClick={this.onSave}>Save customer</button>
             </Link>
           </div>
-          <Tabs>
+          <Tabs defaultIndex={this.props.tabIdx}>
             <TabList>
               <Tab>Details</Tab>
               <Tab>Jobs</Tab>
@@ -154,7 +194,16 @@ export class CustomerDetails extends Component {
             </TabPanel>
             <TabPanel>
               <div className="tab-header"> 
-                <Link to="/schedule/new-job">
+                <Link to={{
+                  pathname: "/schedule/new-job",
+                  state: {
+                    redirect: {
+                      path: window.location.pathname,
+                      customer: this.state.customer,
+                      tabIdx: 1
+                    },
+                  }
+                }} >
                   <span>+</span><h2>New Job</h2>
                 </Link>
               </div>
@@ -163,30 +212,13 @@ export class CustomerDetails extends Component {
                   <thead>
                     <tr className="header">
                       <th><h2>Job name</h2></th>
-                      <th><h2>Date</h2></th>
-                      <th><h2>Time</h2></th>
+                      <th><h2>Date & time</h2></th>
+                      <th><h2>Duratiion</h2></th>
                       <th><h2>Location</h2></th>
                     </tr>
                   </thead>
                   <tbody className="panel-body">
-                    <tr>
-                      <td><Link to="/schedule/new-job">Window cleaning</Link></td>
-                      <td>April 21, 2018</td>
-                      <td>1:00am - 2:00 am</td>
-                      <td>42 W 89th St, New York</td>
-                    </tr>
-                    <tr>
-                      <td><Link to="/schedule/new-job">Window cleaning</Link></td>
-                      <td>April 21, 2018</td>
-                      <td>1:00am - 2:00 am</td>
-                      <td>42 W 89th St, New York</td>
-                    </tr>
-                    <tr>
-                      <td><Link to="/schedule/new-job">Window cleaning</Link></td>
-                      <td>April 21, 2018</td>
-                      <td>1:00am - 2:00 am</td>
-                      <td>42 W 89th St, New York</td>
-                    </tr>
+                    {jobsList}
                   </tbody>
                 </table>
               </div>
@@ -365,3 +397,5 @@ export class CustomerDetails extends Component {
     )
   }
 }
+
+export const CustomerDetails = connect(state => ({ jobs: state.jobsByCustomer }), { getJobByCustomer })(CustomerDetailsComp);

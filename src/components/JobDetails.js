@@ -34,6 +34,37 @@ const addEmployees = (props) => {
     return props.job.employees
   }
 }
+
+const addCustomer = (props) => {
+  if (props.redirect.customer) {
+    return {
+      address: props.redirect.customer.address,
+      id: props.redirect.customer.id,
+      label: props.redirect.customer.name,
+      latLng: props.redirect.customer.latLng,
+    }
+
+  }else {
+    return props.job.customer;
+  }
+}
+
+const addlatLng = (props) => {
+  if (props.redirect.customer) {
+    return props.redirect.customer.latLng;
+  }else {
+    return props.job.latLng;
+  }
+}
+
+const addAddress = (props) => {
+  if (props.redirect.customer ) {
+    return props.redirect.customer.address;
+  }else {
+    return props.job.address || '';
+  }
+}
+
 export class JobDetails extends Component {
   constructor(props) {
     super(props);
@@ -42,11 +73,11 @@ export class JobDetails extends Component {
         start: moment(props.job.start),
         end: moment(props.job.end),
         employees: addEmployees(props),
-        customer: props.job.customer,
+        customer: addCustomer(props),
         title: props.job.title,
         id: props.job.id || '',
-        latLng: props.job.latLng,
-        address: props.job.address || '',
+        latLng: addlatLng(props),
+        address: addAddress(props),
       },
       exit: props.exit,
       allowDelete: props.allowDelete,
@@ -113,20 +144,40 @@ export class JobDetails extends Component {
   handleMarkerClick = () => {
     console.log(arguments, 'clicked')
   }
+
   render() {
     const { customer, employees, start, end } = this.state.job;
     const allowDelete = this.state.allowDelete;
     const duration = moment.duration(end.diff(start)).format("d [days]  h [hours]  m [minutes]");
     if (this.props.exit === true) {
-      return <Redirect
-        to={{
-          pathname: this.props.redirect.path,
-          state: {
-            employee: this.props.redirect.employee,
-            tabIdx: this.props.redirect.tabIdx
-          }
-        }}
-      />
+      if (this.props.redirect.employee){
+        return <Redirect
+          to={{
+            pathname: this.props.redirect.path,
+            state: {
+              employee: this.props.redirect.employee,
+              tabIdx: this.props.redirect.tabIdx
+            }
+          }}
+        />
+      }
+      if (this.props.redirect.customer){
+        return <Redirect
+          to={{
+            pathname: this.props.redirect.path,
+            state: {
+              customer: this.props.redirect.customer,
+              tabIdx: this.props.redirect.tabIdx
+            }
+          }}
+        />
+      }else {
+        return <Redirect
+          to={{
+            pathname: '/schedule',
+          }}
+        />
+      }
     }
     return (
       <div className="new-job-view page-view">
