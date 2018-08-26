@@ -36,6 +36,7 @@ const addEmployees = (props) => {
 }
 
 const addCustomer = (props) => {
+  console.log(props.redirect);
   if (props.redirect.customer) {
     return {
       address: props.redirect.customer.address,

@@ -32,7 +32,12 @@ export class InvoicesComp extends Component {
             <Link
             to={{
               pathname: 'invoices/edit-invoice',
-              state: { invoice }
+              state: { 
+                redirect: {
+                  path: window.location.pathname
+                },
+                invoice 
+              }
             }}
           >{invoice.invoiceNumber}</Link>
           </td>
@@ -61,8 +66,6 @@ export class InvoicesComp extends Component {
           <Link 
             to= {{
             pathname: "/invoices/new-invoice",
-            state: {invoiceNumber: this.props.invoices.invoices.length
-            }
             }}
           >
             <button className="invoice-btn btn"><img src={plus} alt="" /><span>New invoices</span></button>

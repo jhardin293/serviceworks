@@ -6,12 +6,11 @@ import { Link, Redirect } from 'react-router-dom'
 import { geocodeByAddress, getLatLng } from 'react-places-autocomplete'
 import { LocationSearchInput } from '../components/LocationSearchInput'
 import { connect } from 'react-redux'
-import { getJobByCustomer } from '../actions'
+import { getJobByCustomer, getInvoicesByCustomer } from '../actions'
 import Map from '../components/Map'
 
 
-import noteImg1 from '../images/note-img-1.jpg'
-import threeDots from '../images/three-dots.png'
+import deleteIcon from '../images/delete.svg'
 
 export class CustomerDetailsComp extends Component {
   constructor (props) {
@@ -42,7 +41,9 @@ export class CustomerDetailsComp extends Component {
 
   componentWillMount() {
     this.props.getJobByCustomer(this.state.customer);
+    this.props.getInvoicesByCustomer(this.state.customer);
   }
+
 
   getLocation = (address) => {
     this.setState({customer:{...this.state.customer, address}})
@@ -76,7 +77,41 @@ export class CustomerDetailsComp extends Component {
   render() {
     const customer = this.state.customer,
       allowDelete = this.props.allowDelete,
-      jobs = this.props.jobs.jobsByCustomer;
+      jobs = this.props.jobs.jobsByCustomer,
+      invoices = this.props.invoices.invoicesByCustomer;
+    
+
+    const invoicesList = invoices.map((invoice, i) => {
+      if (invoice.dueDate.toDate) {
+        invoice.dueDate = invoice.dueDate.toDate();
+      }
+      const dueDate = moment(invoice.dueDate).format('l');
+      
+      return (
+        <tr key={i}>
+          <td>
+            <Link to={{
+              pathname: "/invoices/edit-invoice",
+              state: {
+                redirect: {
+                  path: window.location.pathname,
+                  customer: this.state.customer,
+                  tabIdx: 2
+                },
+                invoice
+              }
+            }} >{invoice.invoiceNumber}
+            </Link>
+          </td>
+          <td>{invoice.customer.label}</td>
+          <td>{invoice.title}</td>
+          <td>{dueDate}</td>
+          <td>${invoice.total}</td>
+          <td>Current</td>
+        </tr>
+      )
+
+    });
     
     const jobsList = jobs.map((job, i) => {
       if (job.start.toDate) {
@@ -85,8 +120,6 @@ export class CustomerDetailsComp extends Component {
       }
       const start = moment(job.start),
         end = moment(job.end);
-
-
       const duration = moment.duration(end.diff(start)).format("d [days]  h [hours]  m [minutes]");
       return (
         <tr key={i}>
@@ -110,6 +143,8 @@ export class CustomerDetailsComp extends Component {
         </tr>
       )
     })
+
+
 
     if (this.props.exit === true) {
       return <Redirect to="/customers" />
@@ -136,12 +171,18 @@ export class CustomerDetailsComp extends Component {
             </Link>
           </div>
           <Tabs defaultIndex={this.props.tabIdx}>
+           {!this.props.newCustomer &&
             <TabList>
-              <Tab>Details</Tab>
-              <Tab>Jobs</Tab>
-              <Tab>Notes</Tab>
-              <Tab>Invoices</Tab>
+                <Tab>Details</Tab>
+                <Tab>Jobs</Tab>
+                <Tab>Invoices</Tab>
             </TabList>
+            }
+           {this.props.newCustomer &&
+            <TabList>
+                <Tab>Details</Tab>
+            </TabList>
+            }
 
             <TabPanel>
               <form className="person-form">
@@ -224,115 +265,17 @@ export class CustomerDetailsComp extends Component {
               </div>
             </TabPanel>
             <TabPanel>
-              <div className="tab-header notes"> 
-                <Link to="/notes/new-note">
-                  <span>+</span><h2>New Note</h2>
-                </Link>
-              </div>
-              <div className="page-body">
-                <div className="notes-list panel">
-                  <div className="header">
-                    <h2>Note text</h2>
-                    <h2>Created</h2>
-                  </div>
-                  <div className="panel-body">
-                    <div className="sort-group">
-                      <div className="month-group"><span>March 2018</span></div>
-                      <div className="group-body">
-                        <div className="note">
-                          <div className="note-left">
-                            <div className="note-text">
-                              <div className="note-title">This is the first note</div>
-                              <div className="note-body">
-                                <p>This is the body text of the note. Im sure a lot better content will be written here</p>
-                              </div>
-                            </div>
-                            <div className="note-img">
-                              <img src={noteImg1} alt="note-img" />
-                            </div>
-                          </div>
-                          <div className="note-right">
-                            <div className="note-created">3/07/18</div>
-                          </div>
-                        </div>
-                        <div className="note">
-                          <div className="note-left">
-                            <div className="note-text">
-                              <div className="note-title">This is the first note</div>
-                              <div className="note-body">
-                                <p>This is the body text of the note. Im sure a lot better content will be written here</p>
-                              </div>
-                            </div>
-                            <div className="note-img">
-                              <img src={noteImg1} alt="note-img" />
-                            </div>
-                          </div>
-                          <div className="note-right">
-                            <div className="note-created">3/07/18</div>
-                          </div>
-                        </div>
-                        <div className="note">
-                          <div className="note-left">
-                            <div className="note-text">
-                              <div className="note-title">This is the first note</div>
-                              <div className="note-body">
-                                <p>This is the body text of the note. Im sure a lot better content will be written here</p>
-                              </div>
-                            </div>
-                            <div className="note-img">
-                              <img src={noteImg1} alt="note-img" />
-                            </div>
-                          </div>
-                          <div className="note-right">
-                            <div className="note-created">3/07/18</div>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                    <div className="sort-group">
-                      <div className="month-group"><span>March 2018</span></div>
-                      <div className="group-body">
-                        <div className="note">
-                          <div className="note-left">
-                            <div className="note-text">
-                              <div className="note-title">This is the first note</div>
-                              <div className="note-body">
-                                <p>This is the body text of the note. Im sure a lot better content will be written here</p>
-                              </div>
-                            </div>
-                            <div className="note-img">
-                              <img src={noteImg1} alt="note-img" />
-                            </div>
-                          </div>
-                          <div className="note-right">
-                            <div className="note-created">3/07/18</div>
-                          </div>
-                        </div>
-                        <div className="note">
-                          <div className="note-left">
-                            <div className="note-text">
-                              <div className="note-title">This is the first note</div>
-                              <div className="note-body">
-                                <p>This is the body text of the note. Im sure a lot better content will be written here</p>
-                              </div>
-                            </div>
-                            <div className="note-img">
-                              <img src={noteImg1} alt="note-img" />
-                            </div>
-                          </div>
-                          <div className="note-right">
-                            <div className="note-created">3/07/18</div>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </TabPanel>
-            <TabPanel>
               <div className="tab-header invoices"> 
-                <Link to="/invoices">
+                <Link to={{
+                  pathname: "/invoices/new-invoice",
+                  state: {
+                    redirect: {
+                      path: window.location.pathname,
+                      customer: this.state.customer,
+                      tabIdx: 2
+                    },
+                  }
+                }} >
                   <span>+</span><h2>New Invoice</h2>
                 </Link>
               </div>
@@ -346,46 +289,10 @@ export class CustomerDetailsComp extends Component {
                       <th><h2>Date</h2></th>
                       <th><h2>Amount due</h2></th>
                       <th><h2>Status</h2></th>
-                      <th></th>
                     </tr>
                   </thead>
                   <tbody className="panel-body">
-                    <tr>
-                      <td><Link to="/invoices/new-invoice">0001</Link></td>
-                      <td><Link to="customers/new-customer">Sally May</Link></td>
-                      <td><Link to="/invoices/new-invoice">Window cleaning</Link></td>
-                      <td>4/28/18</td>
-                      <td>$240</td>
-                      <td>Current</td>
-                      <td><img src={threeDots} alt="item-menu" /></td>
-                    </tr>
-                    <tr>
-                      <td><Link to="/invoices/new-invoice">0001</Link></td>
-                      <td><Link to="customers/new-customer">Sally May</Link></td>
-                      <td><Link to="/invoices/new-invoice">Window cleaning</Link></td>
-                      <td>4/28/18</td>
-                      <td>$240</td>
-                      <td>Current</td>
-                      <td><img src={threeDots} alt="item-menu" /></td>
-                    </tr>
-                    <tr>
-                      <td><Link to="/invoices/new-invoice">0001</Link></td>
-                      <td><Link to="customers/new-customer">Sally May</Link></td>
-                      <td><Link to="/invoices/new-invoice">Window cleaning</Link></td>
-                      <td>4/28/18</td>
-                      <td>$240</td>
-                      <td>Current</td>
-                      <td><img src={threeDots} alt="item-menu" /></td>
-                    </tr>
-                    <tr>
-                      <td><Link to="/invoices/new-invoice">0001</Link></td>
-                      <td><Link to="customers/new-customer">Sally May</Link></td>
-                      <td><Link to="/invoices/new-invoice">Window cleaning</Link></td>
-                      <td>4/28/18</td>
-                      <td>$240</td>
-                      <td>Current</td>
-                      <td><img src={threeDots} alt="item-menu" /></td>
-                    </tr>
+                    {invoicesList}
                   </tbody>
                 </table>
               </div>
@@ -398,4 +305,4 @@ export class CustomerDetailsComp extends Component {
   }
 }
 
-export const CustomerDetails = connect(state => ({ jobs: state.jobsByCustomer }), { getJobByCustomer })(CustomerDetailsComp);
+export const CustomerDetails = connect(state => ({ jobs: state.jobsByCustomer, invoices: state.invoicesByCustomer }), { getJobByCustomer, getInvoicesByCustomer })(CustomerDetailsComp);

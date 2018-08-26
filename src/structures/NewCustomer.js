@@ -24,7 +24,12 @@ export class NewCustomer extends Component {
   }
   render() {
     return (
-      <CustomerDetails customer={this.state.customer} onSave={this.onSave} exit={this.state.exit} />
+      <CustomerDetails 
+        customer={this.state.customer} 
+        onSave={this.onSave} 
+        exit={this.state.exit} 
+        newCustomer={true}
+      />
     )
   }
 }

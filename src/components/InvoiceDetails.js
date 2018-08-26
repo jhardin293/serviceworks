@@ -2,12 +2,26 @@ import React, { Component } from 'react'
 import PropTypes from 'prop-types'
 import DatePicker from 'react-datepicker'
 import Select from 'react-select'
-import { Redirect, Link } from 'react-router-dom'
+import { Redirect} from 'react-router-dom'
 import { Tab, Tabs, TabList, TabPanel } from 'react-tabs'
 import deleteIcon from '../images/delete.svg'
 import CustomerDropdown from '../components/CustomerDropdown'
 import moment from 'moment'
 import { arrayToObject } from '../libs/array-to-object'
+
+const addCustomer = (props) => {
+  if (props.redirect.customer) {
+    return {
+      address: props.redirect.customer.address,
+      id: props.redirect.customer.id,
+      label: props.redirect.customer.name,
+      latLng: props.redirect.customer.latLng,
+    }
+
+  }else {
+    return props.invoice.customer;
+  }
+}
 
 export class InvoiceDetails extends Component {
   constructor(props) {
@@ -16,7 +30,7 @@ export class InvoiceDetails extends Component {
     this.state = {
       invoice: {
         title: invoice.title,
-        customer: invoice.customer,
+        customer: addCustomer(props),
         dueDate: moment(invoice.dueDate),
         invoiceNumber: invoice.invoiceNumber,
         total: invoice.total,
@@ -26,12 +40,18 @@ export class InvoiceDetails extends Component {
         parts: invoice.parts
       },
       exit: props.exit,
-      allowDelete: props.allowDelete
+      allowDelete: props.allowDelete,
+      redirect: props.redirect
     }
   }
   static propTypes = {
     invoice: PropTypes.object.isRequired,
-    onSave: PropTypes.func.isRequired
+    redirect: PropTypes.object.isRequired,
+    onSave: PropTypes.func.isRequired,
+    exit: PropTypes.bool.isRequired,
+    onDelete: PropTypes.func,
+    onCancel: PropTypes.func,
+    allowDelete: PropTypes.bool 
   }
   onSave = () => {
     this.props.onSave(this.state);
@@ -314,16 +334,32 @@ export class InvoiceDetails extends Component {
     })
 
     if (this.props.exit === true) {
-      return <Redirect to="/invoices" />
+      if (this.props.redirect.customer) {
+        return <Redirect
+          to={{
+            pathname: this.props.redirect.path,
+            state: {
+              customer: this.props.redirect.customer,
+              tabIdx: this.props.redirect.tabIdx
+            }
+          }}
+        />
+      }else {
+        return <Redirect to="/invoices" />
+      }
     }
+    
     return (
       <div className="new-invoice-view page-view">
         <div className="page-header">
           <h1>{this.state.invoice.title || 'New Invoice'}</h1>
           <div className="tab-btn-group">
-            <Link to="/invoices">
-              <button className="btn second-btn btn-cancel ">Cancel</button>
-            </Link>
+            <button 
+              className="btn second-btn btn-cancel"
+              onClick={this.props.onCancel}
+            >
+            Cancel
+            </button>
             {this.state.allowDelete &&
               <button
                 className="btn second-btn btn-delete"
@@ -352,11 +388,11 @@ export class InvoiceDetails extends Component {
                 </div>
                 <div className="invoice-meta">
                   <div>
-                    <label>Invoice #</label>
+                    <label>Invoice ID</label>
                     <input
                       type="text"
-                      onChange={this.onChange}
                       name="invoiceNumber"
+                      disabled={true}
                       value={this.state.invoice.invoiceNumber}
                     />
                   </div>

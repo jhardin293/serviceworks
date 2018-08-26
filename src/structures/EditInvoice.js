@@ -18,9 +18,12 @@ export class EditInvoice extends Component {
       id: this.invoice.id
     },
     exit: false,
-    allowDelete: true
+    allowDelete: true,
+    redirect: this.props.location.state.redirect
   }
-
+  onCancel = () => {
+    this.setState({exit: true});
+  }
   onSave = (invoice) => {
     const invoiceClone = { ...invoice.invoice };
     invoiceClone.dueDate = new Date(invoiceClone.dueDate);
@@ -37,9 +40,11 @@ export class EditInvoice extends Component {
     return (
       <InvoiceDetails
         invoice={this.state.invoice}
+        onCancel={this.onCancel}
         onSave={this.onSave}
         onDelete={this.onDelete}
         exit={this.state.exit}
+        redirect={this.state.redirect}
         allowDelete={this.state.allowDelete}
       />
     )

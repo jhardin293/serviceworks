@@ -22,12 +22,6 @@ export class SideNav extends Component {
               </NavLink>
             </li>
             <li>
-              <NavLink to="/notes">
-                <img src={notes} alt="" />
-                <span>Notes</span>
-              </NavLink>
-            </li>
-            <li>
               <NavLink to="/customers">
                 <img src={customers} alt="" />
                 <span>Customers</span>
@@ -43,6 +37,12 @@ export class SideNav extends Component {
               <NavLink to="/team-map">
                 <img src={map} alt="" />
                 <span>Map</span>
+              </NavLink>
+            </li>
+            <li>
+              <NavLink to="/notes">
+                <img src={notes} alt="" />
+                <span>Notes</span>
               </NavLink>
             </li>
             <li>

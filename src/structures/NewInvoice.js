@@ -1,16 +1,17 @@
 import React, { Component } from 'react'
 import { InvoiceDetails } from '../components/InvoiceDetails'
 import moment from 'moment'
-import { newInvoice } from '../actions/'
+import { connect } from 'react-redux'
+import { newInvoice, getInvoiceCount } from '../actions/'
 
-export class NewInvoice extends Component {
+export class NewInvoiceComp extends Component {
   state = {
     invoice: {
       title: '',
       customer: '',
       selectedBilling: '',
       dueDate: moment(),
-      invoiceNumber: this.props.location.state.invoiceNumber + 1,
+      invoiceNumber: '',
       total: 0,
       footer: '',
       labor: {
@@ -36,24 +37,46 @@ export class NewInvoice extends Component {
     },
     exit: false,
   }
+  componentWillMount() {
+    this.props.getInvoiceCount();
+    if (this.props.location.state) {
+      this.setState({redirect: this.props.location.state.redirect})
+    }else {
+      this.setState({redirect: {path: '/invoices'}})
+    }
+  }
+
+
+  onCancel = () => {
+    this.setState({exit: true});
+  }
 
   onSave = (invoice) => {
     const invoiceClone = {...invoice.invoice};
     invoiceClone.dueDate = new Date(invoiceClone.dueDate);
-    // console.log(invoiceClone, 'inovice clone')
+    invoiceClone.invoiceNumber = this.props.invoicesCount.invoicesCount +1;
     newInvoice(invoiceClone);
     this.setState({exit: true});
   }
 
 
   render() {
-    console.log(this.state, 'invoice state');
+    console.log(this.state, 'state');
     return (
       <InvoiceDetails
         invoice={this.state.invoice}
         onSave={this.onSave}
         exit={this.state.exit}
+        onCancel={this.onCancel}
+        redirect={this.state.redirect}
       />
     )
   }
 }
+
+const mapStateToProps = state => ({
+  invoicesCount: state.invoicesCount
+});
+
+export const NewInvoice = connect(mapStateToProps,
+  { getInvoiceCount })(NewInvoiceComp);

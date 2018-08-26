@@ -74,7 +74,7 @@ export const updateUser = (user) => {
 const get = (path, action) => {
   const user = store.getState().user.data;
   return (dispatch) => {
-    let data = []
+    let data = [];
     ref.collection(path).where("author", "==", user.uid).get().then((snap) => {
       snap.forEach((doc) => {
         data.push(doc.data());
@@ -88,27 +88,41 @@ const get = (path, action) => {
   }
 }
 
+export const getInvoicesByCustomer = (customer) => {
+  const user = store.getState().user.data;
+  return (dispatch) => {
+    let data = [];
+    ref.collection('/invoices').where("author", "==", user.uid).where("customer.id", "==", customer.id).get().then((snap) => {
+      snap.forEach((doc) => {
+        data.push(doc.data());
+      })
 
-// const getItemsById = (path, item, action) => {
-//   const user = store.getState().user.data;
-//   let data = []
-//   ref.collection(path).where("author", "==", user.uid).where(item.id, "==", customer.id).get().then((snap) => {
-//     snap.forEach((doc) => {
-//       data.push(doc.data());
-//     })
-//     console.log(data,'data');
+      dispatch({
+        type: 'INVOICES_BY_CUSTOMER',
+        payload: data,
+        status: 'success'
+      })
+    })
+  }
+}
 
-//     store.dispatch({
-//       type: 'JOB_BY_CUSTOMER',
-//       payload: data,
-//       status: 'success'
-//     })
-//   })
-// }
+export const getInvoiceCount = () => {
+  const user = store.getState().user.data;
+  return (dispatch) => {
+    ref.collection('/invoices').where("author", "==", user.uid).get().then((snap) => {
+      dispatch({
+        type: 'INVOICES_COUNT',
+        payload: snap.size,
+        status: 'success'
+      })
+    })
+  }
+}
+
 export const getJobByCustomer = (customer) => {
   const user = store.getState().user.data;
   return (dispatch) => {
-    let data = []
+    let data = [];
     ref.collection('/jobs').where("author", "==", user.uid).where("customer.id", "==", customer.id).get().then((snap) => {
       snap.forEach((doc) => {
         data.push(doc.data());

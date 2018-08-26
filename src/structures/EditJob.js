@@ -27,7 +27,6 @@ export class EditJob extends Component {
     jobClone.start = new Date(jobClone.start);
     jobClone.end = new Date(jobClone.end);
     editJob(jobClone);
-    console.log('saved');
     this.setState({exit: true});
   }
 
