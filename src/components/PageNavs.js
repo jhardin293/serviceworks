@@ -9,6 +9,7 @@ Modal.setAppElement('#root');
 export class PageNavs extends Component {
 
   static propTypes = {
+    subject: PropTypes.string.isRequired,
     openExitModal: PropTypes.bool.isRequired,
     handleCloseModal: PropTypes.func.isRequired,
     handleDeleteConfirmation: PropTypes.func.isRequired,
@@ -62,7 +63,7 @@ export class PageNavs extends Component {
           <button
             className="btn second-btn btn-success"
             onClick={(e) => this.props.onSave(this.props.payload, e)}>
-            Save job
+            Save {this.props.subject}
             </button>
         </div>
       </div>

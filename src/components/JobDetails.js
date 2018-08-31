@@ -196,6 +196,7 @@ export class JobDetails extends Component {
           </div>
           <div className="page-body">
             <PageNavs
+              subject={'job'}
               openModal={this.state.openModal}
               handleCloseModal={this.props.handleCloseModal}
               onSave={this.props.onSave}
