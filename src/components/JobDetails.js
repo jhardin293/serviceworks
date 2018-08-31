@@ -8,6 +8,8 @@ import { Redirect } from 'react-router-dom'
 import moment from 'moment'
 import CustomerDropdown from '../components/CustomerDropdown'
 import EmployeeMultiSelect from './EmployeeMultiSelect'
+import { PageNavs } from '../components/PageNavs'
+
 
 const addEmployees = (props) => {
   if (props.redirect.employee) {
@@ -36,7 +38,6 @@ const addEmployees = (props) => {
 }
 
 const addCustomer = (props) => {
-  console.log(props.redirect);
   if (props.redirect.customer) {
     return {
       address: props.redirect.customer.address,
@@ -45,7 +46,7 @@ const addCustomer = (props) => {
       latLng: props.redirect.customer.latLng,
     }
 
-  }else {
+  } else {
     return props.job.customer;
   }
 }
@@ -53,15 +54,15 @@ const addCustomer = (props) => {
 const addlatLng = (props) => {
   if (props.redirect.customer) {
     return props.redirect.customer.latLng;
-  }else {
+  } else {
     return props.job.latLng;
   }
 }
 
 const addAddress = (props) => {
-  if (props.redirect.customer ) {
+  if (props.redirect.customer) {
     return props.redirect.customer.address;
-  }else {
+  } else {
     return props.job.address || '';
   }
 }
@@ -82,7 +83,8 @@ export class JobDetails extends Component {
       },
       exit: props.exit,
       allowDelete: props.allowDelete,
-      redirect: props.redirect
+      redirect: props.redirect,
+      openModal: props.openModal
     }
   }
 
@@ -94,6 +96,12 @@ export class JobDetails extends Component {
     onDelete: PropTypes.func,
     onCancel: PropTypes.func,
     allowDelete: PropTypes.bool,
+  }
+
+  componentDidUpdate(prevProps) {
+    if (this.props.openModal !== prevProps.openModal) {
+      this.setState({ openModal: this.props.openModal });
+    }
   }
 
   onChange = (e) => {
@@ -124,7 +132,6 @@ export class JobDetails extends Component {
   }
 
   handleEmployee = (value) => {
-    console.log(value, 'valueee');
     this.setState({ job: { ...this.state.job, employees: value } });
   }
 
@@ -146,12 +153,13 @@ export class JobDetails extends Component {
     console.log(arguments, 'clicked')
   }
 
+
   render() {
     const { customer, employees, start, end } = this.state.job;
     const allowDelete = this.state.allowDelete;
     const duration = moment.duration(end.diff(start)).format("d [days]  h [hours]  m [minutes]");
     if (this.props.exit === true) {
-      if (this.props.redirect.employee){
+      if (this.props.redirect.employee) {
         return <Redirect
           to={{
             pathname: this.props.redirect.path,
@@ -162,7 +170,7 @@ export class JobDetails extends Component {
           }}
         />
       }
-      if (this.props.redirect.customer){
+      if (this.props.redirect.customer) {
         return <Redirect
           to={{
             pathname: this.props.redirect.path,
@@ -172,7 +180,7 @@ export class JobDetails extends Component {
             }
           }}
         />
-      }else {
+      } else {
         return <Redirect
           to={{
             pathname: '/schedule',
@@ -181,125 +189,120 @@ export class JobDetails extends Component {
       }
     }
     return (
-      <div className="new-job-view page-view">
-        <div className="page-header">
-          <h1>{this.state.job.title || 'New Job'}</h1>
-        </div>
-        <div className="page-body">
-          <div className="tab-btn-group">
-            <button
-              className="btn second-btn btn-cancel "
-              onClick={this.props.onCancel}>
-              Cancel
-            </button>
-            {allowDelete &&
-              <button
-                className="btn second-btn btn-delete"
-                onClick={(e) => this.props.onDelete(this.state.job.id, e)}>
-                Delete
-              </button>
-            }
-            <button
-              className="btn second-btn btn-success"
-              onClick={(e) => this.props.onSave(this.state.job, e)}>
-              Save
-            </button>
+      <div className="page-view">
+        <div className="new-job-view ">
+          <div className="page-header">
+            <h1>{this.state.job.title || 'New Job'}</h1>
           </div>
-          <Tabs>
-            <TabList>
-              <Tab>Details</Tab>
-            </TabList>
+          <div className="page-body">
+            <PageNavs
+              openModal={this.state.openModal}
+              handleCloseModal={this.props.handleCloseModal}
+              onSave={this.props.onSave}
+              onCancel={this.props.onCancel}
+              onDelete={this.props.onDelete}
+              payload={this.state.job}
+              allowDelete={allowDelete}
+              openExitModal={this.props.openExitModal}
+              openDeleteModal={this.props.openDeleteModal}
+              handleDeleteConfirmation={this.props.handleDeleteConfirmation}
+            />
+            <Tabs>
+              <TabList>
+                <Tab>Details</Tab>
+              </TabList>
 
-            <TabPanel>
-              <form className="person-form">
-                <div className="input-group">
-                  <input
-                    type="text"
-                    name="title"
-                    placeholder="Job title"
-                    onChange={this.onChange}
-                    value={this.state.job.title}
-                  />
-                </div>
-                <div className="input-group date-picker-group">
-                  <div className="pickers">
-                    <div>
-                      <label>Starts</label>
-                      <DatePicker
-                        selected={this.state.job.start}
-                        selectsStart
-                        start={this.state.job.start}
-                        end={this.state.job.end}
-                        onChange={this.handleChangeStart}
-                        timeFormat="HH:mm"
-                        timeIntervals={15}
-                        timeCaption="Time"
-                        showTimeSelect
-                        dateFormat="LLL"
-                        calendarClassName="time-range-picker"
-                      />
-                    </div>
-                    <div>
-                      <label>Ends</label>
-                      <DatePicker
-                        selected={this.state.job.end}
-                        selectsEnd
-                        start={this.state.job.start}
-                        end={this.state.job.end}
-                        onChange={this.handleChangeEnd}
-                        timeFormat="HH:mm"
-                        timeIntervals={15}
-                        timeCaption="Time"
-                        showTimeSelect
-                        dateFormat="LLL"
-                        calendarClassName="time-range-picker"
-                      />
-                    </div>
+              <TabPanel>
+                <form className="person-form">
+                  <div className="input-group">
+                    <input
+                      type="text"
+                      name="title"
+                      placeholder="Job title"
+                      onChange={this.onChange}
+                      value={this.state.job.title}
+                    />
                   </div>
-                  <div className="time-range">
-                    <span className="bordered-group"></span>
-                    {duration}
-                  </div>
-                </div>
-                <div className="input-group">
-                  <div className="col-2">
-                    <div className="panel">
-                      <div className="header">
-                        <h2>Customer</h2>
+                  <div className="input-group date-picker-group">
+                    <div className="pickers">
+                      <div>
+                        <label>Starts</label>
+                        <DatePicker
+                          selected={this.state.job.start}
+                          selectsStart
+                          start={this.state.job.start}
+                          end={this.state.job.end}
+                          onChange={this.handleChangeStart}
+                          timeFormat="HH:mm"
+                          timeIntervals={15}
+                          timeCaption="Time"
+                          showTimeSelect
+                          dateFormat="LLL"
+                          calendarClassName="time-range-picker"
+                        />
                       </div>
-                      <div className="panel-body">
-                        <CustomerDropdown
-                          onChange={this.handleCustomer}
-                          value={customer}
+                      <div>
+                        <label>Ends</label>
+                        <DatePicker
+                          selected={this.state.job.end}
+                          selectsEnd
+                          start={this.state.job.start}
+                          end={this.state.job.end}
+                          onChange={this.handleChangeEnd}
+                          timeFormat="HH:mm"
+                          timeIntervals={15}
+                          timeCaption="Time"
+                          showTimeSelect
+                          dateFormat="LLL"
+                          calendarClassName="time-range-picker"
                         />
                       </div>
                     </div>
-                    <div className="panel">
-                      <div className="header">
-                        <h2>Employees</h2>
-                      </div>
-                      <div className="panel-body">
-                        <EmployeeMultiSelect
-                          onChange={this.handleEmployee}
-                          value={employees}
-                        />
-                      </div>
+                    <div className="time-range">
+                      <span className="bordered-group"></span>
+                      {duration}
                     </div>
                   </div>
-                  <div className="col-2">
+                  <div className="input-group">
+                    <div className="col-2">
+                      <div className="panel">
+                        <div className="header">
+                          <h2>Customer</h2>
+                        </div>
+                        <div className="panel-body">
+                          <CustomerDropdown
+                            onChange={this.handleCustomer}
+                            value={customer}
+                          />
+                        </div>
+                      </div>
+                      <div className="panel">
+                        <div className="header">
+                          <h2>Employees</h2>
+                        </div>
+                        <div className="panel-body">
+                          <EmployeeMultiSelect
+                            onChange={this.handleEmployee}
+                            value={employees}
+                          />
+                        </div>
+                      </div>
+                    </div>
+                    <div className="col-2">
+                    </div>
                   </div>
-                </div>
-                <div className="map">
-                  <MapSearch
-                    getLocation={this.getLocation}
-                    address={this.state.job.address}
-                    latLng={this.state.job.latLng}
-                    onLocationChange={this.onLocationChange}
-                  />
-                </div>
-              </form>
-            </TabPanel>
-          </Tabs>
+                  <div className="map">
+                    <MapSearch
+                      getLocation={this.getLocation}
+                      address={this.state.job.address}
+                      latLng={this.state.job.latLng}
+                      onLocationChange={this.onLocationChange}
+                    />
+                  </div>
+                </form>
+              </TabPanel>
+            </Tabs>
+          </div>
         </div>
       </div>
     )

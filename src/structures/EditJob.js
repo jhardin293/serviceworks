@@ -1,5 +1,6 @@
 import React, { Component } from 'react'
 import moment from 'moment'
+import isEqual from 'lodash.isequal'
 import { editJob, deleteJob } from '../actions'
 import { JobDetails } from '../components/JobDetails'
 
@@ -17,10 +18,22 @@ export class EditJob extends Component {
       address: this.job.address
     },
     exit: false,
-    redirect: this.props.location.state.redirect
+    redirect: this.props.location.state.redirect,
+    openExitModal: false,
+    openDeleteModal: false,
   }
-  onCancel = () => {
-    this.setState({exit: true});
+
+
+  handleCloseModal = () => {
+    this.setState({openExitModal: false, openDeleteModal: false});
+  }
+
+  onCancel = (currentState) => {
+    if(isEqual(this.state.job, currentState)) {
+      this.setState({exit: true});
+    }else {
+      this.setState({openExitModal: true});
+    }
   }
   onSave = (job) => {
     const jobClone = {...job};
@@ -28,6 +41,10 @@ export class EditJob extends Component {
     jobClone.end = new Date(jobClone.end);
     editJob(jobClone);
     this.setState({exit: true});
+  }
+  
+  handleDeleteConfirmation = () => {
+    this.setState({openDeleteModal: true});
   }
 
   onDelete = (id) => {
@@ -45,6 +62,10 @@ export class EditJob extends Component {
         exit={this.state.exit} 
         redirect={this.state.redirect}
         allowDelete={true}
+        openExitModal={this.state.openExitModal}
+        handleCloseModal={this.handleCloseModal}
+        handleDeleteConfirmation={this.handleDeleteConfirmation}
+        openDeleteModal={this.state.openDeleteModal}
       />
     )
   }  

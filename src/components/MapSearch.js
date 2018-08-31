@@ -14,12 +14,12 @@ export class MapSearch extends Component {
   render() {
     return (
       <div className="map-search">
+        <Map latLng={this.props.latLng} />
         <LocationSearchInput 
           getLocation={this.props.getLocation} 
           onLocationChange={this.props.onLocationChange} 
           address={this.props.address}
         />
-        <Map latLng={this.props.latLng} />
       </div>
     )
   }

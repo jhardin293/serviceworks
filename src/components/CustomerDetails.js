@@ -10,10 +10,9 @@ import { getJobByCustomer, getInvoicesByCustomer } from '../actions'
 import Map from '../components/Map'
 
 
-import deleteIcon from '../images/delete.svg'
 
 export class CustomerDetailsComp extends Component {
-  constructor (props) {
+  constructor(props) {
     super(props);
     this.state = {
       customer: {
@@ -36,7 +35,7 @@ export class CustomerDetailsComp extends Component {
   }
 
   onChange = (e) => {
-    this.setState({ customer: {...this.state.customer,[e.target.name]: e.target.value }});
+    this.setState({ customer: { ...this.state.customer, [e.target.name]: e.target.value } });
   }
 
   componentWillMount() {
@@ -46,17 +45,17 @@ export class CustomerDetailsComp extends Component {
 
 
   getLocation = (address) => {
-    this.setState({customer:{...this.state.customer, address}})
+    this.setState({ customer: { ...this.state.customer, address } })
     geocodeByAddress(address)
       .then(results => getLatLng(results[0]))
       .then((latLng) => {
-        this.setState({customer:{...this.state.customer, latLng}})
+        this.setState({ customer: { ...this.state.customer, latLng } })
       })
       .catch(error => console.error('Error', error))
   }
 
   onLocationChange = (address) => {
-    this.setState({customer:{...this.state.customer, address}})
+    this.setState({ customer: { ...this.state.customer, address } })
   }
 
   onSave = () => {
@@ -64,13 +63,13 @@ export class CustomerDetailsComp extends Component {
   }
   headerDisplay = () => {
     const customer = this.state.customer,
-    company = customer.company,
-    name = customer.name;
+      company = customer.company,
+      name = customer.name;
     if (name && company) {
       return name + " : " + company;
-    }else if (company) {
+    } else if (company) {
       return company;
-    }else {
+    } else {
       return name;
     }
   }
@@ -79,14 +78,14 @@ export class CustomerDetailsComp extends Component {
       allowDelete = this.props.allowDelete,
       jobs = this.props.jobs.jobsByCustomer,
       invoices = this.props.invoices.invoicesByCustomer;
-    
+
 
     const invoicesList = invoices.map((invoice, i) => {
       if (invoice.dueDate.toDate) {
         invoice.dueDate = invoice.dueDate.toDate();
       }
       const dueDate = moment(invoice.dueDate).format('l');
-      
+
       return (
         <tr key={i}>
           <td>
@@ -112,7 +111,7 @@ export class CustomerDetailsComp extends Component {
       )
 
     });
-    
+
     const jobsList = jobs.map((job, i) => {
       if (job.start.toDate) {
         job.start = job.start.toDate();
@@ -155,86 +154,93 @@ export class CustomerDetailsComp extends Component {
           <h1>{this.headerDisplay() || 'New Customer'}</h1>
         </div>
         <div className="page-body">
-          <div className="tab-btn-group">
-            <Link to="/customers">
-              <button className="btn second-btn btn-cancel ">Cancel</button>
-            </Link>
-            {allowDelete &&
-              <button 
-                className="btn second-btn btn-delete" 
-                onClick={(e)=> this.props.onDelete(customer.id, e)}>
-                Delete
-              </button>
-            }
-            <Link to="/customers">
-              <button className="btn second-btn btn-success" onClick={this.onSave}>Save customer</button>
-            </Link>
-          </div>
           <Tabs defaultIndex={this.props.tabIdx}>
-           {!this.props.newCustomer &&
-            <TabList>
+            {!this.props.newCustomer &&
+              <TabList>
                 <Tab>Details</Tab>
                 <Tab>Jobs</Tab>
                 <Tab>Invoices</Tab>
-            </TabList>
+              </TabList>
             }
-           {this.props.newCustomer &&
-            <TabList>
+            {this.props.newCustomer &&
+              <TabList>
                 <Tab>Details</Tab>
-            </TabList>
+              </TabList>
             }
 
             <TabPanel>
-              <form className="person-form">
-                <div className="input-group">
-                  <div className="col-2">
-                    <div>
+              <div>
+              <div className="action-header">
+                  <div></div>
+                  <div className="tab-btn-group">
+                    <Link to="/customers">
+                      <button className="btn second-btn btn-cancel ">Cancel</button>
+                    </Link>
+                    {allowDelete &&
+                      <button
+                        className="btn second-btn btn-delete"
+                        onClick={(e) => this.props.onDelete(customer.id, e)}>
+                        Delete
+                      </button>
+                    }
+                    <Link to="/customers">
+                      <button className="btn second-btn btn-success" onClick={this.onSave}>Save customer</button>
+                    </Link>
+                  </div>
+                </div>
+                <form className="person-form">
+                  <div className="input-group">
+                    <div className="col-2">
                       <div>
-                        <label>
-                          Name
-                        </label>
-                        <input type="text" value={customer.name} name="name" onChange={this.onChange} />
+                        <div>
+                          <label>
+                            Name
+                          </label>
+                          <input type="text" value={customer.name} name="name" onChange={this.onChange} />
+                        </div>
+                        <div>
+                          <label>
+                            Company
+                          </label>
+                          <input type="text" value={customer.company} name="company" onChange={this.onChange} />
+                        </div>
+                        <div>
+                          <label>
+                            Email
+                          </label>
+                          <input type="text" value={customer.email} name="email" onChange={this.onChange} />
+                        </div>
+                        <div>
+                          <label>
+                            Phone
+                          </label>
+                          <input type="text" value={customer.phone} name="phone" onChange={this.onChange} />
+                        </div>
+                        <div>
+                          <label>
+                            Address
+                          </label>
+                          <LocationSearchInput
+                            getLocation={this.getLocation}
+                            onLocationChange={this.onLocationChange}
+                            address={this.state.customer.address}
+                          />
+                        </div>
                       </div>
                       <div>
-                        <label>
-                          Company
-                        </label>
-                        <input type="text" value={customer.company} name="company" onChange={this.onChange}/>
-                      </div>
-                      <div>
-                        <label>
-                          Email
-                        </label>
-                        <input type="text" value={customer.email} name="email"  onChange={this.onChange}/>
-                      </div>
-                      <div>
-                        <label>
-                          Phone
-                        </label>
-                        <input type="text" value={customer.phone} name="phone" onChange={this.onChange}/>
-                      </div>
-                      <div>
-                        <label>
-                          Address
-                        </label>
-                        <LocationSearchInput 
-                          getLocation={this.getLocation} 
-                          onLocationChange={this.onLocationChange} 
-                          address={this.state.customer.address}
-                        />
-                      </div>
-                    </div>
-                    <div>
-                      <div className="map">
-                        <Map  latLng={this.state.customer.latLng}/>
+                        <div className="map">
+                          <Map latLng={this.state.customer.latLng} />
+                        </div>
                       </div>
                     </div>
                   </div>
-                </div>
-              </form>
+                </form>
+
+              </div>
+
             </TabPanel>
             <TabPanel>
-              <div className="tab-header"> 
+              <div className="tab-header">
                 <Link to={{
                   pathname: "/schedule/new-job",
                   state: {
@@ -265,7 +271,7 @@ export class CustomerDetailsComp extends Component {
               </div>
             </TabPanel>
             <TabPanel>
-              <div className="tab-header invoices"> 
+              <div className="tab-header invoices">
                 <Link to={{
                   pathname: "/invoices/new-invoice",
                   state: {

@@ -941,7 +941,6 @@ form.person-form {
   .map-search .location-search-input {
     position: absolute;
     top: 10px;
-    z-index: 1;
     width: 98%;
     margin-left: auto;
     margin-right: auto;
