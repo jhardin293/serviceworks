@@ -12,12 +12,12 @@ export class PageNavs extends Component {
     subject: PropTypes.string.isRequired,
     openExitModal: PropTypes.bool.isRequired,
     handleCloseModal: PropTypes.func.isRequired,
-    handleDeleteConfirmation: PropTypes.func.isRequired,
+    handleDeleteConfirmation: PropTypes.func,
     onSave: PropTypes.func.isRequired,
     onCancel: PropTypes.func.isRequired, 
-    onDelete: PropTypes.func.isRequired, 
+    onDelete: PropTypes.func, 
     payload:PropTypes.object.isRequired,
-    allowDelete: PropTypes.bool.isRequired
+    allowDelete: PropTypes.bool
   }
 
   render() {
