@@ -7,6 +7,8 @@ import { JobDetails } from '../components/JobDetails'
 export class NewJob extends Component {
   state = {
     job : {
+      address: '',
+      id: '',
       start: moment(),
       end: moment(),
       employees:  [''],
@@ -33,6 +35,7 @@ export class NewJob extends Component {
   }
 
   onCancel = (currentState) => {
+    console.log('init state: ',this.state.job, 'current state: ',currentState);
     if(isEqual(this.state.job, currentState)) {
       this.setState({exit: true});
     }else {
