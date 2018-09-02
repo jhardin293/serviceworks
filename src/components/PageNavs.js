@@ -2,6 +2,8 @@ import React, { Component } from 'react'
 import PropTypes from 'prop-types'
 import Modal from 'react-modal'
 
+import deleteIcon from '../images/delete.svg'
+
 
 Modal.setAppElement('#root');
 
@@ -17,7 +19,8 @@ export class PageNavs extends Component {
     onCancel: PropTypes.func.isRequired, 
     onDelete: PropTypes.func, 
     payload:PropTypes.object.isRequired,
-    allowDelete: PropTypes.bool
+    allowDelete: PropTypes.bool,
+    leavePage: PropTypes.func.isRequired
   }
 
   render() {
@@ -29,10 +32,12 @@ export class PageNavs extends Component {
           onRequestClose={() => this.props.handleCloseModal()}
           shouldCloseOnOverlayClick={true}
         >
+          <img  className="close-modal"  onClick={() => this.props.handleCloseModal()} src={deleteIcon} alt="close"/>
           <h3>You have unsaved changes</h3>
           <div className="button-wrapper">
-            <button className="btn second-btn btn-success" onClick={(e) => this.props.onSave(this.props.payload, e)}>save & close</button>
-            <button className="btn second-btn btn-cancel" onClick={() => this.props.handleCloseModal()}>cancel</button>
+            <button className="btn second-btn btn-success" onClick={(e) => this.props.onSave(this.props.payload, e)}>Save {this.props.subject}</button>
+            <button className="btn second-btn btn-cancel" onClick={() => this.props.leavePage()}>Dont save</button>
+            <button className="btn second-btn btn-cancel" onClick={() => this.props.handleCloseModal()}>Cancel</button>
           </div>
         </Modal>
         <Modal
@@ -41,9 +46,10 @@ export class PageNavs extends Component {
           onRequestClose={() => this.props.handleCloseModal()}
           shouldCloseOnOverlayClick={true}
         >
+          <img  className="close-modal"  onClick={() => this.props.handleCloseModal()} src={deleteIcon} alt="close"/>
           <h3>Are you sure you want to delete?</h3>
           <div className="button-wrapper">
-            <button className="btn second-btn btn-delete" onClick={(e) => this.props.onDelete (this.props.payload.id, e)}>Delete & close</button>
+            <button className="btn second-btn btn-delete" onClick={(e) => this.props.onDelete (this.props.payload.id, e)}>Delete {this.props.subject}</button>
             <button className="btn second-btn btn-cancel " onClick={() => this.props.handleCloseModal()}>Cancel</button>
           </div>
         </Modal>

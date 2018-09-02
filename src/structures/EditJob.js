@@ -35,6 +35,11 @@ export class EditJob extends Component {
       this.setState({openExitModal: true});
     }
   }
+
+  leavePage = () => {
+    this.setState({exit: true});
+  }
+
   onSave = (job) => {
     const jobClone = {...job};
     jobClone.start = new Date(jobClone.start);
@@ -56,6 +61,7 @@ export class EditJob extends Component {
     return (
       <JobDetails 
         job={this.state.job} 
+        leavePage={this.leavePage}
         onCancel={this.onCancel}
         onSave={this.onSave} 
         onDelete={this.onDelete}

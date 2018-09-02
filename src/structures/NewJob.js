@@ -30,12 +30,15 @@ export class NewJob extends Component {
     }
   }
 
+  leavePage = () => {
+    this.setState({exit: true});
+  }
+
   handleCloseModal = () => {
     this.setState({openExitModal: false});
   }
 
   onCancel = (currentState) => {
-    console.log('init state: ',this.state.job, 'current state: ',currentState);
     if(isEqual(this.state.job, currentState)) {
       this.setState({exit: true});
     }else {
@@ -56,6 +59,7 @@ export class NewJob extends Component {
     return (
       <JobDetails 
         job={this.state.job} 
+        leavePage={this.leavePage}
         onSave={this.onSave}  
         onCancel={this.onCancel}
         exit={this.state.exit}

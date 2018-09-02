@@ -92,6 +92,7 @@ export class JobDetails extends Component {
     job: PropTypes.object.isRequired,
     redirect: PropTypes.object.isRequired,
     exit: PropTypes.bool.isRequired,
+    leavePage: PropTypes.func.isRequired,
     onSave: PropTypes.func.isRequired,
     onDelete: PropTypes.func,
     onCancel: PropTypes.func,
@@ -197,6 +198,7 @@ export class JobDetails extends Component {
           <div className="page-body">
             <PageNavs
               subject={'job'}
+              leavePage={this.props.leavePage}
               openModal={this.state.openModal}
               handleCloseModal={this.props.handleCloseModal}
               onSave={this.props.onSave}

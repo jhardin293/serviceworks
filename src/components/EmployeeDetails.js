@@ -35,6 +35,7 @@ export class EmployeeDetailsComp extends Component {
     onSave: PropTypes.func.isRequired,
     onCancel: PropTypes.func,
     allowDelete: PropTypes.bool,
+    leavePage: PropTypes.func.isRequired,
     tabIdx: PropTypes.number
   }
 
@@ -125,6 +126,7 @@ export class EmployeeDetailsComp extends Component {
                   <div></div>
                   <PageNavs
                     subject={'employee'}
+                    leavePage={this.props.leavePage}
                     handleCloseModal={this.props.handleCloseModal}
                     onSave={this.props.onSave}
                     onCancel={this.props.onCancel}

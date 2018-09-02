@@ -27,6 +27,10 @@ export class NewCustomer extends Component {
     }
   }
 
+  leavePage = () => {
+    this.setState({exit: true});
+  }
+
   handleCloseModal = () => {
     this.setState({openExitModal: false});
   }
@@ -44,6 +48,7 @@ export class NewCustomer extends Component {
         customer={this.state.customer} 
         onSave={this.onSave} 
         exit={this.state.exit} 
+        leavePage={this.leavePage}
         newCustomer={true}
         redirect={this.state.redirect}
         onCancel={this.onCancel}

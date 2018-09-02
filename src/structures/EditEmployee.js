@@ -39,6 +39,10 @@ export class EditEmployee extends Component {
   handleCloseModal = () => {
     this.setState({openExitModal: false, openDeleteModal: false});
   }
+  
+  leavePage = () => {
+    this.setState({exit: true});
+  }
 
   onDelete = (id) => {
     deleteEmployee(id);
@@ -61,6 +65,7 @@ export class EditEmployee extends Component {
         onDelete={this.onDelete}
         redirect={this.state.redirect}
         tabIdx={this.state.tabIdx}
+        leavePage={this.leavePage}
         exit={this.state.exit}
         allowDelete={this.state.allowDelete}
         openExitModal={this.state.openExitModal}

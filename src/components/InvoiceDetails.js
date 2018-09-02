@@ -52,6 +52,7 @@ export class InvoiceDetails extends Component {
     exit: PropTypes.bool.isRequired,
     onDelete: PropTypes.func,
     onCancel: PropTypes.func,
+    leavePage: PropTypes.func.isRequired,
     allowDelete: PropTypes.bool 
   }
   onSave = () => {
@@ -356,6 +357,7 @@ export class InvoiceDetails extends Component {
           <h1>{this.state.invoice.title || 'New Invoice'}</h1>
           <PageNavs
             subject={'invoice'}
+            leavePage={this.props.leavePage}
             handleCloseModal={this.props.handleCloseModal}
             onSave={this.props.onSave}
             onCancel={this.props.onCancel}

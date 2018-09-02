@@ -36,6 +36,7 @@ export class CustomerDetailsComp extends Component {
     onCancel: PropTypes.func.isRequired,
     onSave: PropTypes.func.isRequired,
     allowDelete: PropTypes.bool,
+    leavePage: PropTypes.func.isRequired,
     tabIdx: PropTypes.number
   }
 
@@ -179,6 +180,7 @@ export class CustomerDetailsComp extends Component {
                   <div></div>
                   <PageNavs
                     subject={'customer'}
+                    leavePage={this.props.leavePage}
                     handleCloseModal={this.props.handleCloseModal}
                     onSave={this.props.onSave}
                     onCancel={this.props.onCancel}

@@ -27,6 +27,10 @@ export class EditCustomer extends Component {
     this.setState({exit: true});
   }
 
+  leavePage = () => {
+    this.setState({exit: true});
+  }
+
   onCancel = (currentState) => {
     if(isEqual(this.state.customer, currentState)) {
       this.setState({exit: true});
@@ -53,7 +57,6 @@ export class EditCustomer extends Component {
   }
 
   render() {
-    console.log('redirect :', this.props.location);
     return (
       <CustomerDetails 
         customer={this.state.customer} 
@@ -64,6 +67,7 @@ export class EditCustomer extends Component {
         exit={this.state.exit} 
         allowDelete
         onDelete={this.onDelete}
+        leavePage={this.leavePage}
         newCustomer={false}
         openExitModal={this.state.openExitModal}
         handleCloseModal={this.handleCloseModal}

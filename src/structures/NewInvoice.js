@@ -52,6 +52,10 @@ export class NewInvoiceComp extends Component {
     this.setState({openExitModal: false});
   }
 
+  leavePage = () => {
+    this.setState({exit: true});
+  }
+
   onCancel = (currentState) => {
     if(isEqual(this.state.invoice, currentState)) {
       this.setState({exit: true});
@@ -74,6 +78,7 @@ export class NewInvoiceComp extends Component {
       <InvoiceDetails
         invoice={this.state.invoice}
         onSave={this.onSave}
+        leavePage={this.leavePage}
         exit={this.state.exit}
         onCancel={this.onCancel}
         redirect={this.state.redirect}

@@ -41,6 +41,10 @@ export class EditInvoice extends Component {
     this.setState({openExitModal: false, openDeleteModal: false});
   }
 
+  leavePage = () => {
+    this.setState({exit: true});
+  }
+
   onSave = (invoice) => {
     const invoiceClone = { ...invoice };
     invoiceClone.dueDate = new Date(invoiceClone.dueDate);
@@ -61,6 +65,7 @@ export class EditInvoice extends Component {
         onSave={this.onSave}
         onDelete={this.onDelete}
         exit={this.state.exit}
+        leavePage={this.leavePage}
         redirect={this.state.redirect}
         allowDelete={this.state.allowDelete}
         openExitModal={this.state.openExitModal}

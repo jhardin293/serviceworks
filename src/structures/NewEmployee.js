@@ -27,6 +27,10 @@ export class NewEmployee extends Component {
     }
   }
 
+  leavePage = () => {
+    this.setState({exit: true});
+  }
+
   handleCloseModal = () => {
     this.setState({openExitModal: false});
   }
@@ -45,6 +49,7 @@ export class NewEmployee extends Component {
         onSave={this.onSave}
         exit={this.state.exit}
         newEmployee={true}
+        leavePage={this.leavePage}
         redirect={this.state.redirect}
         onCancel={this.onCancel}
         openExitModal={this.state.openExitModal}

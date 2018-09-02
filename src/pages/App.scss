@@ -141,14 +141,27 @@ a,
   background-color: rgba(0, 43, 60, 0.75) !important;
   .confrimation-modal {
     background-color: #ffffff;
-    width: 20%;
-    min-width: 317px;
+    width: 33%;
+    min-width: 434px;
     margin: 20% auto;
     padding: 40px;
     text-align: center;
+    position: relative;
+    .close-modal {
+      position: absolute;
+      top: 12px;
+      width: 20px;
+      right: 19px;
+      opacity: 0.2;
+      &:hover {
+        cursor: pointer;
+        opacity: 1;
+      }
+    }
     .button-wrapper {
       display: flex;
-      button:first-child {
+      justify-content: center;
+      button:first-child, button:nth-child(2) {
         margin-right: 10px;
       }
     }
