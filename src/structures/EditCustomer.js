@@ -1,6 +1,7 @@
 import React, { Component } from 'react'
 import { CustomerDetails } from '../components/CustomerDetails'
 import { editCustomer, deleteCustomer} from '../actions'
+import isEqual from 'lodash.isequal'
 
 export class EditCustomer extends Component {
   customer =   this.props.location.state.customer
@@ -15,6 +16,9 @@ export class EditCustomer extends Component {
       id: this.customer.id
     },
     exit: false,
+    redirect: this.props.location.state.redirect,
+    openExitModal: false,
+    openDeleteModal: false,
     tabIdx: this.props.location.state.tabIdx || 0
   }
 
@@ -22,6 +26,23 @@ export class EditCustomer extends Component {
     deleteCustomer(id);
     this.setState({exit: true});
   }
+
+  onCancel = (currentState) => {
+    if(isEqual(this.state.customer, currentState)) {
+      this.setState({exit: true});
+    }else {
+      this.setState({openExitModal: true});
+    }
+  }
+
+  handleDeleteConfirmation = () => {
+    this.setState({openDeleteModal: true});
+  }
+  
+  handleCloseModal = () => {
+    this.setState({openExitModal: false, openDeleteModal: false});
+  }
+ 
 
   onSave = (customer) => {
     const customerClone = {...customer};
@@ -32,15 +53,22 @@ export class EditCustomer extends Component {
   }
 
   render() {
+    console.log('redirect :', this.props.location);
     return (
       <CustomerDetails 
         customer={this.state.customer} 
+        onCancel={this.onCancel}
+        redirect={this.state.redirect}
         tabIdx={this.state.tabIdx}
         onSave={this.onSave} 
         exit={this.state.exit} 
         allowDelete
         onDelete={this.onDelete}
         newCustomer={false}
+        openExitModal={this.state.openExitModal}
+        handleCloseModal={this.handleCloseModal}
+        handleDeleteConfirmation={this.handleDeleteConfirmation}
+        openDeleteModal={this.state.openDeleteModal}
       />
     )
   }

@@ -190,6 +190,7 @@ const post = (item, path, action, getData) => {
 }
 
 const update = (item, path, action, getData) => {
+  console.log(item,'item');
   const itemRef = ref.collection(path).doc(item.id);
   const user = store.getState().user.data;
   item.author = user.uid;

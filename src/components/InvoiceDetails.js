@@ -8,6 +8,7 @@ import deleteIcon from '../images/delete.svg'
 import CustomerDropdown from '../components/CustomerDropdown'
 import moment from 'moment'
 import { arrayToObject } from '../libs/array-to-object'
+import { PageNavs } from '../components/PageNavs'
 
 const addCustomer = (props) => {
   if (props.redirect.customer) {
@@ -353,27 +354,18 @@ export class InvoiceDetails extends Component {
       <div className="new-invoice-view page-view">
         <div className="page-header">
           <h1>{this.state.invoice.title || 'New Invoice'}</h1>
-          <div className="tab-btn-group">
-            <button 
-              className="btn second-btn btn-cancel"
-              onClick={this.props.onCancel}
-            >
-            Cancel
-            </button>
-            {this.state.allowDelete &&
-              <button
-                className="btn second-btn btn-delete"
-                onClick={(e) => this.props.onDelete(this.state.invoice.id, e)}>
-                Delete
-              </button>
-            }
-            <button
-              className="btn second-btn btn-success"
-              onClick={this.onSave}
-            >
-              Save invoice
-            </button>
-          </div>
+          <PageNavs
+            subject={'invoice'}
+            handleCloseModal={this.props.handleCloseModal}
+            onSave={this.props.onSave}
+            onCancel={this.props.onCancel}
+            onDelete={this.props.onDelete}
+            payload={this.state.invoice}
+            allowDelete={this.state.allowDelete}
+            openExitModal={this.props.openExitModal}
+            openDeleteModal={this.props.openDeleteModal}
+            handleDeleteConfirmation={this.props.handleDeleteConfirmation}
+          />
         </div>
         <div className="page-body">
           <div className="invoice-header">

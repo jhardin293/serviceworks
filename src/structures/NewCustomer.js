@@ -1,6 +1,7 @@
 import React, { Component } from 'react'
 import { CustomerDetails } from '../components/CustomerDetails'
 import { newCustomer } from '../actions'
+import isEqual from 'lodash.isequal'
 
 export class NewCustomer extends Component {
   state = {
@@ -10,9 +11,24 @@ export class NewCustomer extends Component {
       email: '',
       phone: '',
       address: '',
-      latLng: {lat:37,lng:-122}
+      latLng: {lat:37,lng:-122},
+      id: ''
     },
-    exit: false
+    exit: false,
+    redirect: this.props.location.state.redirect,
+    openExitModal: false,
+  }
+
+  onCancel = (currentState) => {
+    if(isEqual(this.state.customer, currentState)) {
+      this.setState({exit: true});
+    }else {
+      this.setState({openExitModal: true});
+    }
+  }
+
+  handleCloseModal = () => {
+    this.setState({openExitModal: false});
   }
 
   onSave = (customer) => {
@@ -29,6 +45,10 @@ export class NewCustomer extends Component {
         onSave={this.onSave} 
         exit={this.state.exit} 
         newCustomer={true}
+        redirect={this.state.redirect}
+        onCancel={this.onCancel}
+        openExitModal={this.state.openExitModal}
+        handleCloseModal={this.handleCloseModal}
       />
     )
   }

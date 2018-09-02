@@ -22,7 +22,12 @@ export class TeamComp extends Component {
             <Link 
               to={{
                 pathname: "/my-account/edit-employee",
-                state:{employee}
+                state:{
+                  redirect: {
+                    path: window.location.pathname
+                  },
+                  employee
+                }
               }}>
               {employee.name}
             </Link>
@@ -39,7 +44,15 @@ export class TeamComp extends Component {
           <div>
             <h2>Employees</h2>
           </div>
-          <Link to="/my-account/new-employee">
+          <Link to={{
+            pathname: "/my-account/new-employee",
+            state: {
+              redirect: {
+                path: window.location.pathname,
+                tabIdx: 0
+              },
+            }
+          }} >
             <button className="account-btn btn"><img src={plus} alt="" /><span>Add employee</span></button>
           </Link>
         </div>

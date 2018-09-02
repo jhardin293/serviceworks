@@ -8,6 +8,7 @@ import { LocationSearchInput } from '../components/LocationSearchInput'
 import { getJobByEmployee } from '../actions';
 import { connect } from 'react-redux'
 import Map from '../components/Map'
+import { PageNavs } from '../components/PageNavs'
 
 
 export class EmployeeDetailsComp extends Component {
@@ -28,9 +29,13 @@ export class EmployeeDetailsComp extends Component {
 
   static propTypes = {
     employee: PropTypes.object.isRequired,
+    redirect: PropTypes.object,
     onDelete: PropTypes.func,
     exit: PropTypes.bool.isRequired,
-    onSave: PropTypes.func.isRequired
+    onSave: PropTypes.func.isRequired,
+    onCancel: PropTypes.func,
+    allowDelete: PropTypes.bool,
+    tabIdx: PropTypes.number
   }
 
   componentWillMount() {
@@ -105,19 +110,7 @@ export class EmployeeDetailsComp extends Component {
           <h1>{this.state.employee.name || 'New employee'}</h1>
         </div>
         <div className="page-body">
-          <div className="tab-btn-group">
-            <Link to="/my-account/employees">
-              <button className="btn second-btn btn-cancel ">Cancel</button>
-            </Link>
-            {allowDelete &&
-              <button
-                className="btn second-btn btn-delete"
-                onClick={(e) => this.props.onDelete(employee.id, e)}>
-                Delete
-              </button>
-            }
-            <button className="btn second-btn btn-success" onClick={this.onSave}>Save employee</button>
-          </div>
+
           <Tabs defaultIndex={this.props.tabIdx}>
             <TabList>
               <Tab>Details</Tab>
@@ -127,53 +120,70 @@ export class EmployeeDetailsComp extends Component {
             </TabList>
 
             <TabPanel>
-              <form className="person-form">
-                <div className="input-group">
-                  <div className="col-2">
-                    <div>
+              <div>
+                <div className="action-header">
+                  <div></div>
+                  <PageNavs
+                    subject={'employee'}
+                    handleCloseModal={this.props.handleCloseModal}
+                    onSave={this.props.onSave}
+                    onCancel={this.props.onCancel}
+                    onDelete={this.props.onDelete}
+                    payload={this.state.employee}
+                    allowDelete={allowDelete}
+                    openExitModal={this.props.openExitModal}
+                    openDeleteModal={this.props.openDeleteModal}
+                    handleDeleteConfirmation={this.props.handleDeleteConfirmation}
+                  />
+                </div>
+                <form className="person-form">
+                  <div className="input-group">
+                    <div className="col-2">
                       <div>
-                        <label>
-                          Name
+                        <div>
+                          <label>
+                            Name
                         </label>
-                        <input type="text" value={employee.name} name="name" onChange={this.onChange} />
+                          <input type="text" value={employee.name} name="name" onChange={this.onChange} />
+                        </div>
+                        <div>
+                          <label>
+                            Email
+                        </label>
+                          <input type="text" value={employee.email} name="email" onChange={this.onChange} />
+                        </div>
+                        <div>
+                          <label>
+                            Phone
+                        </label>
+                          <input type="text" value={employee.phone} name="phone" onChange={this.onChange} />
+                        </div>
+                        <div>
+                          <label>
+                            Role
+                        </label>
+                          <input type="text" value={employee.role} name="role" onChange={this.onChange} />
+                        </div>
+                        <div>
+                          <label>
+                            Address
+                        </label>
+                          <LocationSearchInput
+                            getLocation={this.getLocation}
+                            onLocationChange={this.onLocationChange}
+                            address={this.state.employee.address}
+                          />
+                        </div>
                       </div>
                       <div>
-                        <label>
-                          Email
-                        </label>
-                        <input type="text" value={employee.email} name="email" onChange={this.onChange} />
-                      </div>
-                      <div>
-                        <label>
-                          Phone
-                        </label>
-                        <input type="text" value={employee.phone} name="phone" onChange={this.onChange} />
-                      </div>
-                      <div>
-                        <label>
-                          Role
-                        </label>
-                        <input type="text" value={employee.role} name="role" onChange={this.onChange} />
-                      </div>
-                      <div>
-                        <label>
-                          Address
-                        </label>
-                        <LocationSearchInput
-                          getLocation={this.getLocation}
-                          onLocationChange={this.onLocationChange}
-                          address={this.state.employee.address}
-                        />
-                      </div>
-                    </div>
-                    <div>
-                      <div className="map">
-                        <Map latLng={this.state.employee.latLng} />
+                        <div className="map">
+                          <Map latLng={this.state.employee.latLng} />
+                        </div>
                       </div>
                     </div>
                   </div>
-                </div>
-              </form>
+                </form>
+              </div>
             </TabPanel>
             {!this.props.newEmployee &&
               <TabPanel>

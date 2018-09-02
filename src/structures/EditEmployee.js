@@ -1,6 +1,8 @@
 import React, { Component } from 'react'
 import { EmployeeDetails } from '../components/EmployeeDetails'
 import { editEmployee, deleteEmployee } from '../actions';
+import isEqual from 'lodash.isequal'
+
 export class EditEmployee extends Component {
   employee = this.props.location.state.employee
   state = {
@@ -14,8 +16,30 @@ export class EditEmployee extends Component {
       id: this.employee.id
     },
     exit: false,
+    allowDelete: true,
+    redirect: this.props.location.state.redirect,
+    openExitModal: false,
+    openDeletModal: false,
     tabIdx: this.props.location.state.tabIdx || 0
   }
+
+  onCancel = (currentState) => {
+    if(isEqual(this.state.employee, currentState)) {
+      this.setState({exit: true});
+    }else {
+      this.setState({openExitModal: true});
+    }
+  }
+
+  handleDeleteConfirmation = () => {
+    this.setState({openDeleteModal: true});
+  }
+
+
+  handleCloseModal = () => {
+    this.setState({openExitModal: false, openDeleteModal: false});
+  }
+
   onDelete = (id) => {
     deleteEmployee(id);
     this.setState({exit: true});
@@ -32,11 +56,17 @@ export class EditEmployee extends Component {
     return (
       <EmployeeDetails
         employee={this.state.employee}
-        tabIdx={this.state.tabIdx}
+        onCancel={this.onCancel}
         onSave={this.onSave}
-        exit={this.state.exit}
-        allowDelete
         onDelete={this.onDelete}
+        redirect={this.state.redirect}
+        tabIdx={this.state.tabIdx}
+        exit={this.state.exit}
+        allowDelete={this.state.allowDelete}
+        openExitModal={this.state.openExitModal}
+        handleCloseModal={this.handleCloseModal}
+        handleDeleteConfirmation={this.handleDeleteConfirmation}
+        openDeleteModal={this.state.openDeleteModal}
         newEmployee={false}
        />
     )

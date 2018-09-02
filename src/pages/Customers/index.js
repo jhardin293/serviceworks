@@ -37,7 +37,12 @@ class CustomersComp extends Component {
               key={customer.id}
               to={{
                 pathname: "customers/edit-customer",
-                state: {customer}
+                state: {
+                  redirect: {
+                    path: window.location.pathname
+                  },
+                  customer
+                }
               }} >
               {customer.name}
             </Link>
@@ -53,7 +58,15 @@ class CustomersComp extends Component {
       <div className="customer-view page-view">
         <div className="page-header">
           <h1>Customers</h1>
-          <Link to="customers/new-customer">
+          <Link to={{
+            pathname: "customers/new-customer",
+            state: {
+              redirect: {
+                path: window.location.pathname,
+                tabIdx: 0
+              },
+            }
+          }} >
             <button className="customer-btn btn"><img src={plus} alt="" /><span>New customer</span></button>
           </Link>
         </div>

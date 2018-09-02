@@ -66,7 +66,6 @@ class Toolbar extends Component {
     this.props.onNavigate(action);
   }
   view = view => {
-    console.log(view,'view'); 
     this.props.onViewChange(view);
   }
   render() {

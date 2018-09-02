@@ -8,6 +8,7 @@ import { LocationSearchInput } from '../components/LocationSearchInput'
 import { connect } from 'react-redux'
 import { getJobByCustomer, getInvoicesByCustomer } from '../actions'
 import Map from '../components/Map'
+import { PageNavs } from '../components/PageNavs'
 
 
 
@@ -29,9 +30,13 @@ export class CustomerDetailsComp extends Component {
 
   static propTypes = {
     customer: PropTypes.object.isRequired,
-    onDelete: PropTypes.func,
+    redirect: PropTypes.object,
     exit: PropTypes.bool.isRequired,
-    onSave: PropTypes.func.isRequired
+    onDelete: PropTypes.func,
+    onCancel: PropTypes.func.isRequired,
+    onSave: PropTypes.func.isRequired,
+    allowDelete: PropTypes.bool,
+    tabIdx: PropTypes.number
   }
 
   onChange = (e) => {
@@ -170,23 +175,20 @@ export class CustomerDetailsComp extends Component {
 
             <TabPanel>
               <div>
-              <div className="action-header">
+                <div className="action-header">
                   <div></div>
-                  <div className="tab-btn-group">
-                    <Link to="/customers">
-                      <button className="btn second-btn btn-cancel ">Cancel</button>
-                    </Link>
-                    {allowDelete &&
-                      <button
-                        className="btn second-btn btn-delete"
-                        onClick={(e) => this.props.onDelete(customer.id, e)}>
-                        Delete
-                      </button>
-                    }
-                    <Link to="/customers">
-                      <button className="btn second-btn btn-success" onClick={this.onSave}>Save customer</button>
-                    </Link>
-                  </div>
+                  <PageNavs
+                    subject={'customer'}
+                    handleCloseModal={this.props.handleCloseModal}
+                    onSave={this.props.onSave}
+                    onCancel={this.props.onCancel}
+                    onDelete={this.props.onDelete}
+                    payload={this.state.customer}
+                    allowDelete={allowDelete}
+                    openExitModal={this.props.openExitModal}
+                    openDeleteModal={this.props.openDeleteModal}
+                    handleDeleteConfirmation={this.props.handleDeleteConfirmation}
+                  />
                 </div>
                 <form className="person-form">
                   <div className="input-group">
@@ -239,70 +241,76 @@ export class CustomerDetailsComp extends Component {
               </div>
 
             </TabPanel>
-            <TabPanel>
-              <div className="tab-header">
-                <Link to={{
-                  pathname: "/schedule/new-job",
-                  state: {
-                    redirect: {
-                      path: window.location.pathname,
-                      customer: this.state.customer,
-                      tabIdx: 1
-                    },
-                  }
-                }} >
-                  <span>+</span><h2>New Job</h2>
-                </Link>
-              </div>
-              <div className="tab-body">
-                <table className="panel">
-                  <thead>
-                    <tr className="header">
-                      <th><h2>Job name</h2></th>
-                      <th><h2>Date & time</h2></th>
-                      <th><h2>Duratiion</h2></th>
-                      <th><h2>Location</h2></th>
-                    </tr>
-                  </thead>
-                  <tbody className="panel-body">
-                    {jobsList}
-                  </tbody>
-                </table>
-              </div>
-            </TabPanel>
-            <TabPanel>
-              <div className="tab-header invoices">
-                <Link to={{
-                  pathname: "/invoices/new-invoice",
-                  state: {
-                    redirect: {
-                      path: window.location.pathname,
-                      customer: this.state.customer,
-                      tabIdx: 2
-                    },
-                  }
-                }} >
-                  <span>+</span><h2>New Invoice</h2>
-                </Link>
-              </div>
-              <div className="tab-body">
-                <table className="panel invoices">
-                  <thead>
-                    <tr className="header">
-                      <th><h2>Number</h2></th>
-                      <th><h2>Customer</h2></th>
-                      <th><h2>Title</h2></th>
-                      <th><h2>Date</h2></th>
-                      <th><h2>Amount due</h2></th>
-                      <th><h2>Status</h2></th>
-                    </tr>
-                  </thead>
-                  <tbody className="panel-body">
-                    {invoicesList}
-                  </tbody>
-                </table>
-              </div>
-            </TabPanel>
+
+            {!this.props.newCustomer &&
+              <TabPanel>
+                <div className="tab-header">
+                  <Link to={{
+                    pathname: "/schedule/new-job",
+                    state: {
+                      redirect: {
+                        path: window.location.pathname,
+                        customer: this.state.customer,
+                        tabIdx: 1
+                      },
+                    }
+                  }} >
+                    <span>+</span><h2>New Job</h2>
+                  </Link>
+                </div>
+                <div className="tab-body">
+                  <table className="panel">
+                    <thead>
+                      <tr className="header">
+                        <th><h2>Job name</h2></th>
+                        <th><h2>Date & time</h2></th>
+                        <th><h2>Duratiion</h2></th>
+                        <th><h2>Location</h2></th>
+                      </tr>
+                    </thead>
+                    <tbody className="panel-body">
+                      {jobsList}
+                    </tbody>
+                  </table>
+                </div>
+              </TabPanel>
+            }
+
+            {!this.props.newCustomer &&
+              <TabPanel>
+                <div className="tab-header invoices">
+                  <Link to={{
+                    pathname: "/invoices/new-invoice",
+                    state: {
+                      redirect: {
+                        path: window.location.pathname,
+                        customer: this.state.customer,
+                        tabIdx: 2
+                      },
+                    }
+                  }} >
+                    <span>+</span><h2>New Invoice</h2>
+                  </Link>
+                </div>
+                <div className="tab-body">
+                  <table className="panel invoices">
+                    <thead>
+                      <tr className="header">
+                        <th><h2>Number</h2></th>
+                        <th><h2>Customer</h2></th>
+                        <th><h2>Title</h2></th>
+                        <th><h2>Date</h2></th>
+                        <th><h2>Amount due</h2></th>
+                        <th><h2>Status</h2></th>
+                      </tr>
+                    </thead>
+                    <tbody className="panel-body">
+                      {invoicesList}
+                    </tbody>
+                  </table>
+                </div>
+              </TabPanel>
+            }
           </Tabs>
         </div>
 

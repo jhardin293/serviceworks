@@ -3,13 +3,14 @@ import { InvoiceDetails } from '../components/InvoiceDetails'
 import moment from 'moment'
 import { connect } from 'react-redux'
 import { newInvoice, getInvoiceCount } from '../actions/'
+import isEqual from 'lodash.isequal'
 
 export class NewInvoiceComp extends Component {
   state = {
     invoice: {
+      id: '',
       title: '',
       customer: '',
-      selectedBilling: '',
       dueDate: moment(),
       invoiceNumber: '',
       total: 0,
@@ -36,6 +37,7 @@ export class NewInvoiceComp extends Component {
       }
     },
     exit: false,
+    openExitModal: false,
   }
   componentWillMount() {
     this.props.getInvoiceCount();
@@ -46,13 +48,20 @@ export class NewInvoiceComp extends Component {
     }
   }
 
+  handleCloseModal = () => {
+    this.setState({openExitModal: false});
+  }
 
-  onCancel = () => {
-    this.setState({exit: true});
+  onCancel = (currentState) => {
+    if(isEqual(this.state.invoice, currentState)) {
+      this.setState({exit: true});
+    }else {
+      this.setState({openExitModal: true});
+    }
   }
 
   onSave = (invoice) => {
-    const invoiceClone = {...invoice.invoice};
+    const invoiceClone = {...invoice};
     invoiceClone.dueDate = new Date(invoiceClone.dueDate);
     invoiceClone.invoiceNumber = this.props.invoicesCount.invoicesCount +1;
     newInvoice(invoiceClone);
@@ -61,7 +70,6 @@ export class NewInvoiceComp extends Component {
 
 
   render() {
-    console.log(this.state, 'state');
     return (
       <InvoiceDetails
         invoice={this.state.invoice}
@@ -69,6 +77,8 @@ export class NewInvoiceComp extends Component {
         exit={this.state.exit}
         onCancel={this.onCancel}
         redirect={this.state.redirect}
+        openExitModal={this.state.openExitModal}
+        handleCloseModal={this.handleCloseModal}
       />
     )
   }
