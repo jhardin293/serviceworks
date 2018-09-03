@@ -103,7 +103,7 @@ export class EmployeeDetailsComp extends Component {
     })
 
     if (this.props.exit === true) {
-      return <Redirect to="/my-account/employees" />
+      return <Redirect to="/employees" />
     }
     return (
       <div className="new-employee-view person-view page-view">

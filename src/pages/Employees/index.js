@@ -1,11 +1,11 @@
 import React, { Component } from 'react'
 import { Link } from 'react-router-dom'
 import { connect } from 'react-redux'
-import { getEmployees } from '../actions'
+import { getEmployees } from '../../actions'
 import plus from '../images/plus.svg'
 import PropTypes from 'prop-types'
 
-export class TeamComp extends Component {
+export class EmployeesComp extends Component {
   static propTypes = {
     employees: PropTypes.object.isRequired,
     getEmployees: PropTypes.func.isRequired
@@ -21,7 +21,7 @@ export class TeamComp extends Component {
           <td>
             <Link 
               to={{
-                pathname: "/my-account/edit-employee",
+                pathname: "employees/edit-employee",
                 state:{
                   redirect: {
                     path: window.location.pathname
@@ -39,13 +39,11 @@ export class TeamComp extends Component {
       )
     })
     return (
-      <div>
-        <div className="action-header">
-          <div>
-            <h2>Employees</h2>
-          </div>
+      <div className="employee-view page-view">
+        <div className="page-header">
+          <h1>Employees</h1>
           <Link to={{
-            pathname: "/my-account/new-employee",
+            pathname: "employees/new-employee",
             state: {
               redirect: {
                 path: window.location.pathname,
@@ -76,4 +74,4 @@ export class TeamComp extends Component {
   }
 }
 
-export const Team = connect(state => ({ employees: state.employees}), {getEmployees})(TeamComp);
+export const Employees = connect(state => ({ employees: state.employees}), {getEmployees})(EmployeesComp);

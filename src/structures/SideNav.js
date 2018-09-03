@@ -8,6 +8,7 @@ import customers from '../images/customers.svg'
 import invoices from '../images/invoices.svg'
 import map from '../images/map.svg'
 import gear from '../images/gear.svg'
+import brief from '../images/brief.svg'
 
 export class SideNav extends Component {
   render() {
@@ -25,6 +26,12 @@ export class SideNav extends Component {
               <NavLink to="/customers">
                 <img src={customers} alt="" />
                 <span>Customers</span>
+              </NavLink>
+            </li>
+            <li>
+              <NavLink to="/employees">
+                <img src={brief} alt="" />
+                <span>Employees</span>
               </NavLink>
             </li>
             <li>

@@ -3,7 +3,6 @@ import { connect } from 'react-redux'
 import { Route, Redirect } from "react-router-dom";
 import { RoutedTabs, NavTab } from 'react-router-tabs';
 import { getUser, updateUser } from '../../actions'
-import { Team } from '../../components/Team'
 
 import { AccountDetails } from '../../components/AccountDetails';
 
@@ -39,7 +38,6 @@ class MyAccountComp extends Component {
               tabClassName="react-tabs__tab"
             >
               <NavTab to="/details">Details</NavTab>
-              <NavTab to="/employees">Employees</NavTab>
             </RoutedTabs>
             <div className="react-tabs__tab-panel react-tabs__tab-panel--selected">
               <Route exact path={`${match.path}`} render={() => <Redirect replace to={`${match.path}/details`} />} />
@@ -54,7 +52,6 @@ class MyAccountComp extends Component {
                   />
                 )
               }} />
-              <Route path={`${match.path}/employees`} component={Team} />
             </div>
           </div>
         </div>

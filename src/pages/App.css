@@ -800,16 +800,19 @@ form.person-form {
   .account-view .tab-header .btn {
     background-image: linear-gradient(90deg, #6BE1A7 0%, #5CB6B5 100%); }
 
-.account-view .panel {
+.employee-view .employee-list-wrapper {
+  padding: 0px 20px; }
+
+.employee-view .panel {
   width: 100%; }
-  .account-view .panel .panel-body tr {
+  .employee-view .panel .panel-body tr {
     background-color: #F6F8FA;
     border-bottom: 1px solid #dfe4ea; }
-    .account-view .panel .panel-body tr td {
+    .employee-view .panel .panel-body tr td {
       padding: 15px; }
-      .account-view .panel .panel-body tr td a {
+      .employee-view .panel .panel-body tr td a {
         color: black; }
-    .account-view .panel .panel-body tr:nth-child(even) {
+    .employee-view .panel .panel-body tr:nth-child(even) {
       background-color: #fff; }
 
 .new-employee-view .react-tabs .react-tabs__tab-list .react-tabs__tab.react-tabs__tab--selected {
