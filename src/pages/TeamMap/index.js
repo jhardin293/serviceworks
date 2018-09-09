@@ -22,7 +22,7 @@ class PeopleList extends Component {
     const people = this.state.people;
 
     const peopleList = people.map((person, i) => {
-      if (person.displayOnMap) {
+      if (person.displayOnMap !== undefined) {
         return (
           <div className="person" key={i}>
             <label><input type="checkbox" name={i} onChange={this.props.onPeopleChange} checked={person.displayOnMap} /><span>{person.name}</span></label>
