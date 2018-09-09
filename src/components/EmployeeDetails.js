@@ -103,8 +103,16 @@ export class EmployeeDetailsComp extends Component {
     })
 
     if (this.props.exit === true) {
-      return <Redirect to="/employees" />
+      return <Redirect
+        to={{
+          pathname: this.props.redirect.path,
+          state: {
+            employee: this.props.redirect.employee,
+          }
+        }}
+      />
     }
+
     return (
       <div className="new-employee-view person-view page-view">
         <div className="page-header">

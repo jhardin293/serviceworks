@@ -736,10 +736,11 @@ a,
   background-image: linear-gradient(90deg, #6BE1A7 0%, #5CB6B5 100%);
 }
 
+
+.customer-btn {
+  background-image: linear-gradient(90deg, #FE6AAC 0%, #FE8812 100%);
+}
 .customer-view {
-  .customer-btn {
-    background-image: linear-gradient(90deg, #FE6AAC 0%, #FE8812 100%);
-  }
   .customer-list-wrapper {
     padding: 0px 20px;
   }
@@ -1015,6 +1016,11 @@ form {
     top: 0;
     width: 280px;
     padding: 20px;
+    padding-bottom: 40px;
+    padding-top: 30px;
+    .side-group:first-child {
+      margin-bottom: 45px;
+    }
     .side-header {
       h2 {
         color: #828E9E;
@@ -1028,6 +1034,15 @@ form {
       .header-wrap {
         display: flex;
         align-items: center; 
+        input {
+          margin-right: 8px;
+        }
+        img {
+          margin-right: 11px;
+        }
+        h2 {
+          color: #5c646f;
+        }
         .key {
           height: 13px;
           width: 30px; 
@@ -1038,6 +1053,22 @@ form {
           &.employee {
             background: #FFD845;
             border: 1px solid #FA7497; 
+          }
+        }
+      }
+    }
+    .side-body {
+      .person {
+        margin-bottom: 10px;
+        cursor: pointer;
+        &:hover {
+          cursor: pointer;
+        }
+        label {
+          display: flex;
+          align-items: baseline;
+          input {
+            margin-right: 8px;
           }
         }
       }
@@ -1055,7 +1086,6 @@ form {
     }
     .btn {
       margin-top: 20px;
-      margin-bottom: 30px;
     }
   }
 }

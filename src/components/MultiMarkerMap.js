@@ -5,8 +5,8 @@ import GoogleMapReact from 'google-map-react'
 import capitalize from 'capitalize'
 
 import Popover from 'react-popover'
-import employeeMarker from './images/employee-map-marker.svg'
-import customerMarker from './images/customer-map-marker.svg'
+import employeeMarker from '../images/employee-map-marker.svg'
+import customerMarker from '../images/customer-map-marker.svg'
 
 class MapMarker extends Component {
   static propTypes = {
@@ -50,16 +50,27 @@ class MapMarker extends Component {
       path = 'customers/edit-customer';
     }
     if (item.type === 'employee') {
-      path = '/my-account/edit-employee';
+      path = '/employees/edit-employee';
     }
-
     return (
-      <Link
-        to={{
+      // <Link
+      //   to={{
+      //     pathname: path,
+      //     state: { [item.type]: item }
+      //   }} >
+      //   show
+      //   </Link>
+
+        <Link to={{
           pathname: path,
-          state: { [item.type]: item }
+          state: {
+            redirect: {
+              path: window.location.pathname,
+            },
+            [item.type]: item
+          }
         }} >
-        Show details
+          Show details
         </Link>
     )
   }

@@ -541,7 +541,7 @@ a,
 .account-btn {
   background-image: linear-gradient(90deg, #6BE1A7 0%, #5CB6B5 100%); }
 
-.customer-view .customer-btn {
+.customer-btn {
   background-image: linear-gradient(90deg, #FE6AAC 0%, #FE8812 100%); }
 
 .customer-view .customer-list-wrapper {
@@ -756,7 +756,11 @@ form.person-form {
     right: 0;
     top: 0;
     width: 280px;
-    padding: 20px; }
+    padding: 20px;
+    padding-bottom: 40px;
+    padding-top: 30px; }
+    .map-view .side-area .side-group:first-child {
+      margin-bottom: 45px; }
     .map-view .side-area .side-header h2 {
       color: #828E9E;
       font-weight: 400;
@@ -767,6 +771,12 @@ form.person-form {
     .map-view .side-area .side-header .header-wrap {
       display: flex;
       align-items: center; }
+      .map-view .side-area .side-header .header-wrap input {
+        margin-right: 8px; }
+      .map-view .side-area .side-header .header-wrap img {
+        margin-right: 11px; }
+      .map-view .side-area .side-header .header-wrap h2 {
+        color: #5c646f; }
       .map-view .side-area .side-header .header-wrap .key {
         height: 13px;
         width: 30px; }
@@ -776,6 +786,16 @@ form.person-form {
         .map-view .side-area .side-header .header-wrap .key.employee {
           background: #FFD845;
           border: 1px solid #FA7497; }
+    .map-view .side-area .side-body .person {
+      margin-bottom: 10px;
+      cursor: pointer; }
+      .map-view .side-area .side-body .person:hover {
+        cursor: pointer; }
+      .map-view .side-area .side-body .person label {
+        display: flex;
+        align-items: baseline; }
+        .map-view .side-area .side-body .person label input {
+          margin-right: 8px; }
     .map-view .side-area .customer label {
       display: flex;
       align-items: center;
@@ -784,8 +804,7 @@ form.person-form {
         margin-right: 10px;
         cursor: pointer; }
     .map-view .side-area .btn {
-      margin-top: 20px;
-      margin-bottom: 30px; }
+      margin-top: 20px; }
 
 .account-view .react-tabs .react-tabs__tab-list .react-tabs__tab.react-tabs__tab--selected {
   color: #5CB6B5; }

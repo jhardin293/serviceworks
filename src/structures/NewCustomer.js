@@ -43,6 +43,7 @@ export class NewCustomer extends Component {
     this.setState({exit: true});
   }
   render() {
+    console.log(this.state.redirect,'redirct in new customer');
     return (
       <CustomerDetails 
         customer={this.state.customer} 

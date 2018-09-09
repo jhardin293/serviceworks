@@ -3,7 +3,9 @@ import MultiMarkerMap from '../../components/MultiMarkerMap'
 import { Link } from 'react-router-dom'
 import { getCustomers, getEmployees } from '../../actions'
 import { connect } from 'react-redux';
-
+import employeeMarker from '../../images/employee-map-marker.svg'
+import customerMarker from '../../images/customer-map-marker.svg'
+import plus from '../../images/plus.svg'
 
 class PeopleList extends Component {
   state = {
@@ -20,11 +22,15 @@ class PeopleList extends Component {
     const people = this.state.people;
 
     const peopleList = people.map((person, i) => {
-      return (
-        <div className="person" key={i}>
-          <label><input type="checkbox" name={i} onChange={this.props.onPeopleChange} checked={person.displayOnMap} /><span>{person.name}</span></label>
-        </div>
-      )
+      if (person.displayOnMap) {
+        return (
+          <div className="person" key={i}>
+            <label><input type="checkbox" name={i} onChange={this.props.onPeopleChange} checked={person.displayOnMap} /><span>{person.name}</span></label>
+          </div>
+        )
+      }else {
+        return (null)
+      }
     })
     return peopleList;
   }
@@ -33,6 +39,8 @@ class PeopleList extends Component {
 class TeamMapComp extends Component {
   state = {
     customers: this.props.customers,
+    showAllcustomers: true,
+    showAllemployees: true,
     employees: this.props.employees
   };
 
@@ -41,19 +49,19 @@ class TeamMapComp extends Component {
     //adding customers to state
     if (this.props.customers !== prevProps.customers || this.props.employees !== prevProps.employees) {
       //Is this a anti pattern?
-      const customersClone = [...this.props.customers]
-      // console.log(customersClone, 'clone', this.props.customers);
-      const customers = customersClone.map((customer) => {
-        customer.displayOnMap = true;
-        customer.showPopover = false;
-        customer.type = 'customer'
-        return customer;
+      const customers = this.props.customers.map((customer) => {
+        let customerClone = {...customer};
+        customerClone.displayOnMap = true;
+        customerClone.showPopover = false;
+        customerClone.type = 'customer'
+        return customerClone;
       })
       const employees = this.props.employees.map((employee) => {
-        employee.displayOnMap = true;
-        employee.showPopover = false;
-        employee.type = 'employee';
-        return employee;
+        let employeeClone = {...employee};
+        employeeClone.displayOnMap = true;
+        employeeClone.showPopover = false;
+        employeeClone.type = 'employee';
+        return employeeClone;
       })
       this.setState({ customers, employees });
     }
@@ -64,6 +72,7 @@ class TeamMapComp extends Component {
     this.props.getEmployees();
   }
 
+
   handleCheckedChange = (e, type) => {
     const target = e.target;
     const value = target.checked;
@@ -71,7 +80,8 @@ class TeamMapComp extends Component {
     const stateItem = type + 's';
     const item = this.state[stateItem];
     item[idx].displayOnMap = value;
-
+    
+    console.log(stateItem, 'state Item');
     this.setState({ stateItem });
   }
 
@@ -107,6 +117,19 @@ class TeamMapComp extends Component {
     this.setState({ stateItem });
   }
 
+  handleAllSelectedToggle = (e, type) => {
+    const value =  e.target.checked;
+    const stateItem = type;
+    const showAllSubject = "showAll" + type ;
+    const subject = this.state[stateItem].map((item)=> {
+      //Clone to prevent state mutation
+      let itemClone = {...item};
+      itemClone.displayOnMap = value;
+      return itemClone;
+    });
+    this.setState({ [showAllSubject] : value, [type]: subject});
+  }
+
   handleOutsideClick = () => {
     this.resetPopoverState();
   }
@@ -127,31 +150,51 @@ class TeamMapComp extends Component {
           />
         </div>
         <aside className="side-area">
-          <div className="side-header">
-            <div className="header-wrap">
-              <h2>Customers</h2>
-              <div className="key customer"></div>
+          <div className="side-group"> 
+            <div className="side-header">
+              <div className="header-wrap">
+                <input type="checkbox"  onChange={(e) => this.handleAllSelectedToggle(e,'customers')} checked={this.state.showAllcustomers} />
+                <img src={customerMarker} alt="customer Marker"/>
+                <h2>Customers</h2>
+              </div>
+              <hr />
             </div>
-            <hr />
-          </div>
-          <div className="side-body">
-            <PeopleList people={customers} onPeopleChange={(e) => this.handleCheckedChange(e, 'customer')} />
-            <Link to="customers/new-customer">
-              <button className="btn second-btn btn-success">Add Customer</button>
-            </Link>
-          </div>
-          <div className="side-header">
-            <div className="header-wrap">
-              <h2>Employess</h2>
-              <div className="key employee"></div>
+            <div className="side-body">
+              <PeopleList people={customers} onPeopleChange={(e) => this.handleCheckedChange(e, 'customer')} />
+              <Link to={{
+                pathname: "customers/new-customer",
+                state: {
+                  redirect: {
+                    path: window.location.pathname,
+                  },
+                }
+              }} >
+                <button className="customer-btn btn"><img src={plus} alt="" /><span>New customer</span></button>
+              </Link>
             </div>
-            <hr />
           </div>
-          <div className="side-body">
-            <PeopleList people={employees} onPeopleChange={(e) => this.handleCheckedChange(e, 'employee')} />
-            <Link to="customers/new-customer">
-              <button className="btn second-btn btn-success">Add Customer</button>
-            </Link>
+          <div className="side-group">
+            <div className="side-header">
+              <div className="header-wrap">
+                <input type="checkbox"  onChange={(e) => this.handleAllSelectedToggle(e,'employees')} checked={this.state.showAllemployees} />
+                <img src={employeeMarker} alt="customer Marker"/>
+                <h2>Employess</h2>
+              </div>
+              <hr />
+            </div>
+            <div className="side-body">
+              <PeopleList people={employees} onPeopleChange={(e) => this.handleCheckedChange(e, 'employee')} />
+              <Link to={{
+                pathname: "employees/new-employee",
+                state: {
+                  redirect: {
+                    path: window.location.pathname,
+                  },
+                }
+              }} >
+                <button className="account-btn btn"><img src={plus} alt="" /><span>Add employee</span></button>
+              </Link>
+            </div>
           </div>
         </aside>
       </div>
