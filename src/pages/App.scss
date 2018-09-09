@@ -1202,6 +1202,18 @@ form {
         }
       }
     }
+    .customer-contact {
+      margin-top: 15px;
+      .item {
+        display: flex;
+        align-items: center;
+        margin-bottom: 10px;
+        img {
+          width: 16px;
+          margin-right: 15px;
+        }
+      }
+    }
   }
   .map {
     background-color: grey;

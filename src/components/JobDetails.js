@@ -10,6 +10,9 @@ import CustomerDropdown from '../components/CustomerDropdown'
 import EmployeeMultiSelect from './EmployeeMultiSelect'
 import { PageNavs } from '../components/PageNavs'
 
+import phone from '../images/phone.svg'
+import mail from '../images/mail.svg'
+
 
 const addEmployees = (props) => {
   if (props.redirect.employee) {
@@ -42,6 +45,8 @@ const addCustomer = (props) => {
     return {
       address: props.redirect.customer.address,
       id: props.redirect.customer.id,
+      phone:props.redirect.customer.phone,
+      email:props.redirect.customer.email,
       label: props.redirect.customer.name,
       latLng: props.redirect.customer.latLng,
     }
@@ -277,6 +282,16 @@ export class JobDetails extends Component {
                             onChange={this.handleCustomer}
                             value={customer}
                           />
+                          <div className="customer-contact">
+                            <div className="item">
+                              <img src={phone} alt="phone"/>
+                              <p>{customer.phone}</p>
+                            </div> 
+                            <div className="item">
+                              <img src={mail} alt="mail"/>
+                              <p>{customer.email}</p>
+                            </div> 
+                          </div>
                         </div>
                       </div>
                       <div className="panel">

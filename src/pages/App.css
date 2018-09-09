@@ -886,6 +886,16 @@ form.person-form {
     margin-top: 0px;
     height: 50%; }
 
+.new-job-view .panel .customer-contact {
+  margin-top: 15px; }
+  .new-job-view .panel .customer-contact .item {
+    display: flex;
+    align-items: center;
+    margin-bottom: 10px; }
+    .new-job-view .panel .customer-contact .item img {
+      width: 16px;
+      margin-right: 15px; }
+
 .new-job-view .map {
   background-color: grey;
   width: 100%;

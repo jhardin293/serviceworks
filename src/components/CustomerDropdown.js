@@ -28,6 +28,8 @@ class CustomerDropdown extends Component {
           label: customer.name,
           latLng: customer.latLng,
           id: customer.id,
+          phone: customer.phone,
+          email: customer.email,
           address: customer.address
         }
       );
