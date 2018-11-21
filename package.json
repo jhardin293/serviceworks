@@ -1,6 +1,7 @@
 {
   "name": "serviceworks",
   "version": "0.1.0",
+  "homepage": "https://juicesandbox.com/skunk/",
   "private": true,
   "dependencies": {
     "amazon-wish-list": "^0.5.2",

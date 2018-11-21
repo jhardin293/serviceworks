@@ -16,10 +16,21 @@ class CustomerDropdown extends Component {
   componentWillMount() {
     this.props.getCustomers();
   }
+
+  renderLink () {
+		return <a style={{ marginLeft: 5 }} href="/upgrade" target="_blank">Upgrade here!</a>;
+	}
   
   render() {
     const customers = this.props.customers.customers;
-    let customersList = []
+    let customersList = [
+      {
+        label: 'add new customer',
+        link : '/link',
+        value: 'prop',
+        // disabled: true
+      }
+    ]
 
     if (customers.length !== 0) {
      customers.forEach((customer) => {
